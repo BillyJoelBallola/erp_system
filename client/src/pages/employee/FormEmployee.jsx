@@ -16,7 +16,9 @@ const FormEmployee = () => {
   const toast = useRef();
   const navigate = useNavigate();
   const id = useParams().id;
+  const [deduct, setDeduct] = useState("");
   const [positions, setPositions] = useState([]);
+  const [deductions, setDeductions] = useState([]);
   const [employeeData, setEmployeeData] = useState({
     name: "",
     dob: "",
@@ -34,6 +36,8 @@ const FormEmployee = () => {
       phoneNumber: "",
     },
     position: "",
+    salary: "",
+    deductions: [],
     qrCode: "",
     code: "",
   });
@@ -44,29 +48,64 @@ const FormEmployee = () => {
         if(data) setEmployeeData(data);
       });
     }
+  }, [id]);
 
+  useEffect(() => {
     axios.get("/positions").then(({ data }) => {
-        if(data) setPositions(data);
+      if(data) setPositions(data);
     })
-  }, []);
+
+    axios.get("/deductions").then(({ data }) => {
+      if(data) setDeductions(data);
+    })
+  }, [])
 
   const inputAdress = (e) => {
-    setEmployeeData({
-      ...employeeData,
-      address: { ...employeeData.address, [e.target.name]: e.target.value },
-    });
+    setEmployeeData((prev) => ({
+      ...prev,
+      address: { ...prev.address, [e.target.name]: e.target.value },
+    }));
   };
 
   const inputContact = (e) => {
-    setEmployeeData({
-      ...employeeData,
-      contact: { ...employeeData.contact, [e.target.name]: e.target.value },
-    });
+    setEmployeeData((prev) => ({
+      ...prev,
+      contact: { ...prev.contact, [e.target.name]: e.target.value },
+    }));
   };
 
   const inputForm = (e) => {
-    setEmployeeData({ ...employeeData, [e.target.name]: e.target.value });
+    setEmployeeData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
+
+  const inputDeduction = (e) => {
+    setDeduct(e.target.value);
+  }
+
+  const removeDeduction = (idx) => {
+    const newDeduction = [...employeeData.deductions];
+    newDeduction.splice(idx, 1);
+    console.log(newDeduction);
+    setEmployeeData((prev) => ({
+      ...prev, 
+      deductions: newDeduction 
+    }))
+  }
+
+  const addDeduction = (e) => {
+    e.preventDefault();
+    if(deduct === "") return;
+    const data = deductions.filter((item) => {
+      if(item._id === deduct){
+        return item;
+      }
+    })
+    setEmployeeData((prev) => ({
+      ...prev, 
+      deductions: [ ...prev.deductions, data[0] ]
+    }));
+    setDeduct("");
+  }
 
   const editEmployeeInfo = (e) => {
     confirmPopup({
@@ -86,6 +125,7 @@ const FormEmployee = () => {
           !employeeData.address.province ||
           !employeeData.contact.phoneNumber ||
           !employeeData.position ||
+          !employeeData.salary ||
           !employeeData.qrCode
         ){
           return toast.current.show({
@@ -136,6 +176,7 @@ const FormEmployee = () => {
           !employeeData.address.province ||
           !employeeData.contact.phoneNumber ||
           !employeeData.position ||
+          !employeeData.salary ||
           !employeeData.qrCode
         )
           return toast.current.show({
@@ -226,7 +267,7 @@ const FormEmployee = () => {
         </button>
       </div>
       <div className="px-8 py-12">
-        <form className="text-sm grid gap-8">
+        <div className="text-sm grid gap-8">
           {id && (
             <div className="grid grid-cols-[200px_1fr] items-center">
               <span className="text-gray-500 font-semibold">
@@ -376,7 +417,7 @@ const FormEmployee = () => {
           </div>
           <div className="w-full h-[1px] bg-gray-200"></div>
           <div className="grid grid-cols-[200px_1fr] items-center">
-            <span className="text-gray-500 font-semibold">
+            <span className="text-gray-500 font-semibold self-start">
               CONTACT<span className="text-red-400">*</span>
             </span>
             <div className="grid lg:grid-cols-2 gap-10 md:grid-cols-1">
@@ -423,6 +464,65 @@ const FormEmployee = () => {
           </div>
           <div className="w-full h-[1px] bg-gray-200"></div>
           <div className="grid grid-cols-[200px_1fr] items-center">
+            <span className="text-gray-500 font-semibold self-start">
+              SALARY INFO<span className="text-red-400">*</span>
+            </span>
+            <div className="grid lg:grid-cols-2 gap-10 md:grid-cols-1">
+              <div className="grid gap-1 h-min">
+                <label className="text-gray-500 font-semibold text-xs">
+                  BASIC SALARY
+                </label>
+                <input
+                  onChange={inputForm}
+                  value={employeeData.salary}
+                  type="number"
+                  name="salary"
+                  placeholder="Basic Salary"
+                />
+              </div>
+              <div className="grid gap-1">
+                <label className="text-gray-500 font-semibold text-xs">
+                  DEDUCTIONS
+                </label>
+                <form className="flex items-center gap-4">
+                  <select name="deduction" onChange={inputDeduction} value={deduct}>
+                    <option value="">Select deduction</option>
+                    {
+                      deductions &&
+                      deductions.map(({ name, _id }) => (
+                          <option key={_id} value={_id}>{name}</option>   
+                      ))
+                    }
+                  </select>
+                  <button className="bg-blue-400 text-white rounded p-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={4} stroke="currentColor" className="w-4 h-4" onClick={addDeduction}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                    </svg>
+                  </button>
+                </form>
+                {
+                  employeeData.deductions?.length > 0 &&
+                  <div className="mt-4 py-2 px-4 bg-white border-y-[1px] ">
+                    {
+                      employeeData.deductions.map((deduct, idx) => (
+                        <div key={idx} className="flex justify-between py-2">
+                          <span>{deduct.name}</span>
+                          <span>Php{deduct.amount}</span>
+                          <div className="cursor-pointer" onClick={() => removeDeduction(idx)}>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={4} stroke="currentColor" className="w-3 h-3">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                          </div>
+                        </div>
+                      ))
+                    }
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+          <div className="w-full h-[1px] bg-gray-200"></div>
+          <div className="grid grid-cols-[200px_1fr] items-center">
             <span className="text-gray-500 font-semibold self-baseline">
               QR CODE<span className="text-red-400">*</span>
             </span>
@@ -443,7 +543,7 @@ const FormEmployee = () => {
               </div>
             </div>
           </div>
-        </form>
+        </div>
       </div>
     </>
   );

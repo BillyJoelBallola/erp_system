@@ -17,7 +17,7 @@ const ProductionModal = ({ visible, setVisible, productInfo, production, setProd
                 className="w-11/12 md:w-2/3 lg:w-1/2" 
                 onHide={() => {
                     setVisible(false);
-                    setAction("");
+                    setAction && setAction("");
                     }}>
                 <form className="grid gap-5">
                     <div className="grid grid-cols-[150px_150px] gap-10">

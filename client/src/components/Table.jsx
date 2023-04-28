@@ -21,11 +21,20 @@ const Table = ({ dataValue, columns, name}) => {
     const [visible, setVisible] = useState(false);
     const [production, setProduction] = useState([]);
     const [action, setAction] = useState("");
+    const [rawData, setRawData] = useState([]);
     const path = useLocation().pathname.split("/");
     const toast = useRef(null);
     const [filters, setFilters] = useState({
         global: { value: null, matchMode: FilterMatchMode.CONTAINS },
     });
+
+    useEffect(() => {
+        if(name === "production") {
+            axios.get("/raw-materials").then(({ data }) => {
+                if (data) setRawData(data);
+            });
+        }
+    }, [name])
 
     const finish = async (productId, productionId, qty) => {
         try {
@@ -142,6 +151,20 @@ const Table = ({ dataValue, columns, name}) => {
     }
 
     const submitProduction = async () => {
+        let good = false;
+        production.product.rawMaterial.map((item) => {
+            const computedQty = production.quantity * Number(item.qty);
+            rawData.map((raw) => {
+                if(raw.quantity < computedQty){
+                    return good = true;
+                }
+            })
+        })
+
+        if(good){
+            return toast.current.show({ severity: 'warn', summary: 'Production message', detail: 'Not enough raw materials to produce the product', life: 3000 });
+        }
+
         if(production.product === "" ||
             production.dateFinish === "" 
         ) return toast.current.show({ severity: 'warn', summary: 'Production message', detail: 'Fill up all fields', life: 3000 });
@@ -149,14 +172,20 @@ const Table = ({ dataValue, columns, name}) => {
         if(production.quantity === "" ||
             production.quantity <= 0 
         ) return toast.current.show({ severity: 'warn', summary: 'Production message', detail: 'Qty should be greater than to zero [0].', life: 3000 });
-        
+ 
         try {
-            axios.put("/update_production", production);
-            toast.current.show({ severity: 'info', summary: 'Production message', detail: 'Successfully added', life: 3000 });
-            setVisible(false);
-            setTimeout(() => {
-                window.location.reload();
-            }, [800])
+            const { _id, quantity } = production;
+            const rawMaterialsRes = await axios.put("/update_production_raw_material", { _id, quantity });
+            if(typeof rawMaterialsRes === "object"){
+                const productionRes = await axios.put("/update_production", production);
+                if(typeof productionRes === "object"){
+                    toast.current.show({ severity: 'info', summary: 'Production message', detail: 'Successfully added', life: 3000 });
+                    setVisible(false);
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, [800])
+                }
+            }
         } catch (error) {
             toast.current.show({ severity: 'error', summary: 'Production message', detail: 'Failed to produce', life: 3000 });
         } 

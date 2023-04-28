@@ -16,11 +16,10 @@ export const addProduction = async (req, res) => {
         if(productInfo){
             productInfo.rawMaterial.map(async ({ rawId, qty }) => {
                 const rawMaterialInfo = await RawMaterials.findById(rawId);
-                const { quantity, _id } = rawMaterialInfo;
-                if(_id.toString() === rawId){
-                    rawMaterialInfo.set({
-                        quantity: quantity - qty,
-                    });
+                const prodQty = Number(productionData.quantity) * Number(qty);
+                const totalQty = rawMaterialInfo.quantity - prodQty;
+                if(rawMaterialInfo._id.toString() === rawId){
+                    rawMaterialInfo.set({ quantity: totalQty });
                     rawMaterialInfo.save();
                 }
             });
@@ -32,8 +31,7 @@ export const addProduction = async (req, res) => {
 };
 
 export const updateProduction = async (req, res) => {
-    const productionData = await req.body;
-    const { _id, product, quantity, dateFinish, status } = await productionData;
+    const { _id, product, quantity, dateFinish, status } = await req.body;
     const productionInfo = await Production.findById(_id);
     try {
         productionInfo.set({
@@ -41,27 +39,39 @@ export const updateProduction = async (req, res) => {
             quantity: quantity,
             dateFinish: dateFinish,
             status: status
-        });
+        }); 
         productionInfo.save();
         res.json(productionInfo);
     } catch (error) {
         res.json(error.message);
     }
 };
+ 
+export const updateRawMaterialQty = async (req, res) => {
+    const { _id, quantity } = await req.body;
+    const productionInfo = await Production.findById(_id);
+    const productInfo = await Product.findById(productionInfo.product);
+    try {
+        productInfo.rawMaterial.map(async ({ rawId, qty }) => {
+            const rawMaterialInfo = await RawMaterials.findById(rawId);
+            const oldProdQty = productionInfo.quantity * Number(qty);
+            const oldSumQty = rawMaterialInfo.quantity + oldProdQty;
+            const newProdQty = quantity * Number(qty);
+            const totalQty =  oldSumQty - newProdQty;
+            if(rawMaterialInfo._id.toString() === rawId){
+                rawMaterialInfo.set({ quantity: totalQty });
+                rawMaterialInfo.save();
+            }
+        });
+        res.json(productInfo);
+    } catch (error) {
+        res.json(error.message);
+    }
+}
 
 export const getAllProduction = async (req, res) => {
     try {
         const response = await Production.find({}).populate("product");
-        res.json(response);
-    } catch (error) {
-        res.json(error.message);
-    }
-};
-
-export const getProductionById = async (req, res) => {
-    const { id } = req.params;
-    try {
-        const response = await Production.findById(id);
         res.json(response);
     } catch (error) {
         res.json(error.message);
@@ -81,15 +91,14 @@ export const deleteProduction = async (req, res) => {
 export const cancelProduction = async (req, res) => {
     const { id } = req.params;
     try {
-        const { product } = await Production.findById(id).populate("product");
-        if(product){
-            product.rawMaterial.map(async ({ rawId, qty }) => {
+        const productInfo = await Production.findById(id).populate("product");
+        if(productInfo){
+            productInfo.product.rawMaterial.map(async ({ rawId, qty }) => {
                 const rawMaterialInfo = await RawMaterials.findById(rawId);
-                const { quantity, _id } = rawMaterialInfo;
-                if(_id.toString() === rawId){
-                    rawMaterialInfo.set({
-                        quantity: Number(quantity) + Number(qty),
-                    });
+                const prodQty = productInfo.quantity * Number(qty);
+                const totalQty = rawMaterialInfo.quantity + prodQty;
+                if(rawMaterialInfo._id.toString() === rawId){
+                    rawMaterialInfo.set({ quantity: totalQty });
                     rawMaterialInfo.save();
                 }
             });

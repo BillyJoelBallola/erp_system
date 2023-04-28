@@ -13,9 +13,10 @@ import ProductionModal from "../../components/ProductionModal";
 
 const Product = () => {
     const navigate = useNavigate();
-    const toast = useRef(null)
+    const toast = useRef(null);
     const id = useParams().id;
     const [visible, setVisible] = useState(false);
+    const [rawData, setRawData] = useState([]);
     const [productInfo, setProductInfo] = useState({});
     const [production, setProduction] = useState({
         product: id,
@@ -30,28 +31,13 @@ const Product = () => {
                 if(data) setProductInfo(data);
             })
         }
-    }, [id])
+    }, [id]);
 
- 
-    const submitProduction = async () => {
-        if(production.product === "" ||
-            production.dateFinish === "" 
-        ) return toast.current.show({ severity: 'warn', summary: 'Production message', detail: 'Fill up all fields', life: 3000 });
-        
-        if(production.quantity === "" ||
-            production.quantity <= 0 
-        ) return toast.current.show({ severity: 'warn', summary: 'Production message', detail: 'Qty should be greater than to zero [0].', life: 3000 });
-        
-        try {
-            axios.post("/add_production", production);
-            toast.current.show({ severity: 'info', summary: 'Production message', detail: 'Successfully added', life: 3000 });
-            setTimeout(() => {
-                navigate("/products/overview/production");
-            }, [800]);
-        } catch (error) {
-            toast.current.show({ severity: 'error', summary: 'Production message', detail: 'Failed to produce', life: 3000 });
-        } 
-    }
+    useEffect(() => {
+        axios.get("/raw-materials").then(({ data }) => {
+            if (data) setRawData(data);
+          });
+    }, [])
 
     const deleteProductInfo = (e, id) => {
         confirmPopup({
@@ -71,6 +57,40 @@ const Product = () => {
                 } 
             },
         });
+    }
+
+    const submitProduction = async () => {
+        let good = false;
+        productInfo.rawMaterial.map((item) => {
+            const computedQty = Number(production.quantity) * item.qty;
+            rawData.map((raw) => {
+                if(raw.quantity < computedQty){
+                    return good = true;
+                }
+            })
+        })  
+
+        if(good){
+            return toast.current.show({ severity: 'warn', summary: 'Production message', detail: 'Not enough raw materials to produce the product', life: 3000 });
+        }
+
+        if(production.product === "" || production.dateFinish === "") {
+            return toast.current.show({ severity: 'warn', summary: 'Production message', detail: 'Fill up all fields', life: 3000 });
+        }
+        
+        if(production.quantity === "" ||production.quantity <= 0 ) {
+            return toast.current.show({ severity: 'warn', summary: 'Production message', detail: 'Qty should be greater than to zero [0].', life: 3000 });
+        }
+
+        try {
+            axios.post("/add_production", production);
+            toast.current.show({ severity: 'info', summary: 'Production message', detail: 'Successfully added', life: 3000 });
+            setTimeout(() => {
+                navigate("/products/overview/production");
+            }, [800]);
+        } catch (error) {
+            return toast.current.show({ severity: 'error', summary: 'Production message', detail: 'Failed to produce', life: 3000 });
+        } 
     }
 
     return ( 
@@ -119,6 +139,7 @@ const Product = () => {
                     <div className="text-lg">
                     {
                         productInfo.category &&
+                        productInfo.category[0] !== "" &&
                         productInfo.category.length > 0 ?
                         <div className="flex flex-wrap gap-2">
                         {

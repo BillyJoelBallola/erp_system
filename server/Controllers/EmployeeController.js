@@ -2,7 +2,7 @@ import { Employee } from "../Models/EmployeeModel.js";
 
 export const addEmployee = async (req, res) => {
     const employeeData = await req.body;
-    const {name, dob, age, gender, address, contact, position, qrCode, code} = await employeeData;
+    const {name, dob, age, gender, address, contact, position, salary, deductions, qrCode, code} = await employeeData;
     Employee.create({
         name: name,
         dob: dob,
@@ -20,6 +20,8 @@ export const addEmployee = async (req, res) => {
             phoneNumber: contact.phoneNumber
         },
         position: position,
+        salary: salary,
+        deductions: deductions,
         qrCode: qrCode,
         code: code
     }).then((data) => {
@@ -31,7 +33,7 @@ export const addEmployee = async (req, res) => {
 
 export const updateEmployee = async (req, res) => {
     const employeeData = await req.body;
-    const {id, name, dob, age, gender, address, contact, position, qrCode, code} = await employeeData;
+    const {id, name, dob, age, gender, address, contact, position, salary, deductions, qrCode, code} = await employeeData;
     const employeeInfo = await Employee.findById(id);
     try {
         employeeInfo.set({
@@ -51,6 +53,8 @@ export const updateEmployee = async (req, res) => {
                 phoneNumber: contact.phoneNumber
             },
             position: position,
+            salary: salary,
+            deductions: deductions,
             qrCode: qrCode,
             code: code
         })
@@ -63,7 +67,8 @@ export const updateEmployee = async (req, res) => {
 
 export const getAllEmployees = async (req, res) => {
     try {
-        res.json(await Employee.find({}).populate('position'));
+        const response = await Employee.find({}).populate('position');
+        res.json(response);
     } catch (error) {
         res.json(error.message);
     }
@@ -72,7 +77,8 @@ export const getAllEmployees = async (req, res) => {
 export const getEmployeeById = async (req, res) => {
     const { id } = req.params;
     try {
-        res.json(await Employee.findById(id));
+        const response = await Employee.findById(id).populate('position');
+        res.json(response);
     } catch (error) {
         res.json(error.message);
     }

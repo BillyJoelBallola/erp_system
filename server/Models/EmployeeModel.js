@@ -17,6 +17,8 @@ const EmployeeSchema = new Schema({
         phoneNumber: {type: String, required: true }
     },
     position: { type: Schema.Types.ObjectId, ref: "Position", required: true },
+    salary: { type: String, required: true },
+    deductions: [Object],
     qrCode: { type: String, required: true },
     code: { type: String, required: true }
 });

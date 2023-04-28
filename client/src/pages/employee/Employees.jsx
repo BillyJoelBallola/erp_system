@@ -7,7 +7,7 @@ const Employees = () => {
 
   useEffect(() => {
     axios.get("/employees").then(({ data }) => {
-      setAllEmployees(data);
+      setAllEmployees(data.reverse());
     })
   }, [])
 

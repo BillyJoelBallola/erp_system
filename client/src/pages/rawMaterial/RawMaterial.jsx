@@ -82,6 +82,7 @@ const RawMaterial = () => {
             <div className="text-lg">
               {
                 rawMaterialInfo.category &&
+                rawMaterialInfo.category[0] !== "" &&
                 rawMaterialInfo.category.length > 0 ?
                 <div className="flex flex-wrap gap-2">
                   {

@@ -79,6 +79,11 @@ const Employee = () => {
             </div>
             <div className="w-full h-[1px] bg-gray-200"></div>
             <div className="grid grid-cols-[200px_1fr] items-cente">
+              <span className="text-gray-500 text-sm font-semibold">POSITION</span>
+              <span>{employeeInfo.position && employeeInfo.position.name}</span>
+            </div>
+            <div className="w-full h-[1px] bg-gray-200"></div>
+            <div className="grid grid-cols-[200px_1fr] items-cente">
               <span className="text-gray-500 text-sm font-semibold">DATE OF BIRTH</span>
               <span>{employeeInfo.dob && moment(employeeInfo.dob).format("MMMM Do YYYY")}</span>
             </div>
@@ -111,15 +116,41 @@ const Employee = () => {
                 </div>
               </div>
             </div>
+            <div className="w-full h-[1px] bg-gray-200"></div>
+            <div className="grid grid-cols-[200px_1fr] items-cente">
+              <span className="text-gray-500 text-sm font-semibold">SALARY</span>
+              <div className="grid grid-cols-[250px_250px]">
+                <div className="flex flex-col gap-2">
+                  <span className="font-semibold text-gray-500 text-sm">BASIC SALARY</span>
+                  <span>Php{employeeInfo.salary && employeeInfo.salary}</span>
+                </div>
+                <div className="grid gap-2">
+                  <span className="font-semibold text-gray-500 text-sm">DEDUCTIONS</span>
+                  {
+                    employeeInfo.deductions?.length > 0 &&
+                    <div>
+                      {
+                        employeeInfo.deductions.map((deduct) => (
+                          <div key={deduct._id} className="flex justify-between py-1">
+                            <span>{deduct.name}</span>
+                            <span>Php{deduct.amount}</span>
+                          </div>
+                        ))
+                      }
+                  </div>
+                }
+                </div>
+              </div>
+            </div>
         </div>
         <div className="flex lg:flex-col gap-4">
             <a 
               href={employeeInfo.qrCode && employeeInfo.qrCode} 
-              className="border border-gray-400 bg-gray-400 lg:w-9/12 md:w-3/12 aspect-square rounded-md overflow-hidden max-h-min" 
+              className="border border-gray-400 bg-gray-400 lg:w-9/12 md:w-3/12 w-4/12 aspect-square rounded-md overflow-hidden max-h-min" 
               download>
                 <img src={employeeInfo.qrCode && employeeInfo.qrCode} className="object-fit w-full"/>
             </a>
-            <span className="text-sm">QR code will going to use for recording employee’s attendance time-in and time-out. Click the QR code to download.</span>
+            <span className="text-sm break-words">QR code will going to use for recording employee’s attendance time-in and time-out. Click the QR code to download.</span>
         </div>
       </div>
     </>

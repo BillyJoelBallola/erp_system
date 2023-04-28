@@ -11,6 +11,8 @@ import RawMaterialRoutes from "./Routes/RawMaterialRoutes.js";
 import StorageRoutes from "./Routes/StorageRoutes.js";
 import ProductRoutes from "./Routes/ProductRoutes.js";
 import ProductionRoutes from "./Routes/ProductionRoutes.js";
+import SalesRoutes from "./Routes/SalesRoutes.js";
+import DeductionRoutes from "./Routes/DeductionRoutes.js";
 import './config.js'
 import './dbConnect.js';
 
@@ -35,6 +37,8 @@ app.use(RawMaterialRoutes);
 app.use(StorageRoutes);
 app.use(ProductRoutes);
 app.use(ProductionRoutes);
+app.use(SalesRoutes);
+app.use(DeductionRoutes);
 
 const PORT = process.env.SERVER_PORT || 4000;
 

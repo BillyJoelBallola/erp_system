@@ -10,10 +10,10 @@ const Products = () => {
 
     useEffect(() => {
         axios.get("/products").then(({ data }) => {
-            if (data) setProducts(data);
+            if (data) setProducts(data.reverse());
         });
         axios.get("/productions").then(({ data }) => {
-            if (data) setProductions(data);
+            if (data) setProductions(data.reverse());
         });
     }, []);
 

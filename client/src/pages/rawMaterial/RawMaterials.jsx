@@ -8,7 +8,7 @@ const RawMaterials = () => {
   useEffect(() => {
     axios.get("/raw-materials")
       .then(({ data }) => {
-        setAllRawMaterials(data);
+        setAllRawMaterials(data.reverse());
       });
   }, []);
 
