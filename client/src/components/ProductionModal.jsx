@@ -18,7 +18,8 @@ const ProductionModal = ({ visible, setVisible, productInfo, production, setProd
                 onHide={() => {
                     setVisible(false);
                     setAction && setAction("");
-                    }}>
+                    }}
+                draggable={false}>
                 <form className="grid gap-5">
                     <div className="grid grid-cols-[150px_150px] gap-10">
                         <div className="grid gap-1">
@@ -54,20 +55,20 @@ const ProductionModal = ({ visible, setVisible, productInfo, production, setProd
                     <div>
                         <div className="grid gap-2">
                                 <div className="grid gap-2 border-b-[1px] pb-2">
-                                    <div className="grid grid-cols-[1fr_50px_100px] gap-10">
-                                        <span className="text-gray-400 font-semibold text-sm">ITEM</span>
-                                        <span className="text-gray-400 font-semibold text-sm">UOM</span>
-                                        <span className="text-gray-400 font-semibold text-sm">QTY</span>
+                                    <div className="grid grid-cols-[1fr_50px_100px] gap-10 text-gray-400 font-semibold text-sm">
+                                        <span>ITEM</span>
+                                        <span>UOM</span>
+                                        <span>QTY</span>
                                     </div>
                                 </div>
                                 <div className="grid gap-1">
                                     {   
                                         productInfo?.rawMaterial &&
                                         productInfo.rawMaterial.map((raw, idx) => (
-                                            <div className="grid grid-cols-[1fr_50px_100px] gap-10 py-1" key={idx}>
-                                                <span className="text-gray-500 text-sm">{raw.item}</span>
-                                                <span className="text-gray-800 text-sm">{raw.oum}</span>
-                                                <span className="text-gray-800 text-sm">{production.quantity ? raw.qty * production.quantity : raw.qty}</span>
+                                            <div className="grid grid-cols-[1fr_50px_100px] gap-10 py-1 text-gray-800 text-sm" key={idx}>
+                                                <span>{raw.item}</span>
+                                                <span>{raw.oum}</span>
+                                                <span>{production.quantity ? raw.qty * production.quantity : raw.qty}</span>
                                             </div>
                                     ))
                                 }

@@ -78,32 +78,32 @@ const Employee = () => {
               <span className="text-lg text-blue-400">{employeeInfo.name && employeeInfo.name}</span>
             </div>
             <div className="w-full h-[1px] bg-gray-200"></div>
-            <div className="grid grid-cols-[200px_1fr] items-cente">
+            <div className="grid grid-cols-[200px_1fr] items-center">
               <span className="text-gray-500 text-sm font-semibold">POSITION</span>
               <span>{employeeInfo.position && employeeInfo.position.name}</span>
             </div>
             <div className="w-full h-[1px] bg-gray-200"></div>
-            <div className="grid grid-cols-[200px_1fr] items-cente">
+            <div className="grid grid-cols-[200px_1fr] items-center">
               <span className="text-gray-500 text-sm font-semibold">DATE OF BIRTH</span>
               <span>{employeeInfo.dob && moment(employeeInfo.dob).format("MMMM Do YYYY")}</span>
             </div>
             <div className="w-full h-[1px] bg-gray-200"></div>
-            <div className="grid grid-cols-[200px_1fr] items-cente">
+            <div className="grid grid-cols-[200px_1fr] items-center">
               <span className="text-gray-500 text-sm font-semibold">AGE</span>
               <span>{employeeInfo.age && employeeInfo.age}</span>
             </div>
             <div className="w-full h-[1px] bg-gray-200"></div>
-            <div className="grid grid-cols-[200px_1fr] items-cente">
+            <div className="grid grid-cols-[200px_1fr] items-center">
               <span className="text-gray-500 text-sm font-semibold">GENDER</span>
               <span>{employeeInfo.gender && employeeInfo.gender}</span>
             </div>
             <div className="w-full h-[1px] bg-gray-200"></div>
-            <div className="grid grid-cols-[200px_1fr] items-cente">
+            <div className="grid grid-cols-[200px_1fr] items-center">
               <span className="text-gray-500 text-sm font-semibold">ADDRESS</span>
               <span>{employeeInfo.address && `${employeeInfo.address.street}, ${employeeInfo.address.barangay}, ${employeeInfo.address.city}, ${employeeInfo.address.province}, ${employeeInfo.address.country}`}</span>
             </div>
             <div className="w-full h-[1px] bg-gray-200"></div>
-            <div className="grid grid-cols-[200px_1fr] items-cente">
+            <div className="grid grid-cols-[200px_1fr] items-center">
               <span className="text-gray-500 text-sm font-semibold">CONTACT</span>
               <div className="grid grid-cols-[250px_250px]">
                 <div className="grid gap-2">
@@ -117,7 +117,7 @@ const Employee = () => {
               </div>
             </div>
             <div className="w-full h-[1px] bg-gray-200"></div>
-            <div className="grid grid-cols-[200px_1fr] items-cente">
+            <div className="grid grid-cols-[200px_1fr] items-center">
               <span className="text-gray-500 text-sm font-semibold">SALARY</span>
               <div className="grid grid-cols-[250px_250px]">
                 <div className="flex flex-col gap-2">

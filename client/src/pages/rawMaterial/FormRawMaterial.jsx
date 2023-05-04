@@ -15,7 +15,6 @@ const FormRawMaterial = () => {
   const navigate = useNavigate();
   const id = useParams().id;
   const [cat, setCat] = useState("");
-  const [supplier, setSupplier] = useState();
   const [storage, setStorage] = useState();
   const [rawMaterialInfo, setRawMaterialInfo] = useState({
     name: "",
@@ -34,10 +33,6 @@ const FormRawMaterial = () => {
   }, [id]);
 
   useEffect(() => {
-    axios.get("/suppliers").then(({ data }) => {
-      if (data) setSupplier(data);
-    });
-
     axios.get("/storages").then(({ data }) => {
       if (data) setStorage(data);
     });
@@ -45,6 +40,7 @@ const FormRawMaterial = () => {
 
   const addCategory = (e) => {
     e.preventDefault();
+    if(cat === "") return;
     setCat("");
     setRawMaterialInfo({
       ...rawMaterialInfo,
@@ -112,7 +108,7 @@ const FormRawMaterial = () => {
         if (data) {
           navigate(`/raw-materials/${data._id}`);
         } else {
-          alert("Failed to add new supplier information.");
+          alert("Failed to add new raw material information.");
         }
       }
     });
@@ -174,7 +170,7 @@ const FormRawMaterial = () => {
                 {
                   
                   rawMaterialInfo.category.length > 0 &&
-                  products?.category[0] !== "" &&
+                  rawMaterialInfo?.category[0] !== "" &&
                   <div className="flex flex-wrap gap-2 mt-6">
                     {
                       rawMaterialInfo.category.map((cat, idx) => (

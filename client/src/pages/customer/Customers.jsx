@@ -3,7 +3,7 @@ import Table from "../../components/Table";
 import axios from 'axios';
 
 const Customers = () => {
-  const [allCustomers, setAllCustomers] = useState();
+  const [allCustomers, setAllCustomers] = useState([]);
 
   useEffect(() => {
     axios.get("/customers")

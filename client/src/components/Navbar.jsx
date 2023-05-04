@@ -118,7 +118,7 @@ const Navbar = () => {
                                         <div className={`bg-darker/10 ${activeIndex === link.id ? 'flex' : 'hidden'} flex-col py-1 px-7 delay-150 ease-in-out`}>
                                         {link.subLinks &&
                                             link.subLinks.map((sub, i) => (
-                                            <NavLink to="/" key={i}>{sub}</NavLink>
+                                            <NavLink to={sub.path} key={i}>{sub.name}</NavLink>
                                             )) 
                                         }
                                         
@@ -127,11 +127,11 @@ const Navbar = () => {
                                 </li>
                                 :
                                 <li className="nav-links" key={link.id}>
-                                    <NavLink to="/" className="flex gap-2 items-center justify-between py-2 hover:text-blue-400 cursor-pointer">
-                                    <div className="flex gap-2">
-                                        {link.icon}
-                                        {link.name}
-                                    </div>
+                                    <NavLink to={link.path} className="flex gap-2 items-center justify-between py-2 hover:text-blue-400 cursor-pointer">
+                                        <div className="flex gap-2">
+                                            {link.icon}
+                                            {link.name}
+                                        </div>
                                     </NavLink>
                                 </li>
                             }
@@ -169,7 +169,7 @@ const Navbar = () => {
                                         <div className={`bg-darker/10 ${activeIndex === link.id ? 'flex' : 'hidden'} flex-col py-1 px-7 delay-150 ease-in-out`}>
                                         {link.subLinks &&
                                             link.subLinks.map((sub, i) => (
-                                            <NavLink to="/" key={i}>{sub}</NavLink>
+                                            <NavLink to={sub.path} key={i}>{sub.name}</NavLink>
                                             )) 
                                         }
                                         
@@ -178,12 +178,12 @@ const Navbar = () => {
                                 </li>
                                 :
                                 <li className="nav-links" key={link.id}>
-                                <NavLink to="/" className="flex gap-2 items-center justify-between py-2 hover:text-blue-400 cursor-pointer">
-                                <div className="flex gap-2">
-                                    {link.icon}
-                                    {link.name}
-                                </div>
-                                </NavLink>
+                                    <NavLink to={link.path} className="flex gap-2 items-center justify-between py-2 hover:text-blue-400 cursor-pointer">
+                                        <div className="flex gap-2">
+                                            {link.icon}
+                                            {link.name}
+                                        </div>
+                                    </NavLink>
                                 </li>
                             }
                         </div>
@@ -216,7 +216,7 @@ const Navbar = () => {
                             <div className={`bg-darker/10 ${activeIndex === link.id ? 'flex' : 'hidden'} flex-col py-1 px-7 delay-150 ease-in-out`}>
                             {link.subLinks &&
                                 link.subLinks.map((sub, i) => (
-                                <NavLink to="/" key={i}>{sub}</NavLink>
+                                <NavLink to={sub.path} key={i}>{sub.name}</NavLink>
                                 )) 
                             }
                             </div>

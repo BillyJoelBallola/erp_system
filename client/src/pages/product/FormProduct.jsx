@@ -176,8 +176,6 @@ const FormProduct = () => {
     });
   }
 
-  
-
   return (
     <>
       <Toast ref={toast} />
@@ -201,10 +199,10 @@ const FormProduct = () => {
           {id && (
             <div className="grid grid-cols-[200px_1fr] items-center">
               <span className="text-gray-500 font-semibold">
-                RAW MATERIAL'S CODE
+                PRODUCT'S CODE
               </span>
               <span className="text-xl text-blue-400 bg-gray-200 p-1 px-2 rounded-md max-w-max">
-                {id.substring(0, 10)}
+                #{id.substring(0, 10)}
               </span>
             </div>
           )}
@@ -286,34 +284,25 @@ const FormProduct = () => {
                   </button>
                 </div>
               </div>
-              <div className="grid gap-2">
-                <div className="grid gap-2">
-                  <div className="grid grid-cols-[1fr_50px_100px_40px] gap-10">
-                    <span className="text-gray-500 font-semibold text-xs">RAW MATERIAL</span>
-                    <span className="text-gray-500 font-semibold text-xs">UOM</span>
-                    <span className="text-gray-500 font-semibold text-xs">QTY</span>
-                  </div>
-                </div>
-                <div className="grid gap-2 bg-white border border-x-0 p-3">
-                  {
-                    products.rawMaterial.length > 0 ?
-                    products.rawMaterial.map((raw, idx) => (
-                      <div className="grid grid-cols-[1fr_50px_100px_20px] gap-10 py-2" key={idx}>
-                        <span className="text-gray-500 text-xs">{raw.item}</span>
-                        <span className="text-gray-800 text-xs">{raw.oum}</span>
-                        <span className="text-gray-800 text-xs">{raw.qty}</span>
-                        <button onClick={(e) => removeRawMaterial(idx)}>
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={4} stroke="currentColor" className="w-4 h-4">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                          </svg>
-                        </button>
-                      </div>
-                    )) :
-                    <div>
-                      <span>No selected material</span>
+              <div className="grid gap-2 bg-white border border-x-0 p-3">
+                {
+                  products.rawMaterial.length > 0 ?
+                  products.rawMaterial.map((raw, idx) => (
+                    <div className="grid grid-cols-[1fr_50px_100px_20px] gap-10 py-2 text-gray-800 text-sm" key={idx}>
+                      <span>{raw.item}</span>
+                      <span>{raw.oum}</span>
+                      <span>{raw.qty}</span>
+                      <button onClick={() => removeRawMaterial(idx)}>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={4} stroke="currentColor" className="w-4 h-4">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
                     </div>
-                  }
-                </div>
+                  )) :
+                  <div>
+                    <span>No selected material</span>
+                  </div>
+                }
               </div>
             </div>
           </div>

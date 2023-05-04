@@ -26,6 +26,13 @@ import Products from './pages/product/Products';
 import FormProduct from "./pages/product/FormProduct";
 import Product from "./pages/product/Product";
 
+import Sales from "./pages/Sales/Sales";
+import FormSales from "./pages/Sales/FormSales";
+import Sale from "./pages/Sales/Sale";
+
+import Purchases from "./pages/purchase/Purchases";
+import FormPurchase from "./pages/purchase/FormPurchase";
+import Purchase from "./pages/purchase/Purchase";
 
 
 const App = () => {
@@ -50,6 +57,12 @@ const App = () => {
         <Route path="/products/overview/:tab?" element={<Products />}/>
         <Route path="/products/form/:id?" element={<FormProduct />}/>
         <Route path="/products/:id?" element={<Product />}/>
+        <Route path="/sales" element={<Sales />}/>
+        <Route path="/sales/form/:id?" element={<FormSales />}/>
+        <Route path="/sales/:id?" element={<Sale />}/>
+        <Route path="/purchases" element={<Purchases />}/>
+        <Route path="/purchases/form/:id?" element={<FormPurchase />}/>
+        <Route path="/purchases/:id?" element={<Purchase />}/>
       </Route>
     </Routes>
   );

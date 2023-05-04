@@ -1,18 +1,15 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model } from "mongoose";
 
-const SalesSchema = new Schema({
-    customers: {
-        type: Schema.Types.ObjectId, 
-        ref: "Customer",
-        required: true 
-    },
-    order: [Object],
-    dateOrdered: {
-        type: Date,
+const PurchaseSchema = new Schema({
+    supplier: {
+        type: Schema.Types.ObjectId,
+        ref: "Supplier",
         required: true
     },
-    shipment: {
-        type: String,
+    order: [Object],
+    datePurchase: {
+        type: Date,
+        required: true
     },
     payment: {
         type: String,
@@ -30,4 +27,4 @@ const SalesSchema = new Schema({
     }
 });
 
-export const Sales = model("Sales", SalesSchema);  
+export const Purchase = model("Purchase", PurchaseSchema);

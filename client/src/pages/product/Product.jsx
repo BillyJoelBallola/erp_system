@@ -17,7 +17,7 @@ const Product = () => {
     const id = useParams().id;
     const [visible, setVisible] = useState(false);
     const [rawData, setRawData] = useState([]);
-    const [productInfo, setProductInfo] = useState({});
+    const [productInfo, setProductInfo] = useState([]);
     const [production, setProduction] = useState({
         product: id,
         quantity: 0,
@@ -64,8 +64,10 @@ const Product = () => {
         productInfo.rawMaterial.map((item) => {
             const computedQty = Number(production.quantity) * item.qty;
             rawData.map((raw) => {
-                if(raw.quantity < computedQty){
-                    return good = true;
+                if(item.rawId === raw._id ){
+                    if(raw.quantity < computedQty){
+                        return good = true;
+                    }
                 }
             })
         })  
@@ -123,7 +125,7 @@ const Product = () => {
                 PRODUCT INFORMATION
                 </div>
                 <div className="flex gap-2">
-                    <button className="btn-primary px-6" onClick={() => setVisible(true)} >PRODUCE FROM RAW MATERIALS</button>
+                    <button className="btn-primary px-6" onClick={() => setVisible(true)}>PRODUCE FROM RAW MATERIALS</button>
                     <Link to={`/products/form/${id}`} className="btn-outlined">EDIT</Link>
                     <button className="btn-red" onClick={(e) => deleteProductInfo(e, id)}>DELETE</button>
                 </div>
@@ -160,20 +162,20 @@ const Product = () => {
                     <span className="text-gray-500 text-sm font-semibold self-baseline">RAW MATERIAL/S</span>
                     <div className="grid gap-4">
                         <div className="grid gap-2">
-                            <div className="grid grid-cols-[1fr_50px_100px] gap-10">
-                                <span className="text-gray-500 font-semibold text-md">ITEM</span>
-                                <span className="text-gray-500 font-semibold text-md">UOM</span>
-                                <span className="text-gray-500 font-semibold text-md">QTY</span>
+                            <div className="grid grid-cols-[1fr_50px_100px] gap-10 text-gray-500 font-semibold text-md">
+                                <span>ITEM</span>
+                                <span>UOM</span>
+                                <span>QTY</span>
                             </div>
                         </div>
                         <div className="grid gap-2">
                         {
                             productInfo.rawMaterial &&
                             productInfo.rawMaterial.map((raw, idx) => (
-                                <div className="grid grid-cols-[1fr_50px_100px] gap-10 py-2" key={idx}>
-                                    <span className="text-gray-500 text-sm">{raw.item}</span>
-                                    <span className="text-gray-800 text-sm">{raw.oum}</span>
-                                    <span className="text-gray-800 text-sm">{raw.qty}</span>
+                                <div className="grid grid-cols-[1fr_50px_100px] gap-10 py-2 text-gray-800 text-sm" key={idx}>
+                                    <span>{raw.item}</span>
+                                    <span>{raw.oum}</span>
+                                    <span>{raw.qty}</span>
                                 </div>
                             ))
                         }

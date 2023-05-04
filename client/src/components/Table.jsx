@@ -56,7 +56,15 @@ const Table = ({ dataValue, columns, name}) => {
             acceptClassName: 'p-button-danger',
             accept: async () => {
                 try {
-                    await axios.delete(`/${name}/${id}`);
+
+                    if(name === "sale"){
+                        const { data } = await axios.delete(`/cancel_order/${id}`);
+                        if(typeof data === "object"){
+                            await axios.delete(`/sales/${id}`);
+                        }
+                    }else{
+                        await axios.delete(`/${name === "sale" ? "sales" : name}/${id}`);
+                    }
                     toast.current.show({ severity: 'info', summary: 'Delete Message', detail: 'Successfully deleted', life: 3000 });
                     setTimeout(() => {
                         window.location.reload();
@@ -241,7 +249,7 @@ const Table = ({ dataValue, columns, name}) => {
                 setAction={setAction}
             />
             <div className="p-4 bg-gray-200/[.6] flex items-center gap-4 border border-t-0 border-gray-300">
-                <Link to={`/${name === "production" ? "product" : name}s/form`} className="btn-primary px-16 uppercase">{`add new ${name === "production" ? "product" : name?.split("-").join(" ")}`}</Link>
+                <Link to={`/${name === "production" ? "product" : name}s/form`} className="btn-primary px-16 uppercase">{`add new ${name === "production" ? "product" : name === "sale" ? "order" : name?.split("-").join(" ")}`}</Link>
                 <div className="h-8 w-[1px] bg-gray-300"></div>
                 <div className="flex items-center pl-2 rounded-md bg-gray-300/[.9] w-4/12">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5 text-gray-500">

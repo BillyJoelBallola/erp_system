@@ -80,17 +80,17 @@ const Customer = () => {
           <span className="text-lg text-blue-400">{customerInfo.name && customerInfo.name}</span>
         </div>
         <div className="w-full h-[1px] bg-gray-200"></div>
-        <div className="grid grid-cols-[200px_1fr] items-cente">
+        <div className="grid grid-cols-[200px_1fr] items-center">
           <span className="text-gray-500 text-sm font-semibold">BUSINESS</span>
           <span className="text-lg text-blue-400">{customerInfo.business && customerInfo.business}</span>
         </div>
         <div className="w-full h-[1px] bg-gray-200"></div>
-        <div className="grid grid-cols-[200px_1fr] items-cente">
+        <div className="grid grid-cols-[200px_1fr] items-center">
           <span className="text-gray-500 text-sm font-semibold">ADDRESS</span>
           <span>{customerInfo.address && `${customerInfo.address.street}, ${customerInfo.address.barangay}, ${customerInfo.address.city}, ${customerInfo.address.province}, ${customerInfo.address.country}`}</span>
         </div>
         <div className="w-full h-[1px] bg-gray-200"></div>
-        <div className="grid grid-cols-[200px_1fr] items-cente">
+        <div className="grid grid-cols-[200px_1fr] items-center">
           <span className="text-gray-500 text-sm font-semibold">CONTACT</span>
           <div className="grid grid-cols-[250px_250px]">
             <div className="grid gap-2">

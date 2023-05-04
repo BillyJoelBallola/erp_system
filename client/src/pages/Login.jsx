@@ -17,14 +17,14 @@ const Login = () => {
   const signIn = async (e) => {
     e.preventDefault();
     if(logData.email === "" || logData.password === "") {
-      return toast.current.show({ severity: 'info', summary: 'Login Message', detail: 'Fill up all fields.', life: 3000 });
+      return toast.current.show({ severity: 'warn', summary: 'Login Message', detail: 'Fill up all fields.', life: 3000 });
     }
     const { data } = await axios.post("/login", logData);
     if(typeof data === "object") {
       setCurrentUser(data);
       navigate("/");
     }else{
-      toast.current.show({ severity: 'warn', summary: 'Loin Message', detail: data, life: 3000 });
+      toast.current.show({ severity: 'error', summary: 'Login Message', detail: data, life: 3000 });
     }
   }
 

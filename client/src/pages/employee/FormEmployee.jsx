@@ -85,7 +85,6 @@ const FormEmployee = () => {
   const removeDeduction = (idx) => {
     const newDeduction = [...employeeData.deductions];
     newDeduction.splice(idx, 1);
-    console.log(newDeduction);
     setEmployeeData((prev) => ({
       ...prev, 
       deductions: newDeduction 
@@ -94,16 +93,22 @@ const FormEmployee = () => {
 
   const addDeduction = (e) => {
     e.preventDefault();
-    if(deduct === "") return;
-    const data = deductions.filter((item) => {
-      if(item._id === deduct){
-        return item;
-      }
-    })
+    const existingDeduction = employeeData.deductions.filter((item) => (item._id === deduct));
+    const data = deductions.filter((item) => (item._id === deduct && deduct));
+
+    if(existingDeduction.length > 0){
+      return toast.current.show({ severity: 'warn', summary: 'Adding Deduction', detail: `Deduction already in the list.`, life: 3000 });
+    }
+
+    if(deduct === "") {
+      return toast.current.show({ severity: 'warn', summary: 'Adding Deduction', detail: `Select deduction.`, life: 3000 });
+    };
+
     setEmployeeData((prev) => ({
       ...prev, 
       deductions: [ ...prev.deductions, data[0] ]
     }));
+
     setDeduct("");
   }
 
@@ -190,12 +195,12 @@ const FormEmployee = () => {
         if (data) {
           navigate(`/employees/${data._id}`);
         } else {
-            toast.current.show({
-                severity: "warn",
-                summary: "Form message",
-                detail: "Failed to add new employee information.",
-                life: 3000,
-              });
+          toast.current.show({
+            severity: "warn",
+            summary: "Form message",
+            detail: "Failed to add new employee information.",
+            life: 3000,
+          });
         }
       },
     });
@@ -494,8 +499,8 @@ const FormEmployee = () => {
                       ))
                     }
                   </select>
-                  <button className="bg-blue-400 text-white rounded p-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={4} stroke="currentColor" className="w-4 h-4" onClick={addDeduction}>
+                  <button className="bg-blue-400 text-white rounded p-1" onClick={addDeduction}>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={4} stroke="currentColor" className="w-4 h-4">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                     </svg>
                   </button>

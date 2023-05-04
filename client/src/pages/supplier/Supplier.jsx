@@ -80,17 +80,17 @@ const Supplier = () => {
           <span className="text-lg text-blue-400">{supplierInfo.name && supplierInfo.name}</span>
         </div>
         <div className="w-full h-[1px] bg-gray-200"></div>
-        <div className="grid grid-cols-[200px_1fr] items-cente">
+        <div className="grid grid-cols-[200px_1fr] items-center">
           <span className="text-gray-500 text-sm font-semibold">BUSINESS</span>
           <span className="text-lg text-blue-400">{supplierInfo.business && supplierInfo.business}</span>
         </div>
         <div className="w-full h-[1px] bg-gray-200"></div>
-        <div className="grid grid-cols-[200px_1fr] items-cente">
+        <div className="grid grid-cols-[200px_1fr] items-center">
           <span className="text-gray-500 text-sm font-semibold">ADDRESS</span>
           <span>{supplierInfo.address && `${supplierInfo.address.street}, ${supplierInfo.address.barangay}, ${supplierInfo.address.city}, ${supplierInfo.address.province}, ${supplierInfo.address.country}`}</span>
         </div>
         <div className="w-full h-[1px] bg-gray-200"></div>
-        <div className="grid grid-cols-[200px_1fr] items-cente">
+        <div className="grid grid-cols-[200px_1fr] items-center">
           <span className="text-gray-500 text-sm font-semibold">CONTACT</span>
           <div className="grid grid-cols-[250px_250px]">
             <div className="grid gap-2">
