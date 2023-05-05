@@ -97,7 +97,7 @@ const FormEmployee = () => {
     const data = deductions.filter((item) => (item._id === deduct && deduct));
 
     if(existingDeduction.length > 0){
-      return toast.current.show({ severity: 'warn', summary: 'Adding Deduction', detail: `Deduction already in the list.`, life: 3000 });
+      return toast.current.show({ severity: 'warn', summary: 'Adding Deduction', detail: `Deduction already in the list. Try other deduction.`, life: 3000 });
     }
 
     if(deduct === "") {
@@ -274,12 +274,12 @@ const FormEmployee = () => {
       <div className="px-8 py-12">
         <div className="text-sm grid gap-8">
           {id && (
-            <div className="grid grid-cols-[200px_1fr] items-center">
+            <div className="grid gap-2 mb-2 items-center">
               <span className="text-gray-500 font-semibold">
                 EMPLOYEE'S CODE
               </span>
               <span className="text-xl text-blue-400 bg-gray-200 p-1 px-2 rounded-md max-w-max">
-                {id.substring(0, 10)}
+                #{id.substring(0, 10)}
               </span>
             </div>
           )}

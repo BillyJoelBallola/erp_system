@@ -223,7 +223,7 @@ const FormPurchase = () => {
                   ORDER'S CODE
                 </span>
                 <span className="text-xl text-blue-400 bg-gray-200 p-1 px-2 rounded-md max-w-max">
-                  {id.substring(0, 10)}
+                  #{id.substring(0, 10)}
                 </span>
               </div>
               <div className="grid gap-2 items-center">

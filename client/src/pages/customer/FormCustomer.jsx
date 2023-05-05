@@ -148,12 +148,12 @@ const FormCustomer = () => {
       <div className="px-8 py-12">
         <form className="text-sm grid gap-8">
           {id && (
-            <div className="grid grid-cols-[200px_1fr] items-center">
+            <div className="grid gap-2 mb-2 items-center">
               <span className="text-gray-500 font-semibold">
                 CUSTOMER'S CODE
               </span>
               <span className="text-xl text-blue-400 bg-gray-200 p-1 px-2 rounded-md max-w-max">
-                {id.substring(0, 10)}
+                #{id.substring(0, 10)}
               </span>
             </div>
           )}

@@ -48,6 +48,36 @@ const Table = ({ dataValue, columns, name}) => {
         }
     }
 
+    const finishShipment = (e, orderId, shipmentId) => {
+        confirmPopup({
+            target: e.currentTarget,
+            message: "Do you want to set as finish this shipment info?",
+            icon: "pi pi-info-circle",
+            acceptClassName: "p-button-danger",
+            accept: async () => {
+                try {
+                    await axios.put("/finish_shipment", { orderId, shipmentId });
+                    toast.current.show({
+                        severity: "info",
+                        summary: "Delete",
+                        detail: "Shipment has been completed.",
+                        life: 3000,
+                    });
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, [800]);
+                } catch (error) {
+                    toast.current.show({
+                        severity: "error",
+                        summary: "Delete",
+                        detail: "Failed to set as finish",
+                        life: 3000,
+                    });
+                }
+            },
+        });
+    }
+
     const handleDelete = (e, id) => {
         confirmPopup({
             target: e.currentTarget,
@@ -56,7 +86,6 @@ const Table = ({ dataValue, columns, name}) => {
             acceptClassName: 'p-button-danger',
             accept: async () => {
                 try {
-
                     if(name === "sale"){
                         const { data } = await axios.delete(`/cancel_order/${id}`);
                         if(typeof data === "object"){
@@ -65,12 +94,12 @@ const Table = ({ dataValue, columns, name}) => {
                     }else{
                         await axios.delete(`/${name === "sale" ? "sales" : name}/${id}`);
                     }
-                    toast.current.show({ severity: 'info', summary: 'Delete Message', detail: 'Successfully deleted', life: 3000 });
+                    toast.current.show({ severity: 'info', summary: 'Delete Message', detail: `Successfully deleted`, life: 3000 });
                     setTimeout(() => {
                         window.location.reload();
                     }, [800])
                 } catch (error) {
-                    toast.current.show({ severity: 'error', summary: 'Delete', detail: 'Failed to delete', life: 3000 });
+                    toast.current.show({ severity: 'error', summary: 'Delete', detail: `Failed to ${name === "shipment" ? "cancel" : "delete"}`, life: 3000 });
                 } 
             },
         });
@@ -84,7 +113,11 @@ const Table = ({ dataValue, columns, name}) => {
             acceptClassName: 'p-button-danger',
             accept: async () => {
                 try {
-                    await axios.delete(`/cancel_${name}/${id}`);
+                    if(name === "shipment"){
+                        await axios.delete(`/shipment/${id}`);
+                    }else{
+                        await axios.delete(`/cancel_${name}/${id}`);
+                    }
                     toast.current.show({ severity: 'info', summary: 'Cancel Message', detail: 'Successfully cancelled', life: 3000 });
                     setTimeout(() => {
                         window.location.reload();
@@ -94,6 +127,13 @@ const Table = ({ dataValue, columns, name}) => {
                 } 
             },
         });
+    }
+
+    const linkCode = (rowData) => {
+        const { salesOrder } = rowData;
+        if(salesOrder){
+            return <Link className="underline text-blue-400" to={`/sales/${salesOrder._id}`}>{salesOrder._id.substring(0, 10)}</Link>
+        }
     }
 
     const tableLink = (rowData) => {
@@ -143,18 +183,52 @@ const Table = ({ dataValue, columns, name}) => {
         return dateFormat(dateCreated);
     }
 
+    const dateShipment = (rowData) => {
+        const { dateShipment } = rowData;
+        return dateFormat(dateShipment);
+    }
+
     const dateFinish = (rowData) => {
         const { dateFinish } = rowData;
         return dateFormat(dateFinish);
     }
 
+    const paymentStyle = (rowData) => {
+        const { payment } = rowData;
+
+        if(payment === "Pending"){
+            return <span className="bg-yellow-400 font-semibold p-1 rounded-xl text-sm">{payment}</span>
+        }
+        if(payment === "In progress"){
+            return <span className="bg-blue-400 font-semibold p-1 rounded-xl text-sm">{payment}</span>
+        }
+        if(payment === "Completed"){
+            return <span className="bg-green-400 font-semibold p-1 rounded-xl text-sm">{payment}</span>
+        }
+    }
+
+    const shipmentStyle = (rowData) => {
+        const { shipment } = rowData;
+
+        if(shipment === "Pending"){
+            return <span className="bg-yellow-400 font-semibold p-1 rounded-xl text-sm">{shipment}</span>
+        }
+        if(shipment === "In progress"){
+            return <span className="bg-blue-400 font-semibold p-1 rounded-xl text-sm">{shipment}</span>
+        }
+        if(shipment === "Completed"){
+            return <span className="bg-green-400 font-semibold p-1 rounded-xl text-sm">{shipment}</span>
+        }
+    }
+
     const statusStyle = (rowData) => {
         const { status } = rowData;
+
         if(status === "In progress"){
-            return <span className="bg-yellow-400 font-semibold p-1 rounded-xl text-sm">{status}</span>
+            return <span className="bg-blue-400 font-semibold p-1 rounded-xl text-sm">{status}</span>
         }
         if(status === "Completed"){
-            return <span className="bg-blue-400 font-semibold p-1 rounded-xl text-sm">{status}</span>
+            return <span className="bg-green-400 font-semibold p-1 rounded-xl text-sm">{status}</span>
         }
     }
 
@@ -235,6 +309,38 @@ const Table = ({ dataValue, columns, name}) => {
             </> 
         )
     }
+
+    const shipmentActions = (rowData) => {
+        const { _id, status, salesOrder } = rowData;
+        return (
+            <>
+                <Toast ref={toast} />
+                <ConfirmPopup />
+                <div className="flex gap-1 justify-center text-sm font-bold">
+                    {
+                        status === "In progress" ?
+                        <>
+                            <button className="hover:text-green-400" onClick={(e) => finishShipment(e, salesOrder._id, _id)}>
+                                FINISH
+                            </button>
+                            <div className="w-[1px] bg-gray-500" />
+                            <Link to={`/shipments/form/${_id}`} className="hover:text-blue-400">
+                                EDIT
+                            </Link>
+                            <div className="w-[1px] bg-gray-500" />
+                            <button className="hover:text-red-400" onClick={(e) => handleCancel(e, _id)}>
+                                CANCEL
+                            </button>
+                        </>
+                        :
+                        <button className="hover:text-red-400" onClick={(e) => handleDelete(e, _id)}>
+                            DELETE
+                        </button>
+                    }
+                </div>
+            </>
+        )
+    }
     
     return (
         <>
@@ -282,20 +388,30 @@ const Table = ({ dataValue, columns, name}) => {
                         columns.map((item, idx) => (
                             <Column
                             key={idx}
+                            header={item.header}
                             field={
                                 item.field === "dateCreated" ?
                                 dateCreated :
                                 item.field === "dateFinish" ?
                                 dateFinish : 
+                                item.field === "dateShipment" ?
+                                dateShipment:
+                                item.field === "paymentStatus" ?
+                                paymentStyle :
+                                item.field === "shipmentStatus" ?
+                                shipmentStyle :
                                 item.field === "status" ?
                                 statusStyle : item.field
                             }
-                            header={item.header}
                             body={
                                 item.body === "linkCode" ?
                                 tableLink :
+                                item.body === "link" ?
+                                linkCode :
                                 item.body === "buttons" ?
                                 actionBodyTemplate : 
+                                item.body === "shipment" ? 
+                                shipmentActions :
                                 item.body === "production" ? 
                                 productionActions : ""
                             }/>

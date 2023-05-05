@@ -15,8 +15,8 @@ const Sales = () => {
   const columns = [
     {body: "linkCode", header: "# CODE"},
     {field: "customers.name", header: "CUSTOMER NAME"},
-    {field: "shipment", header: "SHIPMENT"},
-    {field: "payment", header: "PAYMENT"},
+    {field: "shipmentStatus", header: "SHIPMENT"},
+    {field: "paymentStatus", header: "PAYMENT"},
     {field: "total", header: "TOTAL"},
     {body: "buttons", header: ""},  
   ];

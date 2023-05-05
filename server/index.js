@@ -14,6 +14,7 @@ import ProductionRoutes from "./Routes/ProductionRoutes.js";
 import SalesRoutes from "./Routes/SalesRoutes.js";
 import DeductionRoutes from "./Routes/DeductionRoutes.js";
 import PurchaseRoutes from "./Routes/PurchaseRoutes.js";
+import ShipmentRoutes from "./Routes/ShipmentRoutes.js";
 
 import './config.js'
 import './dbConnect.js';
@@ -42,6 +43,7 @@ app.use(ProductionRoutes);
 app.use(SalesRoutes);
 app.use(DeductionRoutes);
 app.use(PurchaseRoutes);
+app.use(ShipmentRoutes);
 
 const PORT = process.env.SERVER_PORT || 4000;
 

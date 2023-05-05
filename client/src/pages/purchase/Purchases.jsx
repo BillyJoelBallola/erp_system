@@ -15,7 +15,7 @@ const Purchases = () => {
     const columns = [
         {body: "linkCode", header: "# CODE"},
         {field: "supplier.name", header: "SUPPLIER NAME"},
-        {field: "payment", header: "PAYMENT"},
+        {field: "paymentStatus", header: "PAYMENT"},
         {field: "total", header: "TOTAL"},
         {body: "buttons", header: ""},  
     ];

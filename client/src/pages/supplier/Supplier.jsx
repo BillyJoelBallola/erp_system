@@ -71,9 +71,9 @@ const Supplier = () => {
         </div>
       </div>
       <div className="px-4 py-8 grid gap-6">
-        <div className="grid">
-          <span className="text-gray-500 text-sm font-semibold"># SUPPLIER CODE</span>
-          <span className="text-xl text-blue-400 bg-gray-200 max-w-max px-2 rounded-md">{supplierInfo._id ? supplierInfo._id.substring(0,10) : ""}</span>
+        <div className="grid gap-1 mb-4">
+          <span className="text-gray-500 text-sm font-semibold">SUPPLIER CODE</span>
+          <span className="text-xl text-blue-400 bg-gray-200 max-w-max px-2 rounded-md">#{supplierInfo._id ? supplierInfo._id.substring(0,10) : ""}</span>
         </div>
       <div className="grid grid-cols-[200px_1fr] items-center">
           <span className="text-gray-500 text-sm font-semibold">SUPPLIER'S NAME</span>
