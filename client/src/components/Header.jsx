@@ -20,7 +20,7 @@ const Header = () => {
   return (
     <div className="sticky top-0 right-0 h-[3.5rem] bg-white border-b-gray-200 border flex justify-end items-center px-6 z-10">
       <div 
-        className="hidden max-lg:grid absolute -left-2 place-items-end bg-gradient-to-r from-cyan-400 to-blue-400 rounded-e-full p-1" 
+        className="hidden max-lg:grid absolute -left-2 place-items-end bg-gradient-to-r from-cyan-400 to-blue-400 rounded-e-full p-1 cursor-pointer" 
         onClick={(() => setNavbar(true))}>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="white" className="w-6 h-6 rotate-90">
             <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
