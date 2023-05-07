@@ -82,7 +82,14 @@ const Sale = () => {
             <span className="text-gray-500 font-semibold">
               PAYMENT
             </span>
-            <span className={`text-xl bg-gray-200 p-1 px-2 rounded-md max-w-max ${salesInfo.payment === "Pending" ? "text-yellow-500" : "text-green-400"}`}>
+            <span 
+              className={`text-xl bg-gray-200 p-1 px-2 rounded-md max-w-max 
+                        ${salesInfo.payment === "Completed" ? 
+                          "text-green-500" : 
+                          salesInfo.payment === "In Progress" ? 
+                          "text-blue-400" : 
+                          "text-yellow-500" 
+                        }`}>
               {salesInfo.payment}
             </span>
           </div>
@@ -90,7 +97,14 @@ const Sale = () => {
             <span className="text-gray-500 font-semibold">
               SHIPMENT
             </span>
-            <span className={`text-xl text-blue-400 bg-gray-200 p-1 px-2 rounded-md max-w-max ${salesInfo.shipment === "Pending" ? "text-yellow-500" : "text-green-400"}`}>
+            <span 
+              className={`text-xl bg-gray-200 p-1 px-2 rounded-md max-w-max 
+                        ${salesInfo.shipment === "Completed" ? 
+                          "text-green-500" : 
+                          salesInfo.shipment === "In progress" ? 
+                          "text-blue-400" : 
+                          "text-yellow-500" 
+                        }`}>
               {salesInfo.shipment}
             </span>
           </div>

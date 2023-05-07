@@ -1,8 +1,10 @@
 import { Sales } from "../Models/SalesModel.js";
 import { Product } from "../Models/ProductModel.js";
+import { Customer } from "../Models/CustomerModel.js";
 
 export const addSalesOrder  = async (req, res) => {
-    const { customer, order, dateOrdered, discount, subTotal, total} = req.body;
+    const { customer, order, dateOrdered, discount, subTotal, total} = await req.body;
+    const customerInfo = await Customer.findById(customer);
     try {
         const response = await Sales.create({
             customers: customer,
@@ -14,6 +16,10 @@ export const addSalesOrder  = async (req, res) => {
             subTotal: subTotal,
             total: total
         });
+        customerInfo.set({
+            order: customerInfo.order + 1  
+        });
+        customerInfo.save();
         res.json(response);
     } catch (error) {
         res.json(error.message);
@@ -21,7 +27,7 @@ export const addSalesOrder  = async (req, res) => {
 }
 
 export const updateSalesOrder = async (req, res) => {
-    const { id, _id, order, dateOrdered, discount, subTotal, total } = req.body;
+    const { id, _id, order, dateOrdered, discount, subTotal, total } = await req.body;
     const salesOrderInfo = await Sales.findById(id);
     try {
         salesOrderInfo.set({
@@ -49,7 +55,7 @@ export const getAllSales = async (req, res) => {
 }
 
 export const getSalesById = async (req, res) => {
-    const { id } = req.params;
+    const { id } = await req.params;
     try {
         const response = await Sales.findById(id).populate("customers");
         res.json(response);
@@ -59,9 +65,14 @@ export const getSalesById = async (req, res) => {
 }
 
 export const deleteSales = async (req, res) => {
-    const { id } = req.params;
+    const { id } = await req.params;
     try {
         const response = await Sales.findByIdAndDelete(id);
+        const customerInfo = await Customer.findById(response.customers);
+        customerInfo.set({
+            order: customerInfo.order - 1,
+        });
+        customerInfo.save();
         res.json(response);
     } catch (error) {
         res.json(error.message);

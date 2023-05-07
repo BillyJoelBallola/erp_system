@@ -34,6 +34,7 @@ import Purchases from "./pages/purchase/Purchases";
 import FormPurchase from "./pages/purchase/FormPurchase";
 import Purchase from "./pages/purchase/Purchase";
 
+// working attendance...
 import Attendance from "./pages/attendance/Attendance";
 
 import Shipments from "./pages/shipment/Shipments";
@@ -41,6 +42,8 @@ import FormShipment from "./pages/shipment/FormShipment";
 import Shipment from "./pages/shipment/Shipment";
 
 import Adjusments from "./pages/adjustment/Adjusments";
+
+import Payrolls from "./pages/payroll/Payrolls";
 
 const App = () => {
   return (
@@ -78,6 +81,7 @@ const App = () => {
         <Route path="/shipments/form/:id?" element={<FormShipment />}/>
         <Route path="/shipments/:id?" element={<Shipment />}/>
         <Route path="/adjustments" element={<Adjusments />}/>
+        <Route path="/payrolls" element={<Payrolls />}/>
       </Route>
     </Routes>
   );

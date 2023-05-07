@@ -17,7 +17,7 @@ const Suppliers = () => {
       { body: "linkCode", header: "# CODE" },
       { field: "name", header: "SUPPLIER NAME" },
       { field: "business", header: "BUSINESS" },
-      { field: "", header: "# PURCHASES" },
+      { field: "order", header: "# PURCHASES" },
       { body: "buttons", header: "" },
   ];
 

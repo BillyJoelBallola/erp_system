@@ -4,13 +4,15 @@ import axios from "axios";
 
 const Shipments = () => {
     const [allShipments, setAllShipments] = useState([]);
+    const [tableAction, setTableAction] = useState("");
 
     useEffect(() => {
       axios.get("/shipments")
         .then(({ data }) => {
           setAllShipments(data.reverse());
+          setTableAction("");
         })
-    }, [])
+    }, [tableAction])
   
     const columns = [
       {body: "linkCode", header: "# SHIPMENT CODE"},
@@ -21,7 +23,12 @@ const Shipments = () => {
     ];
   
     return (
-      <Table dataValue={allShipments} columns={columns} name={"shipment"} />
+      <Table 
+        dataValue={allShipments} 
+        columns={columns} 
+        name={"shipment"} 
+        tableAction={tableAction} 
+        setTableAction={setTableAction}/>
     );
 };
 

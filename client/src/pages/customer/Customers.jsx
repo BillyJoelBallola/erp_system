@@ -17,7 +17,7 @@ const Customers = () => {
     { body: "linkCode", header: "# CODE" },
     { field: "name", header: "CUSTOMER NAME" },
     { field: "business", header: "BUSINESS" },
-    { field: "", header: "# ORDER" },
+    { field: "order", header: "# ORDER" },
     { body: "buttons", header: "" },
   ];
 

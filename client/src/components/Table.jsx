@@ -375,7 +375,11 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
                     {
                         status === "In progress" ?
                         <>
-                            <button className="hover:text-green-400" onClick={(e) => finishShipment(e, salesOrder._id, _id)}>
+                            <button 
+                                className="hover:text-green-400"
+                                onClick={(e) => {
+                                    finishShipment(e, salesOrder._id, _id);
+                                }}>
                                 FINISH
                             </button>
                             <div className="w-[1px] bg-gray-500" />

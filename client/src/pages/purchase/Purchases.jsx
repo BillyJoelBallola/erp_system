@@ -4,13 +4,15 @@ import Table from "../../components/Table";
 
 const Purchases = () => {
     const [purchases, setPurchases] = useState([]);
+    const [tableAction, setTableAction] = useState("");
 
     useEffect(() => {
         axios.get("/purchases")
         .then(({ data }) => {
             setPurchases(data.reverse());
+            setTableAction("")
         })
-    }, [])
+    }, [tableAction])
 
     const columns = [
         {body: "linkCode", header: "# CODE"},
@@ -21,7 +23,13 @@ const Purchases = () => {
     ];
 
     return (
-        <Table dataValue={purchases} columns={columns} name={"purchase"} />
+        <Table 
+            dataValue={purchases} 
+            columns={columns} 
+            name={"purchase"}  
+            tableAction={tableAction}
+            setTableAction={setTableAction}
+        />
     );
 };
 

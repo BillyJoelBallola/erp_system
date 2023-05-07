@@ -2,6 +2,9 @@ import { Schema, model } from 'mongoose';
 
 const CustomerSchema = new Schema({
     name: {type: String, required: true},
+    code: {
+        type: String,
+    },
     business: {type: String, required: true},
     address: {
         street: {type: String, required: true},
@@ -14,6 +17,7 @@ const CustomerSchema = new Schema({
         email: {type: String},
         phoneNumber: {type: String, required: true},
     },
+    order: {type: Number, default: 0},
 });
 
 export const Customer = model("Customer", CustomerSchema);

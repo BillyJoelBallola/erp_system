@@ -36,7 +36,7 @@ const Navbar = () => {
 
   return (
     <nav className={`fixed bg-dark bottom-0 top-0 h-screen w-[250px] overflow-y-auto lg:left-0 z-20 ${navbar ? "left-0" : "max-lg:left-[-1000px]"}`}>
-        <div className="bg-darker text-white p-2 flex flex-col sticky top-0 w-full h-[4.5rem] justify-center">
+        <div className="bg-darker text-white p-2 flex flex-col sticky top-0 w-full h-[3.5rem] justify-center">
             <span className="font-bold text-3xl">ERP SYSTEM</span>
             <span className="text-xs">MICAELLA'S MEAT PRODUCTS</span>
             <div className="hidden absolute max-lg:grid place-items-center right-2 rounded-full p-1 bg-gradient-to-r from-cyan-400 to-blue-400" onClick={(() => setNavbar(false))}>

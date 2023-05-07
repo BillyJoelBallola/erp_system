@@ -53,7 +53,8 @@ export const updateCustomer = async (req, res) => {
 
 export const getAllCustomers = async (req, res) => {
     try {
-        res.json(await Customer.find({})); 
+        const response = await Customer.find({});
+        res.json(response); 
     } catch (error) {
         res.json(error.message)
     }
