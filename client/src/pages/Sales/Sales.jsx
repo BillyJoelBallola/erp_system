@@ -8,7 +8,7 @@ const Sales = () => {
   useEffect(() => {
     axios.get("/sales")
       .then(({ data }) => {
-        setAllSales(data);
+        setAllSales(data.reverse());
       })
   }, [])
 

@@ -8,7 +8,7 @@ const Purchases = () => {
     useEffect(() => {
         axios.get("/purchases")
         .then(({ data }) => {
-            setPurchases(data);
+            setPurchases(data.reverse());
         })
     }, [])
 

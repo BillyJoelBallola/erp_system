@@ -42,7 +42,7 @@ export const updateProduct = async (req, res) => {
 
 export const getProduct = async (req, res) => {
     try{
-        const response = await Product.find({});
+        const response = await Product.find({}).populate("storage");
         res.json(response);
     }catch(error){
         res.json(error.message);

@@ -227,7 +227,7 @@ const FormShipment = () => {
                       </div>
                     }
                   </div>
-                  <div className="flex justify-end px-6 py-4 bg-yellow-100 border border-x-0 border-y-yellow-200">
+                  <div className="flex justify-end px-6 py-4 bg-green-100 border border-x-0 border-y-green-200">
                     <div className="w-[300px]">
                       <div className="text-sm flex justify-between">
                         <span>DISCOUNT</span>

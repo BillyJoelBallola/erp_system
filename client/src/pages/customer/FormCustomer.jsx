@@ -184,7 +184,7 @@ const FormCustomer = () => {
           </div>
           <div className="w-full h-[1px] bg-gray-200"></div>
           <div className="grid grid-cols-[200px_1fr] items-center">
-            <span className="text-gray-500 font-semibold">
+            <span className="text-gray-500 font-semibold self-baseline">
               ADDRESS<span className="text-red-400">*</span>
             </span>
             <div className="grid grid-rows-2 gap-10">
@@ -264,7 +264,7 @@ const FormCustomer = () => {
           </div>
           <div className="w-full h-[1px] bg-gray-200"></div>
           <div className="grid grid-cols-[200px_1fr] items-center">
-            <span className="text-gray-500 font-semibold">
+            <span className="text-gray-500 font-semibold self-baseline">
               CONTACT<span className="text-red-400">*</span>
             </span>
             <div className="grid lg:grid-cols-2 gap-10 md:grid-cols-1">

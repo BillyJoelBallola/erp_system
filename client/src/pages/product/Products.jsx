@@ -4,18 +4,21 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 
 const Products = () => {
+    const path = useParams().tab;
     const [products, setProducts] = useState([]);
     const [productions, setProductions] = useState([]);
-    const path = useParams().tab;
+    const [tableAction, setTableAction] = useState("");
 
     useEffect(() => {
         axios.get("/products").then(({ data }) => {
-            if (data) setProducts(data.reverse());
+            setProducts(data.reverse());
+            setTableAction("");
         });
         axios.get("/productions").then(({ data }) => {
-            if (data) setProductions(data.reverse());
+            setProductions(data.reverse());
+            setTableAction("");
         });
-    }, []);
+    }, [tableAction]);
 
     const infoComlumns = [
         { body: "linkCode", header: "# CODE" },
@@ -36,12 +39,23 @@ const Products = () => {
 
     return (
         <>
-        {
-            path === "info" || path === undefined ?
-            <Table dataValue={products} columns={infoComlumns} name={"product"} />
-            :
-            <Table dataValue={productions} columns={prodColumns} name={"production"} />
-        }
+            {path === "info" || path === undefined ? (
+                <Table
+                    dataValue={products}
+                    columns={infoComlumns}
+                    name={"product"}
+                    tableAction={tableAction}
+                    setTableAction={setTableAction}
+                />
+            ) : (
+                <Table
+                    dataValue={productions}
+                    columns={prodColumns}
+                    name={"production"}
+                    tableAction={tableAction}
+                    setTableAction={setTableAction}
+                />
+            )}
         </>
     );
 };

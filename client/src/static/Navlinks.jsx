@@ -172,7 +172,7 @@ export const operations = [
                 </svg>,
         subLinks: [{
             name: 'Adjustment',
-            path: "/adjustment"
+            path: "/adjustments"
         }],
     }
 ]

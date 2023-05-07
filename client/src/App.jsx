@@ -40,6 +40,8 @@ import Shipments from "./pages/shipment/Shipments";
 import FormShipment from "./pages/shipment/FormShipment";
 import Shipment from "./pages/shipment/Shipment";
 
+import Adjusments from "./pages/adjustment/Adjusments";
+
 const App = () => {
   return (
     <Routes>
@@ -75,6 +77,7 @@ const App = () => {
         <Route path="/shipments" element={<Shipments />}/>
         <Route path="/shipments/form/:id?" element={<FormShipment />}/>
         <Route path="/shipments/:id?" element={<Shipment />}/>
+        <Route path="/adjustments" element={<Adjusments />}/>
       </Route>
     </Routes>
   );

@@ -4,22 +4,30 @@ import axios from "axios";
 
 const Employees = () => {
   const [allEmployees, setAllEmployees] = useState([]);
+  const [tableAction, setTableAction] = useState("");
 
   useEffect(() => {
     axios.get("/employees").then(({ data }) => {
       setAllEmployees(data.reverse());
-    })
-  }, [])
+      setTableAction("");
+    });
+  }, [tableAction]);
 
   const columns = [
-    {body: "linkCode", header: "# CODE"},
-    {field: `name`, header: "EMPLOYEE NAME"},
-    {field: "position.name", header: "POSITION"},
-    {body: "buttons", header: ""},  
+    { body: "linkCode", header: "# CODE" },
+    { field: `name`, header: "EMPLOYEE NAME" },
+    { field: "position.name", header: "POSITION" },
+    { body: "buttons", header: "" },
   ];
 
   return (
-    <Table dataValue={allEmployees} columns={columns} name={"employee"}/>
+    <Table
+        dataValue={allEmployees}
+        columns={columns}
+        name={"employee"}
+        tableAction={tableAction}
+        setTableAction={setTableAction}
+    />
   );
 };
 

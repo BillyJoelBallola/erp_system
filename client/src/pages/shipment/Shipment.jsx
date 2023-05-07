@@ -180,7 +180,7 @@ const Shipment = () => {
                         </div>
                         <div className="grid">
                             <span className="text-gray-500 mb-2 text-sm font-semibold">
-                                DATE PURCHASED
+                                DATE SHIPMENT
                             </span>
                             <span className="text-lg">
                                 {shipmentInfo.dateShipment && moment(shipmentInfo.dateShipment).format("MMMM D YYYY")}
