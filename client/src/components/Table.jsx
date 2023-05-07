@@ -187,12 +187,12 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
     }
 
     const actionBodyTemplate = (rowData) => {
-        const { _id } = rowData;
+        const { _id, shipment, payment } = rowData;
         return (
             <>
                 <Toast ref={toast} />
                 <ConfirmPopup />
-                <div className="flex gap-4 justify-center">
+                <div className="flex gap-4 justify-center items-center">
                     {
                         name === "adjustment" ?
                         <button 
@@ -206,6 +206,12 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
                             </svg>
                         </button>
+                        :
+                        name === "sale" && (shipment !== "Pending" || payment !== "Pending") ? 
+                            <></>
+                        :
+                        name === "purchase" && payment !== "Pending" ? 
+                            <></>
                         :
                         <Link to={`/${name}s/form/${_id}`} className="hover:text-blue-400">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
@@ -246,13 +252,13 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
         const { payment } = rowData;
 
         if(payment === "Pending"){
-            return <span className="bg-yellow-400 font-semibold p-1 rounded-xl text-sm">{payment}</span>
-        }
+            return <div className="bg-gradient-to-r from-yellow-400 to-orange-400 font-semibold p-1 rounded-xl text-sm max-w-min">{payment}</div>
+        }   
         if(payment === "In progress"){
-            return <span className="bg-blue-400 font-semibold p-1 rounded-xl text-sm">{payment}</span>
+            return <div className="bg-gradient-to-r from-cyan-400 to-blue-400 font-semibold p-1 rounded-xl text-sm max-w-min whitespace-nowrap">{payment}</div>
         }
         if(payment === "Completed"){
-            return <span className="bg-green-400 font-semibold p-1 rounded-xl text-sm">{payment}</span>
+            return <div className="bg-gradient-to-r from-cyan-400 to-green-400 font-semibold p-1 rounded-xl text-sm max-w-min">{payment}</div>
         }
     }
 
@@ -260,13 +266,13 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
         const { shipment } = rowData;
 
         if(shipment === "Pending"){
-            return <span className="bg-yellow-400 font-semibold p-1 rounded-xl text-sm">{shipment}</span>
+            return <div className="bg-gradient-to-r from-yellow-400 to-orange-400 font-semibold p-1 rounded-xl text-sm max-w-min">{shipment}</div>
         }
         if(shipment === "In progress"){
-            return <span className="bg-blue-400 font-semibold p-1 rounded-xl text-sm">{shipment}</span>
+            return <span className="bg-gradient-to-r from-cyan-400 to-blue-400 font-semibold p-1 rounded-xl text-sm max-w-min whitespace-nowrap">{shipment}</span>
         }
         if(shipment === "Completed"){
-            return <span className="bg-green-400 font-semibold p-1 rounded-xl text-sm">{shipment}</span>
+            return <span className="bg-gradient-to-r from-green-400 to-green-600 font-semibold p-1 rounded-xl text-sm max-w-min">{shipment}</span>
         }
     }
 
@@ -274,10 +280,10 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
         const { status } = rowData;
 
         if(status === "In progress"){
-            return <span className="bg-blue-400 font-semibold p-1 rounded-xl text-sm">{status}</span>
+            return <div className="bg-gradient-to-r from-cyan-400 to-blue-400 font-semibold p-1 rounded-xl text-sm max-w-min whitespace-nowrap">{status}</div>
         }
         if(status === "Completed"){
-            return <span className="bg-green-400 font-semibold p-1 rounded-xl text-sm">{status}</span>
+            return <div className="bg-gradient-to-r from-green-400 to-green-600 font-semibold p-1 rounded-xl text-sm max-w-min">{status}</div>
         }
     }
 
@@ -417,27 +423,27 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
                 />
             }
      
-            <div className="p-4 bg-gray-200/[.6] flex items-center gap-4 border border-t-0 border-gray-300">
+            <div className="p-4 bg-gray-200/[.6] flex items-center gap-4 border border-t-0 border-gray-300 max-md:flex-col text-center">
                 {
                     name === "adjustment" ? 
                     <button 
-                        className="btn-primary px-16 uppercase"
+                        className="btn-primary px-16 uppercase max-md:w-full"
                         onClick={() => {
                             setVisible(true);
                         }}>add new {name}</button>
                     :
-                    <Link to={`/${name === "production" ? "product" : name}s/form`} className="btn-primary px-16 uppercase">{`add new ${name === "production" ? "product" : name === "sale" ? "order" : name?.split("-").join(" ")}`}</Link>
+                    <Link to={`/${name === "production" ? "product" : name}s/form`} className="btn-primary px-16 uppercase max-md:w-full">{`add new ${name === "production" ? "product" : name === "sale" ? "order" : name?.split("-").join(" ")}`}</Link>
                 }
-                <div className="h-8 w-[1px] bg-gray-300"></div>
-                <div className="flex items-center pl-2 rounded-md bg-gray-300/[.9] w-4/12">
+                <div className="h-8 w-[1px] bg-gray-300 block max-md:hidden"/>
+                <div className="flex items-center pl-2 rounded-md bg-gray-300/[.9] w-4/12 max-md:w-full">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5 text-gray-500">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                     </svg>
                     <input
-                    type="search"
-                    placeholder="Type to search"
-                    className="text-sm py-1 px-2 ml-2 rounded-r-md rounded-e-md border border-gray-300 w-full"
-                    onChange={(e) => setFilters({global: {value: e.target.value, matchMode: FilterMatchMode.CONTAINS}})}
+                        type="search"
+                        placeholder="Type to search"
+                        className="text-sm py-1 px-2 ml-2 rounded-r-md rounded-e-md border border-gray-300 w-full"
+                        onChange={(e) => setFilters({global: {value: e.target.value, matchMode: FilterMatchMode.CONTAINS}})}
                     />
                 </div>
             </div>

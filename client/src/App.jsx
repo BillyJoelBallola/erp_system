@@ -26,9 +26,9 @@ import Products from './pages/product/Products';
 import FormProduct from "./pages/product/FormProduct";
 import Product from "./pages/product/Product";
 
-import Sales from "./pages/Sales/Sales";
-import FormSales from "./pages/Sales/FormSales";
-import Sale from "./pages/Sales/Sale";
+import Sales from "./pages/sales/Sales";
+import FormSales from "./pages/sales/FormSales";
+import Sale from "./pages/sales/Sale";
 
 import Purchases from "./pages/purchase/Purchases";
 import FormPurchase from "./pages/purchase/FormPurchase";

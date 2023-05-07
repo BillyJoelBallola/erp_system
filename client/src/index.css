@@ -48,7 +48,7 @@ input[type="date"]{ @apply  border-[1px] border-gray-400 rounded-md px-3 py-2 te
 
 .btn-dark{ @apply py-3 bg-darker text-sm text-white font-bold rounded-md hover:bg-dark/[.9] transition-all delay-100 ease-in-out; }
 
-.btn-primary{ @apply py-1 bg-blue-400 text-sm text-white font-bold rounded-md hover:bg-blue-400/[.8] transition-all delay-100 ease-in-out; }
+.btn-primary{ @apply py-1 bg-gradient-to-r from-blue-400 to-blue-500 text-sm text-white font-bold rounded-md hover:from-blue-400/[.8] hover:to-blue-500/[.8] transition-all delay-100 ease-in-out; }
 
 .form-group{ @apply flex flex-col gap-2; }
 
@@ -74,7 +74,10 @@ input[type="date"]{ @apply  border-[1px] border-gray-400 rounded-md px-3 py-2 te
     @apply border-gray-300;
 }
 
-nav{ @apply hidden lg:block; }
+nav{ 
+    transition: left 300ms ease-in-out; 
+    box-shadow: 0px 5px 5px 1px rgba(0, 0, 0, 0.2)
+}
 main{  @apply float-right w-screen; }
 
 @media (min-width: 1024px) {

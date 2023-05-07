@@ -8,7 +8,7 @@ const Adjusments = () => {
 
   useEffect(() => {
     axios.get("/adjustments").then(({ data }) => {
-      setAllAdjustment(data);
+      setAllAdjustment(data.reverse());
       setTableAction("");
     })
   }, [tableAction]);

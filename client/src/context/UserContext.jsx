@@ -5,6 +5,7 @@ export const UserContext = createContext({});
 
 export const UserContextProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState(null);
+    const [navbar, setNavbar] = useState(false);
 
     useEffect(() => {
         if(!currentUser){
@@ -17,7 +18,7 @@ export const UserContextProvider = ({ children }) => {
     }, [currentUser]);
 
     return(
-        <UserContext.Provider value={{ currentUser, setCurrentUser }}>
+        <UserContext.Provider value={{ currentUser, setCurrentUser, navbar, setNavbar }}>
             {children}
         </UserContext.Provider>
     )

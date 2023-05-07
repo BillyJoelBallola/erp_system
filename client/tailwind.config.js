@@ -9,6 +9,7 @@ export default {
       backgroundColor: {
         'dark': '#303030',
         'darker': '#212121',
+        'light': '#626262',
       },
       textColor: {
         'lighter': '#b2b2b2',

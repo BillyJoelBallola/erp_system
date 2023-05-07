@@ -8,7 +8,7 @@ const Shipments = () => {
     useEffect(() => {
       axios.get("/shipments")
         .then(({ data }) => {
-          setAllShipments(data);
+          setAllShipments(data.reverse());
         })
     }, [])
   
