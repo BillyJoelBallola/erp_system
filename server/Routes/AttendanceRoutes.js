@@ -1,9 +1,11 @@
 import { Router } from "express";
-import { getAllAttendance, timeInAttendance } from "../Controllers/AttendanceController.js";
+import { deleteAttendance, getCurrentAttendance, timeInAttendance, timeOutAttendance } from "../Controllers/AttendanceController.js";
 
 const route = Router();
 
 route.post("/timeIn_attendance", timeInAttendance);
-route.get("/attendance", getAllAttendance);
+route.put("/timeOut_attendance", timeOutAttendance);
+route.delete("/attendance/:id", deleteAttendance);
+route.get("/current_attendance", getCurrentAttendance);
 
 export default route;

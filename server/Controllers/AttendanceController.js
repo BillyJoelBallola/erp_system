@@ -1,33 +1,55 @@
 import { Attendance } from "../Models/AttendanceModel.js";
 import { Employee } from "../Models/EmployeeModel.js";
-
 import moment from "moment";
 
 export const timeInAttendance = async (req, res) => {
     const { code } = await req.body; 
-    const currentDate = moment(Date.now()).format();
-    const [date, time] = currentDate.split("T");
     const employeeInfo = await Employee.findOne({ code: code });
-    const currentAttendance = await Attendance.find({});
-    // try {
-    //     console.log(currentAttendance);
-        // if(employeeInfo){
-        //     const response = await Attendance.create({
-        //         employee: employeeInfo._id,
-        //         timeIn: Date.now()
-        //     })
-        //     res.json(response);
-        // }
-    // } catch (error) {
-    //     res.json(error.message);
-    // }
+    try {
+        if(employeeInfo){
+            const response = await Attendance.create({
+                employee: employeeInfo._id,
+                timeIn: Date.now(),
+                timeOut: "",
+                numHour: 0,
+            })
+            res.json(response);
+        }
+    } catch (error) {
+        res.json(error.message);
+    }
 }
 
-export const getAllAttendance = async (req, res) => {
+export const timeOutAttendance = async (req, res) => {
+    const { id } = await req.body;
+    const attendanceInfo = await Attendance.findById(id);
     try {
-        const response = await Attendance.find({}).populate("employee");
-        res.json(response); 
+        attendanceInfo.set({
+            timeOut: Date.now()
+        });
+        attendanceInfo.save();
+        res.json(attendanceInfo);
     } catch (error) {
+        res.json(error.message);
+    }
+} 
+
+export const getCurrentAttendance = async (req, res) => {
+    const [date, time] = moment(Date.now()).format().split("T");
+    try {
+        const response = await Attendance.find({ timeIn: { $gt: date.toString() } }).populate("employee");
+        res.json(response);
+    } catch (error) {
+        res.json(error.message);
+    }
+}
+
+export const deleteAttendance = async (req, res) => {
+    const { id } = await req.params;
+    try{
+        const response = await Attendance.findByIdAndDelete(id);
+        res.json(response);
+    }catch(error){
         res.json(error.message);
     }
 }

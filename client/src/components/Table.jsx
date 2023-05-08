@@ -421,7 +421,7 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
                     visible={visible}
                     setVisible={setVisible}
                     setTableAction={setTableAction}
-                    data={name === "attendance" ? dataValue : null}
+                    attendanceData={name === "attendance" ? dataValue : null}
                 />
                 :
                 <ProductionModal 
@@ -480,21 +480,21 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
                     {
                         columns.map((item, idx) => (
                             <Column
-                            key={idx}
-                            header={item.header}
-                            field={
-                                item.field === "dateCreated" ?
-                                dateCreated :
-                                item.field === "dateFinish" ?
-                                dateFinish : 
-                                item.field === "dateShipment" ?
-                                dateShipment:
-                                item.field === "paymentStatus" ?
-                                paymentStyle :
-                                item.field === "shipmentStatus" ?
-                                shipmentStyle :
-                                item.field === "status" ?
-                                statusStyle : item.field
+                                key={idx}
+                                header={item.header}
+                                field={
+                                    item.field === "dateCreated" ?
+                                    dateCreated :
+                                    item.field === "dateFinish" ?
+                                    dateFinish : 
+                                    item.field === "dateShipment" ?
+                                    dateShipment:
+                                    item.field === "paymentStatus" ?
+                                    paymentStyle :
+                                    item.field === "shipmentStatus" ?
+                                    shipmentStyle :
+                                    item.field === "status" ?
+                                    statusStyle : item.field
                             }
                             body={
                                 item.body === "linkCode" ?
