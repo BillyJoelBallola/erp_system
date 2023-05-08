@@ -7,10 +7,10 @@ const AttendanceSchema = new Schema({
         required: true,
     },
     timeIn: {
-        type: Timestamp,
+        type: Date,
     },
-    timeIn: {
-        type: Timestamp,
+    timeOut: {
+        type: Date,
     },
     numHour: {
         type: Number,

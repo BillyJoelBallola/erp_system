@@ -45,6 +45,8 @@ import Adjusments from "./pages/adjustment/Adjusments";
 
 import Payrolls from "./pages/payroll/Payrolls";
 
+
+
 const App = () => {
   return (
     <Routes>
@@ -82,6 +84,7 @@ const App = () => {
         <Route path="/shipments/:id?" element={<Shipment />}/>
         <Route path="/adjustments" element={<Adjusments />}/>
         <Route path="/payrolls" element={<Payrolls />}/>
+        
       </Route>
     </Routes>
   );

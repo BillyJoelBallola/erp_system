@@ -16,6 +16,7 @@ import "primeicons/primeicons.css";
 
 import ProductionModal from "./ProductionModal";
 import AdjustmentModal from "./AdjustmentModal";
+import AttendanceModal from "./AttendanceModal";
 
 const Table = ({ dataValue, columns, name, setTableAction}) => {
     const activeTab = useParams().tab; 
@@ -415,6 +416,14 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
                     setAdjustmentId={setAdjustmentId}
                 />
                 :
+                name === "attendance" ?
+                <AttendanceModal 
+                    visible={visible}
+                    setVisible={setVisible}
+                    setTableAction={setTableAction}
+                    data={name === "attendance" ? dataValue : null}
+                />
+                :
                 <ProductionModal 
                     visible = {visible}
                     setVisible = {setVisible}
@@ -429,12 +438,14 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
      
             <div className="p-4 bg-gray-200/[.6] flex items-center gap-4 border border-t-0 border-gray-300 max-md:flex-col text-center">
                 {
-                    name === "adjustment" ? 
+                    name === "adjustment" || name === "attendance"? 
                     <button 
                         className="btn-primary px-16 uppercase max-md:w-full"
                         onClick={() => {
                             setVisible(true);
-                        }}>add new {name}</button>
+                        }}>{
+                            `${name === "attendance" ? "scan qr code" : `add new ${name}`}`
+                        }</button>
                     :
                     <Link to={`/${name === "production" ? "product" : name}s/form`} className="btn-primary px-16 uppercase max-md:w-full">{`add new ${name === "production" ? "product" : name === "sale" ? "order" : name?.split("-").join(" ")}`}</Link>
                 }
