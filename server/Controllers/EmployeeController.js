@@ -93,3 +93,13 @@ export const deleteEmployee = async (req, res) => {
         res.json(error.message);
     }
 }
+
+export const getEmployeeByQrCode = async (req, res) => {
+    const { code } = await req.params;
+    try {
+        const response = await Employee.findOne({ code: code });
+        res.json(response);
+    } catch (error) {
+        res.json(error.message);
+    }
+}

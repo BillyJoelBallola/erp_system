@@ -176,7 +176,7 @@ const FormShipment = () => {
                   </div>
                   <div>
                     <div className="grid gap-1">
-                        <span className="text-gray-500 font-semibold text-xs">SHIP ADDRESS</span>
+                        <span className="text-gray-500 font-semibold text-xs">SHIPPING ADDRESS</span>
                         <span className="text-gray-800">{`${shipOrder.address ? shipOrder.address : orderInfo.address ? orderInfo.address : "--"}`}</span>
                     </div>
                   </div>

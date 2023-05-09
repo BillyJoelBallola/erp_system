@@ -19,6 +19,7 @@ import AdjustmentModal from "./AdjustmentModal";
 import AttendanceModal from "./AttendanceModal";
 
 const Table = ({ dataValue, columns, name, setTableAction}) => {
+    const toast = useRef(null);
     const activeTab = useParams().tab; 
     const [visible, setVisible] = useState(false);
     const [production, setProduction] = useState([]);
@@ -27,7 +28,6 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
     const [rawData, setRawData] = useState([]);
     const [products, setProducts] = useState([]);
     const path = useLocation().pathname.split("/");
-    const toast = useRef(null);
     const [filters, setFilters] = useState({
         global: { value: null, matchMode: FilterMatchMode.CONTAINS },
     });
@@ -45,15 +45,17 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
         }
     }, [name])
 
+    const toastMsgBox = (severity, summary, detail ) => {
+        return toast.current.show({ severity: severity, summary: summary, detail: detail, life: 3000 });
+    }
+
     const finish = async (productId, productionId, qty) => {
         try {
             await axios.put("/update_qty_product", { productId, productionId, qty });
-            toast.current.show({ severity: 'info', summary: 'Finish Message', detail: 'Production finished successfully.', life: 3000 });
-            setTimeout(() => {
-                setTableAction("finish");
-            }, [800]);
+            toastMsgBox('info', 'Production', 'Production finished successfully.');
+            setTableAction("finish");
         } catch (error) {
-            toast.current.show({ severity: 'info', summary: 'Finish Message', detail: 'Failed to finish this production.', life: 3000 });
+            toastMsgBox('error', 'Production', 'Failed to set as finish this production.');        
         }
     }
 
@@ -66,22 +68,10 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
             accept: async () => {
                 try {
                     await axios.put("/finish_shipment", { orderId, shipmentId });
-                    toast.current.show({
-                        severity: "info",
-                        summary: "Delete",
-                        detail: "Shipment has been completed.",
-                        life: 3000,
-                    });
-                    setTimeout(() => {
-                        setTableAction("finish-shipment");
-                    }, [800]);
+                    toastMsgBox('info', 'Shipment', 'Shipment has been completed.');
+                    setTableAction("finish-shipment");
                 } catch (error) {
-                    toast.current.show({
-                        severity: "error",
-                        summary: "Delete",
-                        detail: "Failed to set as finish",
-                        life: 3000,
-                    });
+                    toastMsgBox('error', 'Shipment', 'Failed to set as finish this shipment.');    
                 }
             },
         });
@@ -103,12 +93,10 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
                     }else{
                         await axios.delete(`/${name === "sale" ? "sales" : name}/${id}`);
                     }
-                    toast.current.show({ severity: 'info', summary: 'Delete Message', detail: `Successfully deleted`, life: 3000 });
-                    setTimeout(() => {
-                        setTableAction("deleted");
-                    }, [800]);
+                    toastMsgBox('info', 'Delete', 'Successfully deleted.');    
+                    setTableAction("deleted");
                 } catch (error) {
-                    toast.current.show({ severity: 'error', summary: 'Delete', detail: `Failed to ${name === "shipment" ? "cancel" : "delete"}`, life: 3000 });
+                    toastMsgBox('error', 'Delete', `Failed to ${name === "shipment" ? "cancel" : "delete"}`); 
                 } 
             },
         });
@@ -127,12 +115,10 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
                     }else{
                         await axios.delete(`/cancel_${name}/${id}`);
                     }
-                    toast.current.show({ severity: 'info', summary: 'Cancel Message', detail: 'Successfully cancelled', life: 3000 });
-                    setTimeout(() => {
-                        setTableAction("cancel");
-                    }, [800])
+                    toastMsgBox('info', 'Cancel', "Successfully cancelled."); 
+                    setTableAction("cancel");
                 } catch (error) {
-                    toast.current.show({ severity: 'error', summary: 'Cancel Message', detail: 'Failed to cancel', life: 3000 });
+                    toastMsgBox('info', 'Cancel', "Failed to cancel.");
                 } 
             },
         });
@@ -212,6 +198,9 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
                             <></>
                         :
                         name === "purchase" && payment !== "Pending" ? 
+                            <></>
+                        :
+                        name === "attendance" ?
                             <></>
                         :
                         <Link to={`/${name}s/form/${_id}`} className="hover:text-blue-400">
@@ -300,16 +289,16 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
         })
 
         if(good){
-            return toast.current.show({ severity: 'warn', summary: 'Production message', detail: 'Not enough raw materials to produce the product', life: 3000 });
+            toastMsgBox('warn', 'Production', "Not enough raw materials to produce the product.");
         }
 
-        if(production.product === "" ||
-            production.dateFinish === "" 
-        ) return toast.current.show({ severity: 'warn', summary: 'Production message', detail: 'Fill up all fields', life: 3000 });
+        if(production.product === "" || production.dateFinish === "" ){
+            toastMsgBox('warn', 'Production', "Fill up all fields.");
+        }
         
-        if(production.quantity === "" ||
-            production.quantity <= 0 
-        ) return toast.current.show({ severity: 'warn', summary: 'Production message', detail: 'Qty should be greater than to zero [0].', life: 3000 });
+        if(production.quantity === "" || production.quantity <= 0 ){
+            toastMsgBox('warn', 'Production', "Qty should be greater than to zero [0].");
+        } 
  
         try {
             const { _id, quantity } = production;
@@ -317,11 +306,9 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
             if(typeof rawMaterialsRes === "object"){
                 const productionRes = await axios.put("/update_production", production);
                 if(typeof productionRes === "object"){
-                    toast.current.show({ severity: 'info', summary: 'Production message', detail: 'Successfully added', life: 3000 });
+                    toastMsgBox('info', 'Production', "Successfully added.");
                     setVisible(false);
-                    setTimeout(() => {
-                        setTableAction("submit-production");
-                    }, [800])
+                    setTableAction("submit-production");
                 }
             }
         } catch (error) {
@@ -401,9 +388,27 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
             </>
         )
     }
+
+    const timeInFormat = (rowData) => {
+        const { timeIn } = rowData;
+
+        if(timeIn){
+            return <span>{moment(timeIn).format("LT")}</span>
+        }
+    }
+    
+    const timeOutFormat = (rowData) => {
+        const { timeOut } = rowData;
+
+        if(timeOut){
+            return <span>{moment(timeOut).format("LT")}</span>
+        }
+    }
     
     return (
         <>
+            <Toast ref={toast} />
+            <ConfirmPopup />
             {
                 name === "adjustment" ?
                 <AdjustmentModal 
@@ -481,7 +486,7 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
                         columns.map((item, idx) => (
                             <Column
                                 key={idx}
-                                header={item.header}
+                                header={item.header}    
                                 field={
                                     item.field === "dateCreated" ?
                                     dateCreated :
@@ -493,6 +498,10 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
                                     paymentStyle :
                                     item.field === "shipmentStatus" ?
                                     shipmentStyle :
+                                    item.field === "timeInFormat" ?
+                                    timeInFormat :
+                                    item.field === "timeOutFormat" ?
+                                    timeOutFormat :
                                     item.field === "status" ?
                                     statusStyle : item.field
                             }

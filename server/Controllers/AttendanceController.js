@@ -6,15 +6,12 @@ export const timeInAttendance = async (req, res) => {
     const { code } = await req.body; 
     const employeeInfo = await Employee.findOne({ code: code });
     try {
-        if(employeeInfo){
-            const response = await Attendance.create({
-                employee: employeeInfo._id,
-                timeIn: Date.now(),
-                timeOut: "",
-                numHour: 0,
-            })
-            res.json(response);
-        }
+        const response = await Attendance.create({
+            employee: employeeInfo._id,
+            timeIn: Date.now(),
+            timeOut: "",
+        })
+        res.json(response);
     } catch (error) {
         res.json(error.message);
     }
@@ -22,10 +19,11 @@ export const timeInAttendance = async (req, res) => {
 
 export const timeOutAttendance = async (req, res) => {
     const { id } = await req.body;
+    const currentDate = Date.now();
     const attendanceInfo = await Attendance.findById(id);
     try {
         attendanceInfo.set({
-            timeOut: Date.now()
+            timeOut: currentDate
         });
         attendanceInfo.save();
         res.json(attendanceInfo);
@@ -37,7 +35,7 @@ export const timeOutAttendance = async (req, res) => {
 export const getCurrentAttendance = async (req, res) => {
     const [date, time] = moment(Date.now()).format().split("T");
     try {
-        const response = await Attendance.find({ timeIn: { $gt: date.toString() } }).populate("employee");
+        const response = await Attendance.find({ timeIn: { $gte: date.toString() } }).populate("employee");
         res.json(response);
     } catch (error) {
         res.json(error.message);

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Table from "../../components/Table";
 import axios from "axios";
+import moment from "moment";
 
 const Attendance = () => {
   const [allAttenance, setAllAttendance] = useState([]);
@@ -8,15 +9,15 @@ const Attendance = () => {
 
   useEffect(() => {
     axios.get("/current_attendance").then(({ data }) => {
-      setAllAttendance(data);
+      setAllAttendance(data.reverse());
       setTableAction("");
     })
   }, [tableAction])
     
   const columns = [
     {field: "employee.name", header: "EMPLOYEE NAME"},
-    {field: "timeIn", header: "TIME-IN"},
-    {field: "timeOut", header: "TIME-OUT"},
+    {field: "timeInFormat", header: "TIME-IN"},
+    {field: "timeOutFormat", header: "TIME-OUT"},
     {body: "buttons", header: ""},  
   ];
 

@@ -28,48 +28,71 @@ const AdjustmentModal = ({ visible, setVisible, setTableAction, attendanceData})
         }
     }, [scanQr.result]);
 
+    const toastMsgBox = (severity, summary, detail ) => {
+        return toast.current.show({ severity: severity, summary: summary, detail: detail, life: 3000 });
+    }
+
     const addAttendance = async (code) => {
         if(code === undefined || code === null || code === "") return;
         const [date, time] = moment(Date.now()).format().split("T");
 
-        if(attendanceData !== null && attendanceData.length > 0){
-            attendanceData.map(async (attendance) => {
-                if(attendance.employee.code === code && attendance.timeIn.includes(date) && attendance.timeOut === null){
-                    const { data } = await axios.put("/timeOut_attendance", { id: attendance._id });
-                    if(typeof data === "object"){
-                        setTableAction("timeOut");
-                        setVisible(false);
-                        setScanQr({ result: "" });
-                        return toast.current.show({ severity: 'info', summary: 'Attendance Message', detail: "Time-out is added", life: 3000 });
-                    }else{
-                        setVisible(false);
-                        setScanQr({ result: "" });
-                        return toast.current.show({ severity: 'error', summary: 'Attendance Message', detail: "Failed to add time-out", life: 3000 });
-                    }
-                }
+        let timeOut = false;
+        let outAlready = false;
+        let attedanceId = "";
 
-                if(attendance.timeIn.includes(date)){
+        attendanceData.map(async (attendance) => {
+            if(attendance.employee.code === code && attendance.timeIn.includes(date)){
+                attedanceId = attendance._id
+                timeOut = true;
+            }
+            
+            if(attendance.employee.code === code && attendance.timeIn.includes(date) && attendance.timeOut !== null){
+                outAlready = true;
+            }
+        })
+
+        const { data } = await axios.get(`/qr_employee/${ code }`);
+        if(data === null){
+            setVisible(false);
+            setScanQr({ result: "" });
+            toastMsgBox("error", "Attendance", "Qr code not recognized.");
+        }else{
+            if(code && timeOut === false && !!outAlready === false){
+                try {
+                    await axios.post("/timeIn_attendance", { code });
+                    setTableAction("timeIn");
                     setVisible(false);
                     setScanQr({ result: "" });
-                    return toast.current.show({ severity: 'warn', summary: 'Attendance Message', detail: "Employee is already out.", life: 3000 });
+                    toastMsgBox("info", "Attendance", "Time-in is added.");
+                } catch (error) {
+                    setVisible(false);
+                    setScanQr({ result: "" });
+                    toastMsgBox("error", "Attendance", "Failed to add time-in");
                 }
-            })
-        }else{
-            const { data } = await axios.post("/timeIn_attendance", { code });
-
-            if(typeof data === "object"){
-                setTableAction("timeIn");
+            }
+    
+            if(code && timeOut){
+                try {
+                    await axios.put("/timeOut_attendance", { id: attedanceId });
+                    setTableAction("timeOut");
+                    setVisible(false);
+                    setScanQr({ result: "" });
+                    toastMsgBox("info", "Attendance", "Time-out is added.");
+                } catch (error) {
+                    setVisible(false);
+                    setScanQr({ result: "" });
+                    toastMsgBox("error", "Attendance", "Failed to add time-out");
+                }
+            }
+    
+            if(code && outAlready){
                 setVisible(false);
                 setScanQr({ result: "" });
-                return toast.current.show({ severity: 'info', summary: 'Attendance Message', detail: "Time-in is added", life: 3000 });
-            }else{
-                setVisible(false);
-                setScanQr({ result: "" });
-                return toast.current.show({ severity: 'error', summary: 'Attendance Message', detail: "Failed to add time-in", life: 3000 });
+                toastMsgBox("warn", "Attendance", "Employee is already out.");
             }
         }
     }
-    
+
     return (
         <>
             <Toast ref={toast}/>
@@ -90,6 +113,10 @@ const AdjustmentModal = ({ visible, setVisible, setTableAction, attendanceData})
                                 onScan={handleScan}
                             />
                         </div>
+                        {
+                            scanQr.result && 
+                            <span className="grid mt-4 py-1 word-wrap rounded-md bg-gray-300 text-center">{scanQr.result.text}</span>
+                        }
                 </Dialog>
             </div>
         </>

@@ -11,9 +11,6 @@ const AttendanceSchema = new Schema({
     },
     timeOut: {
         type: Date,
-    },
-    numHour: {
-        type: Number,
     }
 });
 
