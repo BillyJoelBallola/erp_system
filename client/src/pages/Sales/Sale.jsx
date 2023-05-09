@@ -54,7 +54,7 @@ const Sale = () => {
         </div>
         <div className="flex gap-2">
           {
-            salesInfo.shipment === "Pending" && salesInfo.payment === "Pending" &&
+            salesInfo.shipment === "Pending" && salesInfo.payment === "Unpaid" &&
             <Link to={`/sales/form/${id}`} className="btn-outlined" >EDIT</Link>
           }
           <button className="btn-red" onClick={(e) => deleteSalesInfo(e, id)}>DELETE</button>
@@ -76,11 +76,8 @@ const Sale = () => {
             </span>
             <span 
               className={`text-xl bg-gray-200 p-1 px-2 rounded-md max-w-max 
-                        ${salesInfo.payment === "Completed" ? 
-                          "text-green-500" : 
-                          salesInfo.payment === "In Progress" ? 
-                          "text-blue-400" : 
-                          "text-yellow-500" 
+                        ${salesInfo.payment === "Unpaid" ? 
+                        "text-yellow-500" : "text-green-500"
                         }`}>
               {salesInfo.payment}
             </span>

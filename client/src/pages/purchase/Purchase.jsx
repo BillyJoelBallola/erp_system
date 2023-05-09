@@ -60,9 +60,12 @@ const Purchase = () => {
                     PURCHASE INFORMATION
                 </div>
                 <div className="flex gap-2">
-                    <Link to={`/purchases/form/${id}`} className="btn-outlined">
-                        EDIT
-                    </Link>
+                    {
+                        purchaseInfo.payment === "Unpaid" &&
+                        <Link to={`/purchases/form/${id}`} className="btn-outlined">
+                            EDIT
+                        </Link>
+                    }
                     <button
                         className="btn-red"
                         onClick={(e) => deletePurchaseInfo(e, id)}
@@ -87,9 +90,9 @@ const Purchase = () => {
                         </span>
                         <span
                             className={`text-xl bg-gray-200 p-1 px-2 rounded-md max-w-max ${
-                                purchaseInfo.payment === "Pending"
+                                purchaseInfo.payment === "Unpaid"
                                     ? "text-yellow-500"
-                                    : "text-blue-400"
+                                    : "text-green-400"
                             }`}
                         >
                             {purchaseInfo.payment}

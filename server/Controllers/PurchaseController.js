@@ -9,7 +9,7 @@ export const addPurchase = async (req, res) => {
             supplier: supplier,
             order: order,
             datePurchase: datePurchase,
-            payment: "Pending",
+            payment: "Unpaid",
             discount: discount,
             subTotal: subTotal,
             total: total

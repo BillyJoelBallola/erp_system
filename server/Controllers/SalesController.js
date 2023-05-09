@@ -11,7 +11,7 @@ export const addSalesOrder  = async (req, res) => {
             order: order,
             dateOrdered: dateOrdered,
             shipment: "Pending",
-            payment: "Pending",
+            payment: "Unpaid",
             discount: discount,
             subTotal: subTotal,
             total: total

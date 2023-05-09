@@ -241,13 +241,10 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
     const paymentStyle = (rowData) => {
         const { payment } = rowData;
 
-        if(payment === "Pending"){
+        if(payment === "Unpaid"){
             return <div className="bg-gradient-to-r from-yellow-400 to-orange-400 font-semibold p-1 rounded-xl text-sm max-w-min">{payment}</div>
         }   
-        if(payment === "In progress"){
-            return <div className="bg-gradient-to-r from-cyan-400 to-blue-400 font-semibold p-1 rounded-xl text-sm max-w-min whitespace-nowrap">{payment}</div>
-        }
-        if(payment === "Completed"){
+        if(payment === "Paid"){
             return <div className="bg-gradient-to-r from-cyan-400 to-green-400 font-semibold p-1 rounded-xl text-sm max-w-min">{payment}</div>
         }
     }
