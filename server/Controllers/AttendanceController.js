@@ -42,6 +42,16 @@ export const getCurrentAttendance = async (req, res) => {
     }
 }
 
+export const getAttendanceById = async (req, res) => {
+    const { employeeId } = await req.params;
+    try {
+        const allAttendance = await Attendance.find({ employee: employeeId });
+        res.json(allAttendance);
+    } catch (error) {
+        res.json(error.message);
+    }
+}
+
 export const deleteAttendance = async (req, res) => {
     const { id } = await req.params;
     try{

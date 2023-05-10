@@ -121,9 +121,18 @@ const AdjustmentModal = ({ visible, setVisible, action, setAction, id, setAdjust
         if(data){
             toast.current.show({ severity: 'info', summary: 'Save Message', detail: 'Adjustment successfully saved.', life: 3000 });
             setVisible(false);
-            setTimeout(() => {
-                setTableAction("saved");
-            }, [800]);
+            setAdjustment({
+                remarks: "",
+                item: {
+                    itemId: "",
+                    name: "",
+                    uom: "",
+                    oldQty: "",
+                    newQty: "",
+                    storage: ""
+                }
+            })
+            setTableAction("saved");
         }else{
             toast.current.show({ severity: 'error', summary: 'Save Message', detail: 'Failed to save adjustment info.', life: 3000 });
             resetAdjustment();

@@ -130,7 +130,6 @@ const FormEmployee = () => {
           !employeeData.address.province ||
           !employeeData.contact.phoneNumber ||
           !employeeData.position ||
-          !employeeData.salary ||
           !employeeData.qrCode
         ){
           return toast.current.show({
@@ -181,7 +180,6 @@ const FormEmployee = () => {
           !employeeData.address.province ||
           !employeeData.contact.phoneNumber ||
           !employeeData.position ||
-          !employeeData.salary ||
           !employeeData.qrCode
         )
           return toast.current.show({

@@ -40,7 +40,8 @@ input[type="password"],
 input[type="number"]{ @apply border-b-[1px] bg-transparent border-gray-400 rounded-b-md px-3 py-2 text-sm focus:bg-gray-200 w-full focus:border-b-blue-400 h-full; }
 
 select,
-input[type="date"]{ @apply  border-[1px] border-gray-400 rounded-md px-3 py-2 text-sm text-gray-400 w-full; }
+input[type="date"],
+input[type="month"]{ @apply  border-[1px] border-gray-400 rounded-md px-3 py-2 text-sm text-gray-400 w-full; }
 
 .btn-outlined{ @apply py-1 px-4 bg-white text-blue-400 text-sm border border-blue-400 font-bold rounded-md hover:bg-blue-100 hover:border-blue-100 transition-all delay-100 ease-in-out; }
 

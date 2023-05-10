@@ -20,7 +20,7 @@ import AttendanceModal from "./AttendanceModal";
 
 const Table = ({ dataValue, columns, name, setTableAction}) => {
     const toast = useRef(null);
-    const activeTab = useParams().tab; 
+    const activeTab = useParams().tab;  
     const [visible, setVisible] = useState(false);
     const [production, setProduction] = useState([]);
     const [adjustmentId, setAdjustmentId] = useState("");
@@ -93,8 +93,8 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
                     }else{
                         await axios.delete(`/${name === "sale" ? "sales" : name}/${id}`);
                     }
-                    toastMsgBox('info', 'Delete', 'Successfully deleted.');    
                     setTableAction("deleted");
+                    toastMsgBox('info', 'Delete', 'Successfully deleted.');   
                 } catch (error) {
                     toastMsgBox('error', 'Delete', `Failed to ${name === "shipment" ? "cancel" : "delete"}`); 
                 } 
@@ -115,8 +115,8 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
                     }else{
                         await axios.delete(`/cancel_${name}/${id}`);
                     }
-                    toastMsgBox('info', 'Cancel', "Successfully cancelled."); 
                     setTableAction("cancel");
+                    toastMsgBox('info', 'Cancel', "Successfully cancelled."); 
                 } catch (error) {
                     toastMsgBox('info', 'Cancel', "Failed to cancel.");
                 } 
@@ -303,13 +303,13 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
             if(typeof rawMaterialsRes === "object"){
                 const productionRes = await axios.put("/update_production", production);
                 if(typeof productionRes === "object"){
-                    toastMsgBox('info', 'Production', "Successfully added.");
-                    setVisible(false);
                     setTableAction("submit-production");
+                    setVisible(false);
+                    toastMsgBox('info', 'Production', "Successfully added.");
                 }
             }
         } catch (error) {
-            toast.current.show({ severity: 'error', summary: 'Production message', detail: 'Failed to produce', life: 3000 });
+            toastMsgBox('error', 'Production', 'Failed to produce');
         } 
     }
 
@@ -401,11 +401,15 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
             return <span>{moment(timeOut).format("LT")}</span>
         }
     }
+
+    const monthFormat = (rowData) => {
+        const { month } = rowData;
+        return <span>{moment(month).format("MMMM")}</span>
+    }
     
     return (
         <>
             <Toast ref={toast} />
-            <ConfirmPopup />
             {
                 name === "adjustment" ?
                 <AdjustmentModal 
@@ -437,7 +441,6 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
                     setAction={setAction}
                 />
             }
-     
             <div className="p-4 bg-gray-200/[.6] flex items-center gap-4 border border-t-0 border-gray-300 max-md:flex-col text-center">
                 {
                     name === "adjustment" || name === "attendance"? 
@@ -500,7 +503,9 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
                                     item.field === "timeOutFormat" ?
                                     timeOutFormat :
                                     item.field === "status" ?
-                                    statusStyle : item.field
+                                    statusStyle :
+                                    item.field === "monthFormat" ?
+                                    monthFormat : item.field
                             }
                             body={
                                 item.body === "linkCode" ?

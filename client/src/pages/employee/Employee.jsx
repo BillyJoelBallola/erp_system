@@ -122,7 +122,7 @@ const Employee = () => {
               <div className="grid grid-cols-[250px_250px]">
                 <div className="flex flex-col gap-2">
                   <span className="font-semibold text-gray-500 text-sm">BASIC SALARY</span>
-                  <span>Php{employeeInfo.salary && employeeInfo.salary}</span>
+                  <span>{`${employeeInfo.salary && "Php" + employeeInfo.salary}`}</span>
                 </div>
                 <div className="grid gap-2">
                   <span className="font-semibold text-gray-500 text-sm">DEDUCTIONS</span>

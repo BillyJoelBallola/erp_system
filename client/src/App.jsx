@@ -34,7 +34,6 @@ import Purchases from "./pages/purchase/Purchases";
 import FormPurchase from "./pages/purchase/FormPurchase";
 import Purchase from "./pages/purchase/Purchase";
 
-// working attendance...
 import Attendance from "./pages/attendance/Attendance";
 
 import Shipments from "./pages/shipment/Shipments";
@@ -43,9 +42,8 @@ import Shipment from "./pages/shipment/Shipment";
 
 import Adjusments from "./pages/adjustment/Adjusments";
 
-import Payrolls from "./pages/payroll/Payrolls";
-
-
+import Payslips from "./pages/payslip/Payslips";
+import FormPayslip from "./pages/payslip/FormPayslip";
 
 const App = () => {
   return (
@@ -76,15 +74,13 @@ const App = () => {
         <Route path="/purchases/form/:id?" element={<FormPurchase />}/>
         <Route path="/purchases/:id?" element={<Purchase />}/>
         <Route path="/purchases/:id?" element={<Purchase />}/>
-        {/* Attendance => in progress */}
         <Route path="/attendance" element={<Attendance />}/>
-        {/* end Attendance */}
         <Route path="/shipments" element={<Shipments />}/>
         <Route path="/shipments/form/:id?" element={<FormShipment />}/>
         <Route path="/shipments/:id?" element={<Shipment />}/>
         <Route path="/adjustments" element={<Adjusments />}/>
-        <Route path="/payrolls" element={<Payrolls />}/>
-        
+        <Route path="/payslips" element={<Payslips />}/>
+        <Route path="/payslips/form/:id?" element={<FormPayslip />}/>
       </Route>
     </Routes>
   );
