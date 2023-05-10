@@ -2,17 +2,12 @@ import React, { useEffect, useState, useRef } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { ConfirmPopup } from 'primereact/confirmpopup'; 
 import { confirmPopup } from 'primereact/confirmpopup';
-import { Toast } from 'primereact/toast';
+import { ToastContainer, toast } from 'react-toastify';
 import moment from 'moment'; 
 import axios from 'axios';
 
-import "primereact/resources/themes/lara-light-indigo/theme.css";     
-import "primereact/resources/primereact.min.css";
-import "primeicons/primeicons.css";      
-
 const Employee = () => {
   const navigate = useNavigate();
-  const toast = useRef(null)
   const id = useParams().id;
   const [employeeInfo, setEmployeeInfo] = useState({});
 
@@ -33,20 +28,22 @@ const Employee = () => {
       accept: async () => {
           try {
               await axios.delete(`/employee/${id}`);
-              toast.current.show({ severity: 'info', summary: 'Delete', detail: 'Successfully deleted', life: 3000 });
+              toast.success("Successfully deleted", { position: toast.POSITION.TOP_RIGHT });
               setTimeout(() => {
                 navigate("/employees");
               }, [800])
           } catch (error) {
-              toast.current.show({ severity: 'warn', summary: 'Delete', detail: 'Failed to delete', life: 3000 });
+              toast.error("Failed to delete.", { position: toast.POSITION.TOP_RIGHT });
           } 
       },
-  });
+    });
   }
 
   return (
     <>
-      <Toast ref={toast} />
+      <ToastContainer 
+        draggable={false}
+      />
       <ConfirmPopup />
       <div className="bg-gray-100 flex items-center justify-between px-4 py-3 border-b-[1px]">
         <div className="font-semibold text-blue-400 flex items-center gap-2">

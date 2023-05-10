@@ -17,7 +17,7 @@ export const addPayslip = async (req, res) => {
     } catch (error) {
         res.json(error.message);
     }
-}
+}   
 
 export const getAllPayslip = async (req, res) => {
     const [date, time] = moment(Date.now()).format().split("T"); 

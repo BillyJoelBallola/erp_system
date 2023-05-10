@@ -1,13 +1,12 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ConfirmPopup, confirmPopup } from "primereact/confirmpopup";
-import { Toast } from "primereact/toast";
 import { useNavigate, useParams, Link } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
 import axios from "axios";
 import moment from "moment";
 
 const Shipment = () => {
     const navigate = useNavigate();
-    const toast = useRef(null);
     const id = useParams().id;
     const [shipmentInfo, setShipmentInfo] = useState({});
 
@@ -28,27 +27,16 @@ const Shipment = () => {
             accept: async () => {
                 try {
                     await axios.delete(`/shipment/${id}`);
-                    toast.current.show({
-                        severity: "info",
-                        summary: "Delete",
-                        detail: "Successfully deleted",
-                        life: 3000,
-                    });
+                    toast.success("Successfully deleted", { position: toast.POSITION.TOP_RIGHT });
                     setTimeout(() => {
                         navigate("/shipments");
                     }, [800]);
                 } catch (error) {
-                    toast.current.show({
-                        severity: "error",
-                        summary: "Delete",
-                        detail: "Failed to delete",
-                        life: 3000,
-                    });
+                    toast.error("Failed to delete.", { position: toast.POSITION.TOP_RIGHT });
                 }
             },
         });
     };
-
     const finishShipment = async (e, orderId, shipmentId) => {
         confirmPopup({
             target: e.currentTarget,
@@ -58,22 +46,12 @@ const Shipment = () => {
             accept: async () => {
                 try {
                     await axios.put("/finish_shipment", { orderId, shipmentId });
-                    toast.current.show({
-                        severity: "info",
-                        summary: "Finish",
-                        detail: "Shipment has been completed.",
-                        life: 3000,
-                    });
+                    toast.success("Shipment has been completed", { position: toast.POSITION.TOP_RIGHT });
                     setTimeout(() => {
                         navigate("/shipments");
                     }, [800]);
                 } catch (error) {
-                    toast.current.show({
-                        severity: "error",
-                        summary: "Finish",
-                        detail: "Failed to set as finish",
-                        life: 3000,
-                    });
+                     toast.error("Failed to set as finish.", { position: toast.POSITION.TOP_RIGHT });
                 }
             },
         });
@@ -81,7 +59,9 @@ const Shipment = () => {
 
     return (
         <>
-            <Toast ref={toast} />
+            <ToastContainer 
+                draggable={false}
+            />
             <ConfirmPopup />
             <div className="bg-gray-100 flex items-center justify-between px-4 py-3 border-b-[1px]">
                 <div className="font-semibold text-blue-400 flex items-center gap-2">

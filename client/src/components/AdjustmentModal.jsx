@@ -1,10 +1,9 @@
-import React, { useEffect, useReducer, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Dialog } from "primereact/dialog";
-import { Toast } from "primereact/toast";
+import { toast } from 'react-toastify';
 import axios from "axios";
 
 const AdjustmentModal = ({ visible, setVisible, action, setAction, id, setAdjustmentId, setTableAction}) => {
-    const toast = useRef(null);
     const [storages, setStorage] = useState([]);
     const [products, setProducts] = useState([]);
     const [rawMaterials, setRawMaterials] = useState([]);
@@ -46,6 +45,26 @@ const AdjustmentModal = ({ visible, setVisible, action, setAction, id, setAdjust
                 })
         }
     }, [action, id])
+    
+    const toastMsgBox = (severity, detail ) => {
+        switch(severity){
+            case "info":
+                toast.info(detail, { position: toast.POSITION.TOP_RIGHT });
+                break;
+            case "success":
+                toast.success(detail, { position: toast.POSITION.TOP_RIGHT });
+                break;
+            case "warning":
+                toast.warning(detail, { position: toast.POSITION.TOP_RIGHT });
+                break;
+            case "error":
+                toast.error(detail, { position: toast.POSITION.TOP_RIGHT });
+                break;
+            default:
+                break;
+        }
+    }   
+
 
     const selectStorage = (e) => {
         const storageId = e.target.value;
@@ -114,12 +133,12 @@ const AdjustmentModal = ({ visible, setVisible, action, setAction, id, setAdjust
             adjustment.item.itemId === "" ||
             adjustment.item.newQty === "" 
         ){
-            return toast.current.show({ severity: 'warn', summary: 'Save Message', detail: 'Fill up all fields.', life: 3000 });
+            return toastMsgBox("warning", "Fill up all fields.");
         }
 
         const { data } = await axios.post("/add_adjustment", adjustment);
         if(data){
-            toast.current.show({ severity: 'info', summary: 'Save Message', detail: 'Adjustment successfully saved.', life: 3000 });
+            toastMsgBox("success", "Adjustment successfully saved.");
             setVisible(false);
             setAdjustment({
                 remarks: "",
@@ -134,7 +153,7 @@ const AdjustmentModal = ({ visible, setVisible, action, setAction, id, setAdjust
             })
             setTableAction("saved");
         }else{
-            toast.current.show({ severity: 'error', summary: 'Save Message', detail: 'Failed to save adjustment info.', life: 3000 });
+            toastMsgBox("error", "Failed to save adjustment info.");
             resetAdjustment();
             setFilteredItem([]);
         }
@@ -147,18 +166,19 @@ const AdjustmentModal = ({ visible, setVisible, action, setAction, id, setAdjust
             adjustment.item.itemId === "" ||
             adjustment.item.newQty === "" 
         ){
-            return toast.current.show({ severity: 'warn', summary: 'Edit Message', detail: 'Fill up all fields.', life: 3000 });
+           
+            return toastMsgBox("warn", "Fill up all fields.");
         }
 
         const { data } = await axios.post("/update_adjustment", adjustment);
         if(data){
-            toast.current.show({ severity: 'info', summary: 'Edit Message', detail: 'Adjustment successfully edited.', life: 3000 });
+            toastMsgBox("success", "Adjustment successfully edited.");
             setVisible(false);
             setTimeout(() => {
                 setTableAction("edited");
             }, [800]);
         }else{
-            toast.current.show({ severity: 'error', summary: 'Edit Message', detail: 'Failed to edit adjustment info.', life: 3000 });
+            toastMsgBox("error", "Failed to edit adjustment info.");
             resetAdjustment();
             setFilteredItem([]);
         }
@@ -171,7 +191,6 @@ const AdjustmentModal = ({ visible, setVisible, action, setAction, id, setAdjust
 
     return (
         <>
-            <Toast ref={toast}/>
             <div className="card flex justify-content-center">
                 <Dialog header="ADJUSTMENT" 
                     visible={visible} 

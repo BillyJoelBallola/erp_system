@@ -1,17 +1,16 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-
 import { ConfirmPopup } from 'primereact/confirmpopup'; 
 import { confirmPopup } from 'primereact/confirmpopup';
-import { Toast } from 'primereact/toast';
+import { ToastContainer, toast } from 'react-toastify';
 
 import "primereact/resources/themes/lara-light-indigo/theme.css";     
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css"; 
+
 import axios from "axios";
 
 const RawMaterial = () => {
-  const toast = useRef();
   const navigate = useNavigate();
   const id = useParams().id;
   const [rawMaterialInfo, setRawMaterialInfo] = useState({});
@@ -33,12 +32,12 @@ const RawMaterial = () => {
       accept: async () => {
           try {
               await axios.delete(`/raw-material/${id}`);
-              toast.current.show({ severity: 'info', summary: 'Delete', detail: 'Successfully deleted', life: 3000 });
+               toast.success("Successfully deleted", { position: toast.POSITION.TOP_RIGHT });
               setTimeout(() => {
                 navigate("/raw-materials");
               }, [800])
           } catch (error) {
-              toast.current.show({ severity: 'error', summary: 'Delete', detail: 'Failed to delete', life: 3000 });
+              toast.error("Failed to delete.", { position: toast.POSITION.TOP_RIGHT });
           } 
       },
     });
@@ -46,7 +45,9 @@ const RawMaterial = () => {
 
   return (
     <>
-      <Toast ref={toast} />
+      <ToastContainer 
+        draggable={false}
+      />
       <ConfirmPopup />
       <div className="bg-gray-100 flex items-center justify-between px-4 py-3 border-b-[1px]">
         <div className="font-semibold text-blue-400 flex items-center gap-2">

@@ -1,12 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Dialog } from "primereact/dialog";
-import { Toast } from "primereact/toast";
+import { toast } from 'react-toastify';
 import QrReader from "react-qr-scanner";
 import axios from "axios";
 import moment from "moment";
 
 const AdjustmentModal = ({ visible, setVisible, setTableAction, attendanceData}) => {
-    const toast = useRef(null); 
     const [scanQr, setScanQr] = useState({
         delay: 100,
         result: ""
@@ -19,7 +18,7 @@ const AdjustmentModal = ({ visible, setVisible, setTableAction, attendanceData})
     }
 
     const handleError = (err) => {
-        return toast.current.show({ severity: 'warn', summary: 'QR Scanner', detail: err, life: 3000 });
+        return toast.current.show({ severity: 'warning', summary: 'QR Scanner', detail: err, life: 3000 });
     }
 
     useEffect(() => {
@@ -28,9 +27,25 @@ const AdjustmentModal = ({ visible, setVisible, setTableAction, attendanceData})
         }
     }, [scanQr.result]);
 
-    const toastMsgBox = (severity, summary, detail ) => {
-        return toast.current.show({ severity: severity, summary: summary, detail: detail, life: 3000 });
-    }
+    
+    const toastMsgBox = (severity, detail ) => {
+        switch(severity){
+            case "info":
+                toast.info(detail, { position: toast.POSITION.TOP_RIGHT });
+                break;
+            case "success":
+                toast.success(detail, { position: toast.POSITION.TOP_RIGHT });
+                break;
+            case "warning":
+                toast.warning(detail, { position: toast.POSITION.TOP_RIGHT });
+                break;
+            case "error":
+                toast.error(detail, { position: toast.POSITION.TOP_RIGHT });
+                break;
+            default:
+                break;
+        }
+    }   
 
     const addAttendance = async (code) => {
         if(code === undefined || code === null || code === "") return;
@@ -41,8 +56,8 @@ const AdjustmentModal = ({ visible, setVisible, setTableAction, attendanceData})
         let attedanceId = "";
 
         attendanceData.map(async (attendance) => {
-            if(attendance.employee.code === code && attendance.timeIn.includes(date)){
-                attedanceId = attendance._id
+            if(attendance.employee.code === code && attendance.timeIn.includes(date) && attendance.timeOut === null){
+                attedanceId = attendance._id;
                 timeOut = true;
             }
             
@@ -55,7 +70,7 @@ const AdjustmentModal = ({ visible, setVisible, setTableAction, attendanceData})
         if(data === null){
             setVisible(false);
             setScanQr({ result: "" });
-            toastMsgBox("error", "Attendance", "Qr code not recognized.");
+            toastMsgBox("error", "Qr code not recognized.");
         }else{
             if(code && timeOut === false && !!outAlready === false){
                 try {
@@ -63,11 +78,11 @@ const AdjustmentModal = ({ visible, setVisible, setTableAction, attendanceData})
                     setTableAction("timeIn");
                     setVisible(false);
                     setScanQr({ result: "" });
-                    toastMsgBox("info", "Attendance", "Time-in is added.");
+                    toastMsgBox("info", "Time-in is added.");
                 } catch (error) {
                     setVisible(false);
                     setScanQr({ result: "" });
-                    toastMsgBox("error", "Attendance", "Failed to add time-in");
+                    toastMsgBox("error", "Failed to add time-in");
                 }
             }
     
@@ -77,25 +92,24 @@ const AdjustmentModal = ({ visible, setVisible, setTableAction, attendanceData})
                     setTableAction("timeOut");
                     setVisible(false);
                     setScanQr({ result: "" });
-                    toastMsgBox("info", "Attendance", "Time-out is added.");
+                    toastMsgBox("info", "Time-out is added.");
                 } catch (error) {
                     setVisible(false);
                     setScanQr({ result: "" });
-                    toastMsgBox("error", "Attendance", "Failed to add time-out");
+                    toastMsgBox("error", "Failed to add time-out");
                 }
             }
     
             if(code && outAlready){
                 setVisible(false);
                 setScanQr({ result: "" });
-                toastMsgBox("warn", "Attendance", "Employee is already out.");
+                toastMsgBox("warning", "Employee is already out.");
             }
         }
     }
 
     return (
         <>
-            <Toast ref={toast}/>
             <div className="card flex justify-content-center">
                 <Dialog header="QR SCANNER" 
                     visible={visible} 

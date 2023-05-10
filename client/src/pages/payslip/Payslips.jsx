@@ -26,11 +26,11 @@ const Payslips = () => {
   return (
     <>
       <Table 
-      dataValue={allPayslips}
-      columns={columns}
-      name={"payslip"}
-      tableAction={tableAction}
-      setTableAction={setTableAction}
+        dataValue={allPayslips}
+        columns={columns}
+        name={"payslip"}
+        tableAction={tableAction}
+        setTableAction={setTableAction}
       />
     </>
   );

@@ -1,11 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ConfirmPopup, confirmPopup } from "primereact/confirmpopup";
-import { Toast } from "primereact/toast";
+import { ToastContainer, toast } from 'react-toastify';
 import axios from "axios";
 
 const FormPayslip = () => {
-    const toast = useRef();
     const navigate = useNavigate();
     const id = useParams().id;
     const [positions, setPositions] = useState([]);
@@ -94,7 +93,7 @@ const FormPayslip = () => {
                     payslipInfo.employee === "" ||
                     payslipInfo.monthYear === "" 
                 )
-                    return toast.current.show({ severity: 'warn', summary: 'Payslip', detail: 'Fill up all fields.', life: 3000 });
+                    return toast.warn("Fill up all fields.", { position: toast.POSITION.TOP_RIGHT });
                     const { gross, deduction, netPay } = totals;
                     const { employee, monthYear} = payslipInfo;
                     const [year, month] = monthYear.split("-");
@@ -102,7 +101,7 @@ const FormPayslip = () => {
                 if (data) {
                     navigate(`/payslips/${data._id}`);
                 } else {
-                    return toast.current.show({ severity: 'error', summary: 'Payslip', detail: 'Failed to add payslip.', life: 3000 });
+                    return toast.error("Failed to add payslip.", { position: toast.POSITION.TOP_RIGHT });
                 }
             }
         });
@@ -198,7 +197,9 @@ const FormPayslip = () => {
 
     return (
         <>
-            <Toast ref={toast} />
+            <ToastContainer 
+                draggable={false}
+            />
             <ConfirmPopup />
             <div className="bg-gray-100 flex items-center justify-between px-4 py-3 border-0 border-b">
                 <div className="font-semibold text-blue-400 flex items-center gap-2">

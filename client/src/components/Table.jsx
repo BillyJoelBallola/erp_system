@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, NavLink, useLocation, useParams } from "react-router-dom";
 import moment from "moment";
 import axios from "axios";
@@ -8,7 +8,8 @@ import { DataTable } from "primereact/datatable";
 import { FilterMatchMode } from 'primereact/api';
 import { ConfirmPopup } from 'primereact/confirmpopup'; 
 import { confirmPopup } from 'primereact/confirmpopup';
-import { Toast } from 'primereact/toast';
+
+import { ToastContainer, toast } from 'react-toastify';
 
 import "primereact/resources/themes/lara-light-indigo/theme.css";     
 import "primereact/resources/primereact.min.css";
@@ -19,7 +20,6 @@ import AdjustmentModal from "./AdjustmentModal";
 import AttendanceModal from "./AttendanceModal";
 
 const Table = ({ dataValue, columns, name, setTableAction}) => {
-    const toast = useRef(null);
     const activeTab = useParams().tab;  
     const [visible, setVisible] = useState(false);
     const [production, setProduction] = useState([]);
@@ -45,17 +45,32 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
         }
     }, [name])
 
-    const toastMsgBox = (severity, summary, detail ) => {
-        return toast.current.show({ severity: severity, summary: summary, detail: detail, life: 3000 });
-    }
+    const toastMsgBox = (severity, detail ) => {
+        switch(severity){
+            case "info":
+                toast.info(detail, { position: toast.POSITION.TOP_RIGHT });
+                break;
+            case "success":
+                toast.success(detail, { position: toast.POSITION.TOP_RIGHT });
+                break;
+            case "warning":
+                toast.warning(detail, { position: toast.POSITION.TOP_RIGHT });
+                break;
+            case "error":
+                toast.error(detail, { position: toast.POSITION.TOP_RIGHT });
+                break;
+            default:
+                break;
+        }
+    }   
 
     const finish = async (productId, productionId, qty) => {
         try {
             await axios.put("/update_qty_product", { productId, productionId, qty });
-            toastMsgBox('info', 'Production', 'Production finished successfully.');
+            toastMsgBox('success', 'Production finished successfully.');
             setTableAction("finish");
         } catch (error) {
-            toastMsgBox('error', 'Production', 'Failed to set as finish this production.');        
+            toastMsgBox('error', 'Failed to set as finish this production.');        
         }
     }
 
@@ -68,10 +83,10 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
             accept: async () => {
                 try {
                     await axios.put("/finish_shipment", { orderId, shipmentId });
-                    toastMsgBox('info', 'Shipment', 'Shipment has been completed.');
+                    toastMsgBox('success', 'Shipment has been completed.');
                     setTableAction("finish-shipment");
                 } catch (error) {
-                    toastMsgBox('error', 'Shipment', 'Failed to set as finish this shipment.');    
+                    toastMsgBox('error', 'Failed to set as finish this shipment.');    
                 }
             },
         });
@@ -94,9 +109,9 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
                         await axios.delete(`/${name === "sale" ? "sales" : name}/${id}`);
                     }
                     setTableAction("deleted");
-                    toastMsgBox('info', 'Delete', 'Successfully deleted.');   
+                    toastMsgBox('success', 'Successfully deleted.');   
                 } catch (error) {
-                    toastMsgBox('error', 'Delete', `Failed to ${name === "shipment" ? "cancel" : "delete"}`); 
+                    toastMsgBox('error', `Failed to ${name === "shipment" ? "cancel" : "delete"}`); 
                 } 
             },
         });
@@ -116,9 +131,9 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
                         await axios.delete(`/cancel_${name}/${id}`);
                     }
                     setTableAction("cancel");
-                    toastMsgBox('info', 'Cancel', "Successfully cancelled."); 
+                    toastMsgBox('success', "Successfully cancelled."); 
                 } catch (error) {
-                    toastMsgBox('info', 'Cancel', "Failed to cancel.");
+                    toastMsgBox('error', "Failed to cancel.");
                 } 
             },
         });
@@ -177,13 +192,15 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
         const { _id, shipment, payment } = rowData;
         return (
             <>
-                <Toast ref={toast} />
+                <ToastContainer
+                    draggable={false}
+                />
                 <ConfirmPopup />
                 <div className="flex gap-4 justify-center items-center">
                     {
                         name === "adjustment" ?
                         <button 
-                            className="hover:text-blue-400" 
+                        className="hover:text-blue-400" 
                             onClick={() => {
                                 setVisible(true);
                                 setAction("edit");
@@ -194,7 +211,7 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
                             </svg>
                         </button>
                         :
-                        name === "sale" && (shipment !== "Pending" || payment !== "Pending") ? 
+                        name === "sale" && (shipment !== "Pending" || payment !== "Unpaid") ? 
                             <></>
                         :
                         name === "purchase" && payment !== "Pending" ? 
@@ -286,15 +303,15 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
         })
 
         if(good){
-            toastMsgBox('warn', 'Production', "Not enough raw materials to produce the product.");
+            toastMsgBox('warning', "Not enough raw materials to produce the product.");
         }
 
         if(production.product === "" || production.dateFinish === "" ){
-            toastMsgBox('warn', 'Production', "Fill up all fields.");
+            toastMsgBox('warning', "Fill up all fields.");
         }
         
         if(production.quantity === "" || production.quantity <= 0 ){
-            toastMsgBox('warn', 'Production', "Qty should be greater than to zero [0].");
+            toastMsgBox('warning', "Qty should be greater than to zero [0].");
         } 
  
         try {
@@ -305,11 +322,11 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
                 if(typeof productionRes === "object"){
                     setTableAction("submit-production");
                     setVisible(false);
-                    toastMsgBox('info', 'Production', "Successfully added.");
+                    toastMsgBox('info', "Successfully added.");
                 }
             }
         } catch (error) {
-            toastMsgBox('error', 'Production', 'Failed to produce');
+            toastMsgBox('error', 'Failed to produce');
         } 
     }
 
@@ -317,7 +334,9 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
         const { _id, quantity, product, status} = rowData;
         return (
             <>
-                <Toast ref={toast} />
+                <ToastContainer
+                    draggable={false}
+                />
                 <ConfirmPopup />
                 <div className="flex gap-1 justify-center">
                     {
@@ -354,7 +373,9 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
         const { _id, status, salesOrder } = rowData;
         return (
             <>
-                <Toast ref={toast} />
+                <ToastContainer 
+                    draggable={false}
+                />
                 <ConfirmPopup />
                 <div className="flex gap-1 justify-center text-sm font-bold">
                     {
@@ -409,7 +430,9 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
     
     return (
         <>
-            <Toast ref={toast} />
+            <ToastContainer 
+                draggable={false}
+            />
             {
                 name === "adjustment" ?
                 <AdjustmentModal 

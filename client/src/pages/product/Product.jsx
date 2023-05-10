@@ -1,19 +1,19 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { ConfirmPopup } from 'primereact/confirmpopup'; 
 import { confirmPopup } from 'primereact/confirmpopup';
-import { Toast } from 'primereact/toast';
+import { ToastContainer, toast } from 'react-toastify';
 
 import axios from 'axios';
 
 import "primereact/resources/themes/lara-light-indigo/theme.css";     
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";     
+
 import ProductionModal from "../../components/ProductionModal";
 
 const Product = () => {
     const navigate = useNavigate();
-    const toast = useRef(null);
     const id = useParams().id;
     const [visible, setVisible] = useState(false);
     const [rawData, setRawData] = useState([]);
@@ -48,12 +48,12 @@ const Product = () => {
             accept: async () => {
                 try {
                     await axios.delete(`/product/${id}`);
-                    toast.current.show({ severity: 'info', summary: 'Delete', detail: 'Successfully deleted', life: 3000 });
+                    toast.success("Successfully deleted", { position: toast.POSITION.TOP_RIGHT });
                     setTimeout(() => {
                         navigate("/products/overview");
                     }, [800]);
                 } catch (error) {
-                    toast.current.show({ severity: 'error', summary: 'Delete', detail: 'Failed to delete', life: 3000 });
+                    toast.error("Failed to delete.", { position: toast.POSITION.TOP_RIGHT });
                 } 
             },
         });
@@ -73,31 +73,34 @@ const Product = () => {
         })  
 
         if(good){
-            return toast.current.show({ severity: 'warn', summary: 'Production message', detail: 'Not enough raw materials to produce the product', life: 3000 });
+            return toast.warning("Not enough raw materials to produce the product", { position: toast.POSITION.TOP_RIGHT });
+            
         }
 
         if(production.product === "" || production.dateFinish === "") {
-            return toast.current.show({ severity: 'warn', summary: 'Production message', detail: 'Fill up all fields', life: 3000 });
+            return toast.warning("Fill up all fields.", { position: toast.POSITION.TOP_RIGHT });
         }
         
         if(production.quantity === "" ||production.quantity <= 0 ) {
-            return toast.current.show({ severity: 'warn', summary: 'Production message', detail: 'Qty should be greater than to zero [0].', life: 3000 });
+            return toast.warning("Qty should be greater than to zero [0].", { position: toast.POSITION.TOP_RIGHT });
         }
 
         try {
             axios.post("/add_production", production);
-            toast.current.show({ severity: 'info', summary: 'Production message', detail: 'Successfully added', life: 3000 });
+            toast.success("Successfully added.", { position: toast.POSITION.TOP_RIGHT });
             setTimeout(() => {
                 navigate("/products/overview/production");
             }, [800]);
         } catch (error) {
-            return toast.current.show({ severity: 'error', summary: 'Production message', detail: 'Failed to produce', life: 3000 });
+            return toast.error("failed to produce.", { position: toast.POSITION.TOP_RIGHT });
         } 
     }
 
     return ( 
         <>
-            <Toast ref={toast} />
+            <ToastContainer 
+                draggable={false}
+            />
             <ConfirmPopup />
             <ProductionModal 
                 visible={visible}
