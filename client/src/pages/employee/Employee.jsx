@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { ConfirmPopup } from 'primereact/confirmpopup'; 
 import { confirmPopup } from 'primereact/confirmpopup';
@@ -43,6 +43,7 @@ const Employee = () => {
     <>
       <ToastContainer 
         draggable={false}
+        hideProgressBar={true}
       />
       <ConfirmPopup />
       <div className="bg-gray-100 flex items-center justify-between px-4 py-3 border-b-[1px]">

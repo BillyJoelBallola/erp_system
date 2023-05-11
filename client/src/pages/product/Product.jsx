@@ -100,6 +100,7 @@ const Product = () => {
         <>
             <ToastContainer 
                 draggable={false}
+                hideProgressBar={true}
             />
             <ConfirmPopup />
             <ProductionModal 

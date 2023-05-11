@@ -23,7 +23,7 @@ export const getAllPayslip = async (req, res) => {
     const [date, time] = moment(Date.now()).format().split("T"); 
     const [year, month, day] = date.split("-");
     try {
-        const response = await Payslip.find({ month: month }).populate("employee");
+        const response = await Payslip.find({ month: month.toString() }).populate("employee");
         res.json(response);
     } catch (error) {
         res.json(error.message);

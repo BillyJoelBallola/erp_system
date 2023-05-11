@@ -41,6 +41,7 @@ const Purchase = () => {
         <>
             <ToastContainer 
                 draggable={false}
+                hideProgressBar={true}
             />
             <ConfirmPopup />
             <div className="bg-gray-100 flex items-center justify-between px-4 py-3 border-b-[1px]">

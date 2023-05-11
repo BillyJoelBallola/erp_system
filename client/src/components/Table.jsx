@@ -336,6 +336,7 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
             <>
                 <ToastContainer
                     draggable={false}
+                    hideProgressBar={true}
                 />
                 <ConfirmPopup />
                 <div className="flex gap-1 justify-center">
@@ -375,6 +376,7 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
             <>
                 <ToastContainer 
                     draggable={false}
+                    hideProgressBar={true}
                 />
                 <ConfirmPopup />
                 <div className="flex gap-1 justify-center text-sm font-bold">
@@ -432,6 +434,7 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
         <>
             <ToastContainer 
                 draggable={false}
+                hideProgressBar={true}
             />
             {
                 name === "adjustment" ?
