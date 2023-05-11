@@ -425,9 +425,9 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
         }
     }
 
-    const monthFormat = (rowData) => {
-        const { month } = rowData;
-        return <span>{moment(month).format("MMMM")}</span>
+    const monthYearFormat = (rowData) => {
+        const { monthYear } = rowData;
+        return <span>{moment(monthYear).format("MMMM YYYY")}</span>
     }
     
     return (
@@ -530,8 +530,8 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
                                     timeOutFormat :
                                     item.field === "status" ?
                                     statusStyle :
-                                    item.field === "monthFormat" ?
-                                    monthFormat : item.field
+                                    item.field === "monthYearFormat" ?
+                                    monthYearFormat : item.field
                             }
                             body={
                                 item.body === "linkCode" ?

@@ -1,11 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ConfirmPopup, confirmPopup } from "primereact/confirmpopup";
-import { Toast } from "primereact/toast";
+import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
+import { ToastContainer } from "react-toastify";
 
 const FormSales = () => {
-  const toast = useRef();
   const navigate = useNavigate();
   const id = useParams().id;
   const [customers, setCustomers] = useState([]);
@@ -34,6 +34,25 @@ const FormSales = () => {
     order: [],
     dateOrdered: "",
   })
+
+  const toastMsgBox = (severity, detail ) => {
+    switch(severity){
+        case "info":
+            toast.info(detail, { position: toast.POSITION.TOP_RIGHT });
+            break;
+        case "success":
+            toast.success(detail, { position: toast.POSITION.TOP_RIGHT });
+            break;
+        case "warning":
+            toast.warning(detail, { position: toast.POSITION.TOP_RIGHT });
+            break;
+        case "error":
+            toast.error(detail, { position: toast.POSITION.TOP_RIGHT });
+            break;
+        default:
+            break;
+    }
+}   
 
   useEffect(() => {
     axios.get("/customers")
@@ -153,21 +172,21 @@ const FormSales = () => {
     })
 
     if(good){
-      return toast.current.show({ severity: 'warn', summary: 'Adding Item', detail: `Qty should be less than or equal to the in stock quantity.`, life: 3000 });
+      return toastMsgBox("warning", "Qty should be less than or equal to the in stock quantity.");
     }
 
     if(itemInfo.item === ""){
-      return toast.current.show({ severity: 'warn', summary: 'Adding Item', detail: `Please select item.`, life: 3000 });
+      return toastMsgBox("warning", "Pleas select an item.");
     }
 
     if(itemInfo.qty === 0 || itemInfo.qty === ""){
-      return toast.current.show({ severity: 'warn', summary: 'Adding Item', detail: 'Qty should be greater than to one[1].', life: 3000 });
+      return toastMsgBox("warning", "Qty should be greater than to one[1].");
     }
 
     const existingItem = salesOrder.order.filter((item) => (item.item === itemInfo.item));
     if(existingItem.length > 0){
       resetItemInfo();
-      return toast.current.show({ severity: 'warn', summary: 'Adding Item', detail: `Item already in the list. Try other items.`, life: 3000 });
+      return toastMsgBox("warning", "Item is already in the list. Try other items.");
     }
 
     setSalesOrder((prev) => ({
@@ -234,7 +253,7 @@ const FormSales = () => {
           salesOrder.dateOrdered === "" ||
           totals.total === ""
         )
-        return toast.current.show({ severity: 'warn', summary: 'Form message', detail: 'Fill up all fields.', life: 3000 });
+        return toastMsgBox("warning", "Fill up all fields.");
 
         const { discount, total, subTotal } = totals;
         const { customers, order, dateOrdered } = salesOrder;
@@ -244,7 +263,7 @@ const FormSales = () => {
           axios.put("/reduce_sales_product_qty", { order });
           navigate(`/sales/${data._id}`);
         } else {
-          return toast.current.show({ severity: 'error', summary: 'Form message', detail: 'Failed to add order.', life: 3000 });
+          return toastMsgBox("error", "Failed to edit order info.");
         }
       }
     });
@@ -263,7 +282,7 @@ const FormSales = () => {
           salesOrder.dateOrdered === "" ||
           totals.total === ""
         )
-        return toast.current.show({ severity: 'warn', summary: 'Form message', detail: 'Fill up all fields.', life: 3000 });
+        return toastMsgBox("warning", "Fill up all fields.");
 
         const { discount, total, subTotal } = totals;
         const { customer, order, dateOrdered } = salesOrder;
@@ -272,7 +291,7 @@ const FormSales = () => {
           axios.put("/reduce_sales_product_qty", { order });
           navigate(`/sales/${data._id}`);
         } else {
-          return toast.current.show({ severity: 'error', summary: 'Form message', detail: 'Failed to add order.', life: 3000 });
+          return toastMsgBox("error", "Failed to add order.");
         }
       }
     });
@@ -280,7 +299,10 @@ const FormSales = () => {
 
   return (
     <>
-      <Toast ref={toast} />
+      <ToastContainer 
+        draggable={false}
+        hideProgressBar={true}
+      />
       <ConfirmPopup />
       <div className="bg-gray-100 flex items-center justify-between px-4 py-3 border-0 border-b">
         <div className="font-semibold text-blue-400 flex items-center gap-2">

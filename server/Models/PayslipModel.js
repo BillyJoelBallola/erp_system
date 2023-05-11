@@ -9,12 +9,11 @@ const PayslipSchema = new Schema({
     payment: {
         type: String,
     },
-    month: {
-        type: String,
-        required: true
+    earning: {
+        type: Number,
     },
-    year: {
-        type: String,
+    monthYear: {
+        type: Date,
         required: true
     },
     gross: {

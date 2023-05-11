@@ -7,6 +7,7 @@ import axios from "axios";
 const FormPayslip = () => {
     const navigate = useNavigate();
     const id = useParams().id;
+    const [payslip, setPayslip] = useState({});
     const [positions, setPositions] = useState([]);
     const [employee, setEmployee] = useState([]);
     const [attendance, setAttendance] = useState([]);
@@ -33,6 +34,7 @@ const FormPayslip = () => {
             ...prev,
             position: posId,
             employee: "",
+            earning: ""
         }));
 
         setTotals({
@@ -95,9 +97,8 @@ const FormPayslip = () => {
                 )
                     return toast.warn("Fill up all fields.", { position: toast.POSITION.TOP_RIGHT });
                     const { gross, deduction, netPay } = totals;
-                    const { employee, monthYear} = payslipInfo;
-                    const [year, month] = monthYear.split("-");
-                    const { data } = await axios.post("/add_payslip", { employee, month, year, gross, deduction, netPay });
+                    const { employee, monthYear, earning } = payslipInfo;
+                    const { data } = await axios.post("/add_payslip", { employee, monthYear, earning, gross, deduction, netPay });
                 if (data) {
                     navigate(`/payslips/${data._id}`);
                 } else {
@@ -108,15 +109,13 @@ const FormPayslip = () => {
     };
 
     useEffect(() => {
-        if(payslipInfo.earning !== ""){
-            const netPay = Number(payslipInfo.earning) - totals.deduction;
-            setTotals((prev) => ({
-                ...prev,
-                gross: Number(payslipInfo.earning),
-                netPay: netPay
-            })) 
+        if(id){
+            axios.get(`/payslip/${id}`).then(({ data }) => {
+                setPayslipInfo(data);
+                setFilteredEmployee([data]);
+            });
         }
-    }, [payslipInfo.earning])
+    }, [id])
 
     useEffect(() => {
         axios.get("/positions").then(({ data }) => {
@@ -128,71 +127,132 @@ const FormPayslip = () => {
         });
     }, []);
 
-    useEffect(() => {
-        if(totals.length !== 0){
-            employee.filter((employee) => {
-                if(employee._id === payslipInfo.employee){
-                    const gross = totals.length * Number(employee.salary);
-                    const netPay = gross - totals.deduction;
+    
+    // useEffect(() => {
+    //     console.log(payslip);
+    //     if(payslip){
+    //         setPayslipInfo({
+    //             position: payslip.employee.position,
+    //             employee: payslip.employee._id,
+    //             monthYear: payslip.monthYear,
+    //             earning: payslip.employee.salary
+    //         })
+    //     }
+    // }, [payslip])
 
-                    setTotals((prev) => ({
-                        ...prev,
-                        gross: gross,
-                        netPay: netPay
-                    }))
-                }
-            })
+    useEffect(() => {
+        const getNetPayOfFactoryWorker = () => {
+            if(payslipInfo.earning !== ""){
+                const netPay = Number(payslipInfo.earning) - totals.deduction;
+                setTotals((prev) => ({
+                    ...prev,
+                    gross: Number(payslipInfo.earning),
+                    netPay: netPay
+                })) 
+            }
         }
+        getNetPayOfFactoryWorker();
+    }, [payslipInfo.earning])
+
+
+    useEffect(() => {
+        const getNetPay = () => {
+            if(totals.length !== 0){
+                employee.filter((employee) => {
+                    if(employee._id === payslipInfo.employee){
+                        const gross = totals.length * Number(employee.salary);
+                        const netPay = gross - totals.deduction;
+    
+                        setTotals((prev) => ({
+                            ...prev,
+                            gross: gross,
+                            netPay: netPay
+                        }))
+                    }
+
+                    if(typeof payslipInfo.employee === "object"){
+                        const gross = totals.length * Number(payslipInfo.employee.salary);
+                        const netPay = gross - totals.deduction;
+    
+                        setTotals((prev) => ({
+                            ...prev,
+                            gross: gross,
+                            netPay: netPay
+                        }))
+                    }
+                })
+            }
+        }
+        getNetPay();
     }, [totals.length])
 
     useEffect(() => {
-        if(attendance.length > 0){
-            const att = attendance.filter((attendance) => attendance.timeOut.includes(payslipInfo.monthYear));
-            setTotals((prev) => ({
-                ...prev,
-                length: att.length
-            }))
+        const getNumberOfAttendance = () => {
+            if(attendance.length > 0){
+                const att = attendance.filter((attendance) => attendance.timeOut.includes(payslipInfo.monthYear));
+                setTotals((prev) => ({
+                    ...prev,
+                    length: att.length
+                }))
+            }
         }
+        getNumberOfAttendance();
     }, [attendance])
 
     useEffect(() => {
-        let deductionTotal = 0;
+        const getTotalDeduction = () => {
+            let deductionTotal = 0;
     
-        if(filteredEmployee.length < 0) return; 
-        filteredEmployee.map((filtered) => {
-            if(filtered._id === payslipInfo.employee){
-                filtered.deductions.map((deduction) => {
-                    deductionTotal += Number(deduction.amount);
-                    setTotals((prev) => ({
-                        ...prev,
-                        deduction: deductionTotal
-                    }));
-                })
-            }
-        })
-
-        if(payslipInfo.position === ""|| payslipInfo.employee === ""){
-            setTotals((prev) => ({
-                ...prev,
-                deduction: 0
-            }));
-        }
-
-        if(payslipInfo.employee === "" || payslipInfo.monthYear === "") return;
-        positions.map((position) => {
-            if(position._id === payslipInfo.position){
-                if(position.name !== "Factory worker"){
-                    employee.map((emp) => {
-                        if(emp._id === payslipInfo.employee){
-                            axios.get(`/date_id_attendance/${emp._id}`)
-                                .then(({ data }) => { 
-                                    setAttendance(data);
-                                });
-                        }
+            if(filteredEmployee.length < 0) return; 
+            filteredEmployee.map((filtered) => {
+                if(filtered._id === payslipInfo.employee){
+                    filtered.deductions.map((deduction) => {
+                        deductionTotal += Number(deduction.amount);
+                        setTotals((prev) => ({
+                            ...prev,
+                            deduction: deductionTotal
+                        }));
                     })
                 }
+
+                if(typeof payslipInfo.employee === "object"){
+                    filtered.employee.deductions.map((deduction) => {
+                        deductionTotal += Number(deduction.amount);
+                        setTotals((prev) => ({
+                            ...prev,
+                            deduction: deductionTotal
+                        }));
+                    })
+                }
+            })
+    
+            if(payslipInfo.position === ""|| payslipInfo.employee === ""){
+                setTotals((prev) => ({
+                    ...prev,
+                    deduction: 0
+                }));
             }
-        })
+        }
+
+        const getAttendanceOfSelectedEmployee = () => {
+            if(payslipInfo.employee === "" || payslipInfo.monthYear === "") return;
+            positions.map((position) => {
+                if(position._id === payslipInfo.position){
+                    if(position.name !== "Factory worker"){
+                        employee.map((emp) => {
+                            if(emp._id === payslipInfo.employee){
+                                axios.get(`/date_id_attendance/${emp._id}`)
+                                    .then(({ data }) => { 
+                                        setAttendance(data);
+                                    });
+                            }
+                        })
+                    }
+                }
+            })
+        }
+        getTotalDeduction();
+        getAttendanceOfSelectedEmployee();
     }, [payslipInfo.employee, payslipInfo.position, payslipInfo.monthYear])
 
     return (
@@ -227,7 +287,7 @@ const FormPayslip = () => {
                 </button>
             </div>
             <div className="px-8 py-12">
-                {/* {id && (
+                {id && (
                     <div className="text-sm mb-10 grid grid-cols-[200px_200px_200px]">
                         <div className="grid gap-2 items-center">
                             <span className="text-gray-500 font-semibold">
@@ -242,11 +302,11 @@ const FormPayslip = () => {
                                 PAYMENT
                             </span>
                             <span className="text-xl text-blue-400 bg-gray-200 p-1 px-2 rounded-md max-w-max">
-                                {salesOrder.payment}
+                                {payslipInfo.payment}
                             </span>
                         </div>
                     </div>
-                )} */}
+                )}
                 <div className="grid gap-8">
                     <div className="grid grid-cols-[200px_1fr] items-center">
                         <span className="text-gray-500 font-semibold self-baseline">
@@ -257,7 +317,7 @@ const FormPayslip = () => {
                                 <span className="text-gray-500 font-semibold text-xs">
                                     POSITION
                                 </span>
-                                <select name="position" value={payslipInfo.position} onChange={selectPosition}>
+                                <select name="position" value={id ? payslipInfo.employee.position : payslipInfo.position} onChange={selectPosition} disabled={id ? true : false}>
                                     <option value="">Select position</option>
                                     {
                                         positions.length > 0 &&
@@ -271,12 +331,15 @@ const FormPayslip = () => {
                                 <span className="text-gray-500 font-semibold text-xs">
                                     EMPLOYEE NAME
                                 </span>
-                                <select name="employee" value={payslipInfo.employee} onChange={selectEmployee}>
+                                <select name="employee" value={id ? payslipInfo.employee._id : payslipInfo.employee} onChange={selectEmployee} disabled={id ? true : false}>
                                     <option value="">Select employee</option>
                                     {
-                                        filteredEmployee.length > 0 && 
+                                        filteredEmployee.length > 0 &&
                                         filteredEmployee.map((filtered) => (
+                                            (typeof filtered.employee) !== "object" ? 
                                             <option value={filtered._id} key={filtered._id}>{filtered.name}</option>
+                                            :
+                                            <option value={filtered.employee._id} key={filtered._id}>{filtered.employee.name}</option>
                                         ))
                                     }
                                 </select>
@@ -296,9 +359,21 @@ const FormPayslip = () => {
                                         <span className="text-gray-500 font-semibold text-xs">
                                             MONTH - YEAR
                                         </span>
-                                        <input type="month" name="monthYear" value={payslipInfo.monthYear} onChange={(e) => setPayslipInfo((prev) => ({...prev, monthYear: e.target.value}))}/>
+                                        <input type="month" name="monthYear" value={payslipInfo.monthYear.toString().slice(0, 7)} onChange={(e) => setPayslipInfo((prev) => ({...prev, monthYear: e.target.value}))}/>
                                     </div>
-                                    {
+                                    {   
+                                        id ?
+                                        positions && 
+                                        positions.map((position) => (
+                                            position._id === payslipInfo.employee.position &&
+                                            <div className="flex flex-col gap-1" key={position._id}>
+                                                <span className="text-gray-500 font-semibold text-xs">
+                                                    EARNING AMOUNT
+                                                </span>
+                                                <input type="number" name="earning" value={payslipInfo.earning} onChange={(e) => setPayslipInfo((prev) => ({...prev, earning: e.target.value}))}/>
+                                            </div>
+                                        ))
+                                        :
                                         positions && 
                                         positions.map((position) => (
                                             position._id === payslipInfo.position &&
@@ -309,6 +384,30 @@ const FormPayslip = () => {
                                                 </span>
                                                 <input type="number" name="earning" value={payslipInfo.earning} onChange={(e) => setPayslipInfo((prev) => ({...prev, earning: e.target.value}))}/>
                                             </div>
+                                        ))
+                                    }
+                                    {
+                                         filteredEmployee.length > 0 &&
+                                         filteredEmployee.map((filtered) => (
+                                                filtered._id === payslipInfo.employee &&
+                                                filtered.salary ?
+                                                <div className="flex flex-col gap-1" key={filtered._id}>
+                                                    <span className="text-gray-500 font-semibold text-xs">
+                                                        BASIC SALARY
+                                                    </span>
+                                                    <span>{filtered.salary}</span>
+                                                </div>
+                                                :
+                                                (typeof payslipInfo.employee) === "object" &&
+                                                filtered.employee.salary !== "" ?
+                                                    <div className="flex flex-col gap-1" key={filtered.employee._id}>
+                                                        <span className="text-gray-500 font-semibold text-xs">
+                                                            BASIC SALARY
+                                                        </span>
+                                                        <span>{filtered.employee.salary}</span>
+                                                    </div>
+                                                :
+                                                <></>
                                         ))
                                     }
                                 </div>
@@ -325,14 +424,18 @@ const FormPayslip = () => {
                                                         <span>{deduction.name}</span>
                                                         <span>{deduction.amount}</span>
                                                     </div>
-                                                ))
-                                                :
+                                                )) :
+                                                (typeof filtered.employee) === "object" ?
+                                                filtered.employee.deductions.map((deduction) => (
+                                                    <div className="flex items-center justify-between" key={deduction._id}>
+                                                        <span>{deduction.name}</span>
+                                                        <span>{deduction.amount}</span>
+                                                    </div>
+                                                )) :
                                                 <span key={filtered._id}>No deduction.</span>
-                                            ))
-                                            :
+                                            )) :
                                             <span>No deduction.</span>
                                         }
-                                      
                                     </div>
                                 </div>
                             </div>

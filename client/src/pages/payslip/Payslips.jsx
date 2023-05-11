@@ -17,8 +17,7 @@ const Payslips = () => {
   const columns = [
     { body: "linkCode", header: "# CODE" },
     { field: "employee.name", header: "EMPLOYEE NAME" },
-    { field: "monthFormat", header: "MONTH" },
-    { field: "year", header: "YEAR" },
+    { field: "monthYearFormat", header: "MONTH - YEAR" },
     { field: "paymentStatus", header: "PAYMENT" },
     { body: "buttons", header: "" },
   ];
