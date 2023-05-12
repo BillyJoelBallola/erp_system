@@ -36,13 +36,20 @@ const Navbar = () => {
 
   return (
     <nav className={`fixed bg-dark bottom-0 top-0 h-screen w-[250px] overflow-y-auto lg:left-0 z-30 ${navbar ? "left-0" : "max-lg:left-[-1000px]"}`}>
-        <div className="bg-darker text-white p-2 flex flex-col sticky top-0 w-full h-[3.5rem] justify-center z-30">
-            <span className="font-bold text-2xl">ERP SYSTEM</span>
-            <span className="text-xs -mt-1">MICAELLA'S MEAT PRODUCTS</span>
-            <div className="hidden absolute max-lg:grid place-items-center right-2 rounded-full p-1 bg-gradient-to-r from-cyan-400 to-blue-400" onClick={(() => setNavbar(false))}>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-5 h-5">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
+        <div className="bg-darker text-white p-2 flex flex-col sticky top-0 w-full justify-center z-30">
+            <div 
+                className="hidden mb-2 max-w-min whitespace-nowrap px-2 py-1 max-lg:grid place-items-center rounded-full bg-dark hover:bg-light cursor-pointer duration-150 ease-in-out" 
+                onClick={(() => setNavbar(false))}>
+                <div className="flex gap-2 items-center text-lighter">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="rgb(178 178 178)" className="w-5 h-5">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+                    </svg>
+                    Close menu  
+                </div>
+            </div>
+            <div className="grid bg-[#292929] rounded-lg p-1 text-center">
+                <span className="font-bold text-2xl">ERP SYSTEM</span>
+                <span className="text-xs -mt-1">MICAELLA'S MEAT PRODUCTS</span>
             </div>
         </div>
         <div className="py-6 px-4 grid gap-4">

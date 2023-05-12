@@ -10,6 +10,7 @@ export default {
         'dark': '#303030',
         'darker': '#212121',
         'light': '#626262',
+        'lighter': '#b2b2b2',
       },
       textColor: {
         'lighter': '#b2b2b2',
