@@ -89,7 +89,7 @@ const Navbar = () => {
                                     </div>
                                     {   
                                         link.subLinks && 
-                                        <div className={`bg-darker/10 flex ${activeIndex === link.id ? 'opacity-1' : 'opacity-0 hidden'} flex-col py-1 px-7 duration-150 ease-in-out`}>
+                                        <div className={`bg-darker/20 rounded-md flex ${activeIndex === link.id ? 'opacity-1' : 'opacity-0 h-0'} overflow-hidden flex-col py-1 px-7 duration-200 ease-in-out`}>
                                         {link.subLinks &&
                                             link.subLinks.map((sub, idx) => (
                                             <NavLink to={sub.path} key={idx} className={idx === 0 && isProduct.includes("products") ? "active" : ""}>{sub.name}</NavLink>
@@ -154,7 +154,7 @@ const Navbar = () => {
                                     </div>
                                     {
                                         link.subLinks && 
-                                        <div className={`bg-darker/10 flex ${activeIndex === link.id ? 'opacity-1' : 'opacity-0 hidden'} flex-col py-1 px-7 duration-150 ease-in-out`}>
+                                        <div className={`bg-darker/20 rounded-md flex ${activeIndex === link.id ? 'opacity-1' : 'opacity-0 h-0'} overflow-hidden flex-col py-1 px-7 duration-200 ease-in-out`}>
                                         {link.subLinks &&
                                             link.subLinks.map((sub, idx) => (
                                             <NavLink to={sub.path} key={idx}>{sub.name}</NavLink>
@@ -221,7 +221,7 @@ const Navbar = () => {
                                     </div>
                                     {
                                         link.subLinks && 
-                                        <div className={`bg-darker/10 flex ${activeIndex === link.id ? 'opacity-1' : 'opacity-0 hidden'} flex-col py-1 px-7 duration-150 ease-in-out`}>
+                                        <div className={`bg-darker/20 rounded-md flex ${activeIndex === link.id ? 'opacity-1' : 'opacity-0 h-0'} overflow-hidden flex-col py-1 px-7 duration-200 ease-in-out`}>
                                         {link.subLinks &&
                                             link.subLinks.map((sub, idx) => (
                                             <NavLink to={sub.path} key={idx}>{sub.name}</NavLink>
@@ -284,7 +284,7 @@ const Navbar = () => {
                         </div>
                         {
                             link.subLinks && 
-                            <div className={`bg-darker/10 flex ${activeIndex === link.id ? 'opacity-1' : 'opacity-0 hidden'} flex-col py-1 px-7 duration-150 ease-in-out`}>
+                            <div className={`bg-darker/20 rounded-md flex ${activeIndex === link.id ? 'opacity-1' : 'opacity-0 h-0'} overflow-hidden flex-col py-1 px-7 duration-200 ease-in-out`}>
                             {link.subLinks &&
                                 link.subLinks.map((sub, idx) => (
                                 <NavLink to={sub.path} key={idx}>{sub.name}</NavLink>
