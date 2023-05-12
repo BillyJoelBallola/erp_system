@@ -47,14 +47,14 @@ const Login = () => {
                 src={logo}
                 alt="micaella's logo" />
             </div>
-            <div className="h-full w-[2px] bg-gray-400"></div>
+            <div className="h-full w-[2px] bg-gray-300"></div>
             <div className="font-bold">
               <span className="text-5xl tracking-[.5rem]">ERP</span>
                 <br/>
               <span className="text-md tracking-[.5rem]">SYSTEM</span>
             </div>
           </div>
-          <form className="flex flex-col gap-4 w-[300px]" onSubmit={signIn}>
+          <form className="flex flex-col gap-4 w-[300px] sm:" onSubmit={signIn}>
             <div className="form-group">
               <label htmlFor="Email">Email</label>
               <input type="text" name="email" placeholder="Email Address" onChange={getInputValue}/>
