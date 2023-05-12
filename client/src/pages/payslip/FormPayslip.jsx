@@ -76,7 +76,7 @@ const FormPayslip = () => {
                     const { gross, deduction, netPay } = totals;
                     const { data } = await axios.put("/update_payslip", { id, earning, monthYear, gross, deduction, netPay});
                 if (data) {
-                    navigate(`/payslips/${data._id}`);
+                    navigate("/payslips");
                 } else {
                     return toast.error("Failed to edit payslip.", { position: toast.POSITION.TOP_RIGHT });
                 }
@@ -101,7 +101,7 @@ const FormPayslip = () => {
                     const { employee, monthYear, earning } = payslipInfo;
                     const { data } = await axios.post("/add_payslip", { employee, monthYear, earning, gross, deduction, netPay });
                 if (data) {
-                    navigate(`/payslips/${data._id}`);
+                    navigate("/payslips");
                 } else {
                     return toast.error("Failed to add payslip.", { position: toast.POSITION.TOP_RIGHT });
                 }
