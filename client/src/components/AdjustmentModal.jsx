@@ -29,7 +29,6 @@ const AdjustmentModal = ({ visible, setVisible, action, setAction, id, setAdjust
         axios.get("/products")
             .then(({ data }) => {
                 setProducts(data);
-                console.log("fectch");
             })
 
         axios.get("/raw-materials")
