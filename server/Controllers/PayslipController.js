@@ -19,6 +19,24 @@ export const addPayslip = async (req, res) => {
     }
 }   
 
+export const updatePayslip = async (req, res) => {
+    const { id, monthYear, earning, gross, deduction, netPay} = await req.body; 
+    const payslipData = await Payslip.findById(id);  
+    try{
+        payslipData.set({
+            monthYear: monthYear,
+            earning: earning,
+            gross: gross,
+            deduction: deduction,
+            netPay: netPay
+        })
+        payslipData.save();
+        res.json(payslipData);
+    }catch(error){
+        res.json(error.message);
+    }
+}
+
 export const getAllPayslip = async (req, res) => {
     const [date, time] = moment(Date.now()).format().split("T"); 
     const [year, month, day] = date.split("-");

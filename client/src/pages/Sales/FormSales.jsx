@@ -3,7 +3,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ConfirmPopup, confirmPopup } from "primereact/confirmpopup";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
-import { ToastContainer } from "react-toastify";
 
 const FormSales = () => {
   const navigate = useNavigate();

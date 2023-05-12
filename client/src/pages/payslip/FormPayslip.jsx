@@ -7,7 +7,7 @@ import axios from "axios";
 const FormPayslip = () => {
     const navigate = useNavigate();
     const id = useParams().id;
-    const [payslip, setPayslip] = useState({});
+    // const [payslip, setPayslip] = useState({});
     const [positions, setPositions] = useState([]);
     const [employee, setEmployee] = useState([]);
     const [attendance, setAttendance] = useState([]);
@@ -54,33 +54,34 @@ const FormPayslip = () => {
         }));
     }
 
-    //not working
     const editPayslip = (e) => {
-        // confirmPopup({
-        //   target: e.currentTarget,
-        //   message: "Do you want to add this sales order?",
-        //   icon: "pi pi-info-circle",
-        //   acceptClassName: "p-button-danger",
-        //   accept: async () => {
-        //     if (
-        //       salesOrder.customer === "" ||
-        //       salesOrder.order < 0 ||
-        //       salesOrder.dateOrdered === "" ||
-        //       totals.total === ""
-        //     )
-        //     return toast.current.show({ severity: 'warn', summary: 'Form message', detail: 'Fill up all fields.', life: 3000 });
-        //     const { discount, total, subTotal } = totals;
-        //     const { customers, order, dateOrdered } = salesOrder;
-        //     const { _id } = customers;
-        //     const { data } = await axios.put("/update_sales", { _id, order, dateOrdered, discount, subTotal, total, id });
-        //     if (data) {
-        //       axios.put("/reduce_sales_product_qty", { order });
-        //       navigate(`/sales/${data._id}`);
-        //     } else {
-        //       return toast.current.show({ severity: 'error', summary: 'Form message', detail: 'Failed to add order.', life: 3000 });
-        //     }
-        //   }
-        // });
+        let isFactoryWorker = false;
+        if(payslipInfo.earning !== null){
+            isFactoryWorker = true;
+        }
+        confirmPopup({
+            target: e.currentTarget,
+            message: "Do you want to edit this payslip?",
+            icon: "pi pi-info-circle",
+            acceptClassName: "p-button-danger",
+            accept: async () => {
+                if (
+                    payslipInfo.position === "" ||
+                    payslipInfo.employee === "" ||
+                    payslipInfo.monthYear === "" || 
+                    isFactoryWorker && payslipInfo.earning === ""
+                )
+                    return toast.warn("Fill up all fields.", { position: toast.POSITION.TOP_RIGHT });
+                    const { earning, monthYear } = payslipInfo;
+                    const { gross, deduction, netPay } = totals;
+                    const { data } = await axios.put("/update_payslip", { id, earning, monthYear, gross, deduction, netPay});
+                if (data) {
+                    navigate(`/payslips/${data._id}`);
+                } else {
+                    return toast.error("Failed to edit payslip.", { position: toast.POSITION.TOP_RIGHT });
+                }
+            }
+        });
     };
 
     const addNewPayslip = (e) => {
@@ -127,22 +128,9 @@ const FormPayslip = () => {
         });
     }, []);
 
-    
-    // useEffect(() => {
-    //     console.log(payslip);
-    //     if(payslip){
-    //         setPayslipInfo({
-    //             position: payslip.employee.position,
-    //             employee: payslip.employee._id,
-    //             monthYear: payslip.monthYear,
-    //             earning: payslip.employee.salary
-    //         })
-    //     }
-    // }, [payslip])
-
     useEffect(() => {
         const getNetPayOfFactoryWorker = () => {
-            if(payslipInfo.earning !== ""){
+            if(payslipInfo.earning !== null || payslipInfo.earning !== ""){
                 const netPay = Number(payslipInfo.earning) - totals.deduction;
                 setTotals((prev) => ({
                     ...prev,
@@ -157,23 +145,11 @@ const FormPayslip = () => {
 
     useEffect(() => {
         const getNetPay = () => {
-            if(totals.length !== 0){
+            if(totals.length >= 0){
                 employee.filter((employee) => {
                     if(employee._id === payslipInfo.employee){
                         const gross = totals.length * Number(employee.salary);
                         const netPay = gross - totals.deduction;
-    
-                        setTotals((prev) => ({
-                            ...prev,
-                            gross: gross,
-                            netPay: netPay
-                        }))
-                    }
-
-                    if(typeof payslipInfo.employee === "object"){
-                        const gross = totals.length * Number(payslipInfo.employee.salary);
-                        const netPay = gross - totals.deduction;
-    
                         setTotals((prev) => ({
                             ...prev,
                             gross: gross,
@@ -181,23 +157,20 @@ const FormPayslip = () => {
                         }))
                     }
                 })
+
+                if(typeof payslipInfo.employee === "object"){
+                    const gross = totals.length * Number(payslipInfo.employee.salary);
+                    const netPay = gross - totals.deduction;
+                    setTotals((prev) => ({
+                        ...prev,
+                        gross: gross,
+                        netPay: netPay
+                    }))
+                }
             }
         }
         getNetPay();
     }, [totals.length])
-
-    useEffect(() => {
-        const getNumberOfAttendance = () => {
-            if(attendance.length > 0){
-                const att = attendance.filter((attendance) => attendance.timeOut.includes(payslipInfo.monthYear));
-                setTotals((prev) => ({
-                    ...prev,
-                    length: att.length
-                }))
-            }
-        }
-        getNumberOfAttendance();
-    }, [attendance])
 
     useEffect(() => {
         const getTotalDeduction = () => {
@@ -233,7 +206,31 @@ const FormPayslip = () => {
                 }));
             }
         }
+        getTotalDeduction();
+    }, [payslipInfo.employee, payslipInfo.position])
 
+    const fetchAttendance = (id) => {
+        axios.get(`/date_id_attendance/${id}`).then(({ data }) => { 
+            setAttendance(data);
+        });
+    }
+
+    useEffect(() => {
+        const getNumberOfAttendance = () => {
+            const [date, time] = payslipInfo.monthYear.split("T");
+            const [year, month] = date.split("-");
+            if(attendance.length > 0){
+                const matchAtt = attendance.filter((att) => (att.timeOut.includes(`${year}-${month}`)));
+                setTotals((prev) => ({
+                    ...prev,
+                    length: matchAtt.length
+                }))
+            }
+        }
+        getNumberOfAttendance();
+    }, [attendance, payslipInfo.monthYear])
+
+    useEffect(() => {
         const getAttendanceOfSelectedEmployee = () => {
             if(payslipInfo.employee === "" || payslipInfo.monthYear === "") return;
             positions.map((position) => {
@@ -241,19 +238,28 @@ const FormPayslip = () => {
                     if(position.name !== "Factory worker"){
                         employee.map((emp) => {
                             if(emp._id === payslipInfo.employee){
-                                axios.get(`/date_id_attendance/${emp._id}`)
-                                    .then(({ data }) => { 
-                                        setAttendance(data);
-                                    });
+                                fetchAttendance(emp.id);
                             }
                         })
                     }
                 }
             })
+
+            if(typeof payslipInfo.employee === "object" && id){
+                filteredEmployee.map((emp) => {
+                    positions.map((position) => {
+                        if(position._id === payslipInfo.employee.position){
+                            if(position.name !== "Factory worker"){
+                                fetchAttendance(emp.employee._id);
+                            }
+                        }
+
+                    })
+                })
+            }
         }
-        getTotalDeduction();
         getAttendanceOfSelectedEmployee();
-    }, [payslipInfo.employee, payslipInfo.position, payslipInfo.monthYear])
+    }, [payslipInfo.monthYear])
 
     return (
         <>
@@ -366,6 +372,7 @@ const FormPayslip = () => {
                                         positions && 
                                         positions.map((position) => (
                                             position._id === payslipInfo.employee.position &&
+                                            payslipInfo.earning !== null &&
                                             <div className="flex flex-col gap-1" key={position._id}>
                                                 <span className="text-gray-500 font-semibold text-xs">
                                                     EARNING AMOUNT
@@ -386,8 +393,19 @@ const FormPayslip = () => {
                                             </div>
                                         ))
                                     }
-                                    {
-                                         filteredEmployee.length > 0 &&
+                                    {/* need to fix */}
+                                    {/* {
+                                        id &&
+                                        filteredEmployee.length > 0 &&
+                                        filtered.employee.salary !== "" ?
+                                            <div className="flex flex-col gap-1" key={filtered._id}>
+                                                <span className="text-gray-500 font-semibold text-xs">
+                                                    BASIC SALARY
+                                                </span>
+                                                <span>{filtered.employee.salary}</span>
+                                            </div>
+                                         ?
+                                         filteredEmployee.length > 0 ?
                                          filteredEmployee.map((filtered) => (
                                                 filtered._id === payslipInfo.employee &&
                                                 filtered.salary ?
@@ -396,20 +414,10 @@ const FormPayslip = () => {
                                                         BASIC SALARY
                                                     </span>
                                                     <span>{filtered.salary}</span>
-                                                </div>
-                                                :
-                                                (typeof payslipInfo.employee) === "object" &&
-                                                filtered.employee.salary !== "" ?
-                                                    <div className="flex flex-col gap-1" key={filtered.employee._id}>
-                                                        <span className="text-gray-500 font-semibold text-xs">
-                                                            BASIC SALARY
-                                                        </span>
-                                                        <span>{filtered.employee.salary}</span>
-                                                    </div>
-                                                :
-                                                <></>
-                                        ))
-                                    }
+                                            </div>
+                                        )) :
+                                        <></>
+                                    } */}
                                 </div>
                                 <div className="flex flex-col gap-1">
                                     <span className="text-gray-500 font-semibold text-xs">DEDUCTIONS</span>
