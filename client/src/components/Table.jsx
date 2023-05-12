@@ -194,6 +194,7 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
             <>
                 <ToastContainer
                     draggable={false}
+                    hideProgressBar={true}
                 />
                 <ConfirmPopup />
                 <div className="flex gap-4 justify-center items-center">

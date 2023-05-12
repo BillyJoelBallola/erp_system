@@ -220,10 +220,10 @@ const FormPayslip = () => {
             const [date, time] = payslipInfo.monthYear.split("T");
             const [year, month] = date.split("-");
             if(attendance.length > 0){
-                const matchAtt = attendance.filter((att) => (att.timeOut.includes(`${year}-${month}`)));
+                const attLength = attendance.filter((att) => (att.timeOut.includes(`${year}-${month}`))).length;
                 setTotals((prev) => ({
                     ...prev,
-                    length: matchAtt.length
+                    length: attLength
                 }))
             }
         }
@@ -238,7 +238,7 @@ const FormPayslip = () => {
                     if(position.name !== "Factory worker"){
                         employee.map((emp) => {
                             if(emp._id === payslipInfo.employee){
-                                fetchAttendance(emp.id);
+                                fetchAttendance(emp._id);
                             }
                         })
                     }
@@ -261,13 +261,25 @@ const FormPayslip = () => {
         getAttendanceOfSelectedEmployee();
     }, [payslipInfo.monthYear])
 
+    const handelMonthYear = (e) => {
+        if(payslipInfo.position === "" || payslipInfo.employee=== ""){
+            return toast.warn("Select position and employee first.", { position: toast.POSITION.TOP_RIGHT })
+        }
+
+        setPayslipInfo((prev) => ({
+            ...prev, 
+            monthYear: e.target.value
+        }))
+    }
+
     return (
         <>
             <ToastContainer 
                 draggable={false}
+                hideProgressBar={true}
             />
             <ConfirmPopup />
-            <div className="bg-gray-100 flex items-center justify-between px-4 py-3 border-0 border-b">
+                <div className="bg-gray-100 flex items-center justify-between px-4 py-3 border-0 border-b">
                 <div className="font-semibold text-blue-400 flex items-center gap-2">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -365,7 +377,11 @@ const FormPayslip = () => {
                                         <span className="text-gray-500 font-semibold text-xs">
                                             MONTH - YEAR
                                         </span>
-                                        <input type="month" name="monthYear" value={payslipInfo.monthYear.toString().slice(0, 7)} onChange={(e) => setPayslipInfo((prev) => ({...prev, monthYear: e.target.value}))}/>
+                                        <input 
+                                            type="month" 
+                                            name="monthYear" 
+                                            value={payslipInfo.monthYear.toString().slice(0, 7)} 
+                                            onChange={handelMonthYear}/>
                                     </div>
                                     {   
                                         id ?
@@ -393,31 +409,32 @@ const FormPayslip = () => {
                                             </div>
                                         ))
                                     }
-                                    {/* need to fix */}
-                                    {/* {
-                                        id &&
-                                        filteredEmployee.length > 0 &&
-                                        filtered.employee.salary !== "" ?
+                                    {
+                                        id && 
+                                        filteredEmployee.length > 0 ?
+                                        filteredEmployee.map((filtered) => (
+                                            filtered.employee.salary !== "" &&
                                             <div className="flex flex-col gap-1" key={filtered._id}>
                                                 <span className="text-gray-500 font-semibold text-xs">
                                                     BASIC SALARY
                                                 </span>
                                                 <span>{filtered.employee.salary}</span>
                                             </div>
-                                         ?
+                                        ))
+                                        :
                                          filteredEmployee.length > 0 ?
                                          filteredEmployee.map((filtered) => (
-                                                filtered._id === payslipInfo.employee &&
-                                                filtered.salary ?
+                                            filtered._id === payslipInfo.employee &&
+                                            filtered.salary &&
                                                 <div className="flex flex-col gap-1" key={filtered._id}>
                                                     <span className="text-gray-500 font-semibold text-xs">
                                                         BASIC SALARY
                                                     </span>
                                                     <span>{filtered.salary}</span>
                                             </div>
-                                        )) :
+                                        )) : 
                                         <></>
-                                    } */}
+                                    }
                                 </div>
                                 <div className="flex flex-col gap-1">
                                     <span className="text-gray-500 font-semibold text-xs">DEDUCTIONS</span>
