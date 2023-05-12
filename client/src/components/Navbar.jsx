@@ -35,8 +35,8 @@ const Navbar = () => {
   }
 
   return (
-    <nav className={`fixed bg-dark bottom-0 top-0 h-screen w-[250px] overflow-y-auto lg:left-0 z-20 ${navbar ? "left-0" : "max-lg:left-[-1000px]"}`}>
-        <div className="bg-darker text-white p-2 flex flex-col sticky top-0 w-full h-[3.5rem] justify-center">
+    <nav className={`fixed bg-dark bottom-0 top-0 h-screen w-[250px] overflow-y-auto lg:left-0 z-30 ${navbar ? "left-0" : "max-lg:left-[-1000px]"}`}>
+        <div className="bg-darker text-white p-2 flex flex-col sticky top-0 w-full h-[3.5rem] justify-center z-30">
             <span className="font-bold text-2xl">ERP SYSTEM</span>
             <span className="text-xs -mt-1">MICAELLA'S MEAT PRODUCTS</span>
             <div className="hidden absolute max-lg:grid place-items-center right-2 rounded-full p-1 bg-gradient-to-r from-cyan-400 to-blue-400" onClick={(() => setNavbar(false))}>
@@ -76,7 +76,7 @@ const Navbar = () => {
                                             viewBox="0 0 24 24"
                                             strokeWidth={3}
                                             stroke="currentColor"
-                                            className="w-4 h-3"
+                                            className="w-4 h-3 duration-300 ease-in-out"
                                             transform={`rotate(${rotateArrow(link.id)})`}
                                             >
                                                 <path
@@ -89,13 +89,12 @@ const Navbar = () => {
                                     </div>
                                     {   
                                         link.subLinks && 
-                                        <div className={`bg-darker/10 ${activeIndex === link.id ? 'flex' : 'hidden'} flex-col py-1 px-7 delay-150 ease-in-out`}>
+                                        <div className={`bg-darker/10 flex ${activeIndex === link.id ? 'opacity-1' : 'opacity-0 hidden'} flex-col py-1 px-7 duration-150 ease-in-out`}>
                                         {link.subLinks &&
                                             link.subLinks.map((sub, idx) => (
                                             <NavLink to={sub.path} key={idx} className={idx === 0 && isProduct.includes("products") ? "active" : ""}>{sub.name}</NavLink>
                                             )) 
                                         }
-                                        
                                         </div>
                                     }
                                 </li>
@@ -142,7 +141,7 @@ const Navbar = () => {
                                             viewBox="0 0 24 24"
                                             strokeWidth={3}
                                             stroke="currentColor"
-                                            className="w-4 h-3"
+                                            className="w-4 h-3 duration-300 ease-in-out"
                                             transform={`rotate(${rotateArrow(link.id)})`}
                                             >
                                                 <path
@@ -155,7 +154,7 @@ const Navbar = () => {
                                     </div>
                                     {
                                         link.subLinks && 
-                                        <div className={`bg-darker/10 ${activeIndex === link.id ? 'flex' : 'hidden'} flex-col py-1 px-7 delay-150 ease-in-out`}>
+                                        <div className={`bg-darker/10 flex ${activeIndex === link.id ? 'opacity-1' : 'opacity-0 hidden'} flex-col py-1 px-7 duration-150 ease-in-out`}>
                                         {link.subLinks &&
                                             link.subLinks.map((sub, idx) => (
                                             <NavLink to={sub.path} key={idx}>{sub.name}</NavLink>
@@ -209,7 +208,7 @@ const Navbar = () => {
                                             viewBox="0 0 24 24"
                                             strokeWidth={3}
                                             stroke="currentColor"
-                                            className="w-4 h-3"
+                                            className="w-4 h-3 duration-300 ease-in-out"
                                             transform={`rotate(${rotateArrow(link.id)})`}
                                             >
                                                 <path
@@ -222,7 +221,7 @@ const Navbar = () => {
                                     </div>
                                     {
                                         link.subLinks && 
-                                        <div className={`bg-darker/10 ${activeIndex === link.id ? 'flex' : 'hidden'} flex-col py-1 px-7 delay-150 ease-in-out`}>
+                                        <div className={`bg-darker/10 flex ${activeIndex === link.id ? 'opacity-1' : 'opacity-0 hidden'} flex-col py-1 px-7 duration-150 ease-in-out`}>
                                         {link.subLinks &&
                                             link.subLinks.map((sub, idx) => (
                                             <NavLink to={sub.path} key={idx}>{sub.name}</NavLink>
@@ -272,7 +271,7 @@ const Navbar = () => {
                                 viewBox="0 0 24 24"
                                 strokeWidth={3}
                                 stroke="currentColor"
-                                className="w-4 h-3"
+                                className="w-4 h-3 duration-300 ease-in-out"
                                 transform={`rotate(${rotateArrow(link.id)})`}
                                 >
                                     <path
@@ -285,7 +284,7 @@ const Navbar = () => {
                         </div>
                         {
                             link.subLinks && 
-                            <div className={`bg-darker/10 ${activeIndex === link.id ? 'flex' : 'hidden'} flex-col py-1 px-7 delay-150 ease-in-out`}>
+                            <div className={`bg-darker/10 flex ${activeIndex === link.id ? 'opacity-1' : 'opacity-0 hidden'} flex-col py-1 px-7 duration-150 ease-in-out`}>
                             {link.subLinks &&
                                 link.subLinks.map((sub, idx) => (
                                 <NavLink to={sub.path} key={idx}>{sub.name}</NavLink>

@@ -15,6 +15,7 @@ export default {
         'lighter': '#b2b2b2',
         'light': '#626262',
         'dark': '#303030',
+        'darker': '#212121'
       },
     },
   

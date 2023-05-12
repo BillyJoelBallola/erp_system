@@ -1,12 +1,12 @@
-import React, { useContext, useRef, useState } from "react";
-import logo from '../assets/micaella-logo.png';
-import axios from 'axios';
+import React, { useContext, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from "../context/UserContext";
-import { Toast } from "primereact/toast";
+import { ToastContainer, toast } from "react-toastify";
+import axios from 'axios';
+
+import logo from '../assets/micaella-logo.png';
 
 const Login = () => {
-  const toast = useRef(); 
   const navigate = useNavigate();
   const { setCurrentUser} = useContext(UserContext);
   const [logData, setLogData] = useState({
@@ -17,14 +17,14 @@ const Login = () => {
   const signIn = async (e) => {
     e.preventDefault();
     if(logData.email === "" || logData.password === "") {
-      return toast.current.show({ severity: 'warn', summary: 'Login Message', detail: 'Fill up all fields.', life: 3000 });
+      return toast.warn("Fill up all fields.", { position: toast.POSITION.TOP_RIGHT });
     }
     const { data } = await axios.post("/login", logData);
     if(typeof data === "object") {
       setCurrentUser(data);
       navigate("/");
     }else{
-      toast.current.show({ severity: 'error', summary: 'Login Message', detail: data, life: 3000 });
+      return toast.error("Failed to login.", { position: toast.POSITION.TOP_RIGHT });
     }
   }
 
@@ -34,7 +34,10 @@ const Login = () => {
 
   return (
     <>
-      <Toast ref={toast}/>
+      <ToastContainer 
+        draggable={false}
+        hideProgressBar={true}
+      />
       <div className="w-screen h-screen grid place-content-center font-roboto">
         <div className="flex flex-col items-center gap-10">
           <div className="flex items-center gap-4">
