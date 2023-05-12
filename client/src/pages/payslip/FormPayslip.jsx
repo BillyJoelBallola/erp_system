@@ -382,6 +382,10 @@ const FormPayslip = () => {
                                             name="monthYear" 
                                             value={payslipInfo.monthYear.toString().slice(0, 7)} 
                                             onChange={handelMonthYear}/>
+                                        {
+                                            totals.length > 0 && payslipInfo.monthYear &&
+                                            <span className="text-gray-500 text-sm mt-1">Number of present day/s: {totals.length}</span>
+                                        }
                                     </div>
                                     {   
                                         id ?
@@ -431,7 +435,7 @@ const FormPayslip = () => {
                                                         BASIC SALARY
                                                     </span>
                                                     <span>{filtered.salary}</span>
-                                            </div>
+                                                </div>
                                         )) : 
                                         <></>
                                     }

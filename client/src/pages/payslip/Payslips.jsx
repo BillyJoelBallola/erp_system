@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import Table from "../../components/Table";
 import axios from "axios";
-import { Toast } from "primereact/toast";
 
 const Payslips = () => {
   const [allPayslips, setAllPayslips] = useState([]);
@@ -9,7 +8,7 @@ const Payslips = () => {
 
   useEffect(() => {
     axios.get("/payslips").then(({ data }) => {
-      setAllPayslips(data);
+      setAllPayslips(data.reverse());
       setTableAction("");
     })
   }, [tableAction]);
