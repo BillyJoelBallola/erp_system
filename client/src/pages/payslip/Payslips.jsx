@@ -14,10 +14,11 @@ const Payslips = () => {
   }, [tableAction]);
 
   const columns = [
-    { body: "linkCode", header: "# CODE" },
+    // { body: "linkCode", header: "# CODE" },
     { field: "employee.name", header: "EMPLOYEE NAME" },
     { field: "monthYearFormat", header: "MONTH - YEAR" },
     { field: "paymentStatus", header: "PAYMENT" },
+    { field: "netPay", header: "₱ NETPAY"},
     { body: "buttons", header: "" },
   ];
 
