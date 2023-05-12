@@ -89,32 +89,7 @@ export const getAllAdjustment = async (req, res) => {
 
 export const deleteAdjustment = async (req, res) => { 
     const { id } = await req.params;
-    const adjustmentInfo = await Adjustment.findById(id);
-    const productInfo = await Product.find({});
-    const rawMaterialInfo = await RawMaterials.find({});
     try {
-        productInfo.map((product) => {
-            if(product._id.toString() === adjustmentInfo.item.itemId){
-                product.set({
-                    quantity: adjustmentInfo.item.oldQty
-                })
-                product.save();
-            }else{
-                return;
-            }
-        })
-
-        rawMaterialInfo.map((raw) => {
-            if(raw._id.toString() === adjustmentInfo.item.itemId){
-                raw.set({
-                    quantity: adjustmentInfo.item.oldQty
-                })
-                raw.save();
-            }else{
-                return;
-            }
-        }) 
-
         const response = await Adjustment.findByIdAndDelete(id);
         res.json(response);
     } catch (error) {

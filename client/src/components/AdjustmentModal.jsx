@@ -29,13 +29,14 @@ const AdjustmentModal = ({ visible, setVisible, action, setAction, id, setAdjust
         axios.get("/products")
             .then(({ data }) => {
                 setProducts(data);
+                console.log("fectch");
             })
 
         axios.get("/raw-materials")
             .then(({ data }) => {
                 setRawMaterials(data);
             })
-    }, []);
+    }, [adjustment.item.newQty]);
 
     useEffect(() => {
         if(action === "edit" || id){
@@ -64,7 +65,6 @@ const AdjustmentModal = ({ visible, setVisible, action, setAction, id, setAdjust
                 break;
         }
     }   
-
 
     const selectStorage = (e) => {
         const storageId = e.target.value;
@@ -259,7 +259,7 @@ const AdjustmentModal = ({ visible, setVisible, action, setAction, id, setAdjust
                         </div>
                         <div className="grid gap-2 mb-5">
                             <div className="grid gap-2 border-b-[1px] pb-2">
-                                <div className="grid grid-cols-[1fr_50px_50px_100px] gap-10 text-gray-400 font-semibold text-sm">
+                                <div className="grid grid-cols-[1fr_50px_50px_100px] gap-10 text-gray-500 font-semibold text-sm">
                                     <span>
                                         ITEM<span className="text-red-400">*</span>
                                     </span>

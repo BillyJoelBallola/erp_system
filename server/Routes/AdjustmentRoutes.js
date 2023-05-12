@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { addAdjustment, deleteAdjustment, getAdjustmentById, getAllAdjustment, updateAdjustment } from "../Controllers/AdjusmentController.js";
+import { addAdjustment, deleteAdjustment, getAdjustmentById, getAllAdjustment, updateAdjustment } from "../Controllers/AdjustmentController.js";
 
 const route = Router();
 
