@@ -4,8 +4,14 @@ import Summary from "../components/Summary";
 import axios from "axios";
 
 const Dashboard = () => {
-	const [chartData, setChartData] = useState({});
-    const [chartOptions, setChartOptions] = useState({});
+	const [salesDataGraph, setSalesDataGraph] = useState({
+        data: {},
+        options: {}
+    });
+	const [attendanceDataGraph, setAttendanceDataGraph] = useState({
+        data: {},
+        options: {}
+    });
     const [summaryData, setSummaryData] = useState({
         sales: 0,
         shipments: 0,
@@ -56,7 +62,53 @@ const Dashboard = () => {
 
 	}, [])
 
+    // attendance
+    useEffect(() => {
+        const documentStyle = getComputedStyle(document.documentElement);
+        const textColor = documentStyle.getPropertyValue('--text-color');
+        const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
 
+        const data = {
+            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+            datasets: [
+                {
+                    label: 'Attendance',
+                    backgroundColor: documentStyle.getPropertyValue('--green-500'),
+                    borderColor: documentStyle.getPropertyValue('--green-500'),
+                    data: [65, 59, 80, 81, 56, 55, 40]
+                }
+            ]
+        };
+        const options = {
+            maintainAspectRatio: false,
+            aspectRatio: 1,
+            plugins: {
+                legend: {
+                    labels: {
+                        fontColor: textColor
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    grid: {
+                        display: false,
+                        drawBorder: false
+                    }
+                },
+                y: {
+                    grid: {
+                        color: surfaceBorder,
+                        drawBorder: false
+                    }
+                }
+            }
+        };
+
+        setAttendanceDataGraph((prev) => ({...prev, data: data, options: options}));
+    }, []);
+
+    // sales
     useEffect(() => {
         const documentStyle = getComputedStyle(document.documentElement);
         const textColor = documentStyle.getPropertyValue('--text-color');
@@ -74,6 +126,7 @@ const Dashboard = () => {
                 }
             ]
         };
+        
         const options = {
             maintainAspectRatio: false,
             aspectRatio: 1,
@@ -98,17 +151,16 @@ const Dashboard = () => {
             }
         };
 
-        setChartData(data);
-        setChartOptions(options);
+        setSalesDataGraph((prev) => ({...prev, data: data, options: options}));
     }, []);
 
     return (
 		<div className="px-5 py-6">
 			<div>
-				<h2 className="font-semibold text-2xl">Summary</h2>
+				<h2 className="font-semibold text-2xl text-darker">Summary</h2>
 				<div className="flex gap-5 mt-2 max-w-full overflow-x-auto max-h-min">
 					<Summary 
-						color={"blue"}
+						color={"bg-blue-100"}
                         value={summaryData.sales}
                         label={"Total sales"}
                         icon={<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-5 h-5">
@@ -116,7 +168,7 @@ const Dashboard = () => {
                             </svg>}
 					/>
 					<Summary 
-						color={"green"}
+						color={"bg-green-100"}
                         value={summaryData.shipments}
                         label={"Number of shipments"}
                         icon={<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-5 h-5">
@@ -124,7 +176,7 @@ const Dashboard = () => {
                             </svg>}z
 					/>
 					<Summary 
-						color={"yellow"}
+						color={"bg-yellow-100"}
                         value={summaryData.products}
                         label={"Number of products"}
                         icon={<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-5 h-5">
@@ -132,7 +184,7 @@ const Dashboard = () => {
                             </svg>}
 					/>
 					<Summary 
-						color={"red"}
+						color={"bg-red-100"}
                         value={summaryData.employees}
                         label={"Number of employees"}
                         icon={<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-5 h-5">
@@ -140,7 +192,7 @@ const Dashboard = () => {
                             </svg>}
 					/>
 					<Summary 
-						color={"lime"}
+						color={"bg-lime-100"}
                         value={summaryData.customers}
                         label={"Number of customers"}
                         icon={<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-5 h-5">
@@ -149,15 +201,29 @@ const Dashboard = () => {
                     />
 				</div>
 			</div>
-			<div className="mt-4">
-                <h2 className="font-semibold text-2xl">Analytics</h2>
-                <Chart
-                    type="line"
-                    data={chartData}
-                    options={chartOptions}
-                    className="w-full"
-                />
-			</div>
+			<div className="mt-8">
+                <h2 className="font-semibold text-2xl text-darker">Analytics</h2>
+                <div className="grid grid-cols-2 gap-10 max-lg:grid-cols-1 max-lg:gap-5">
+                    <div className="mt-2 max-lg:mt-4">
+                        <h4 className="font-semibold text-lg text-dark">Sales</h4>
+                        <Chart
+                            type="line"
+                            data={salesDataGraph.data}
+                            options={salesDataGraph.options}
+                            className="w-full"
+                        />
+                    </div>
+                    <div className="mt-2">
+                        <h4 className="font-semibold text-lg text-dark">Attendance</h4>
+                        <Chart
+                            type="bar"
+                            data={attendanceDataGraph.data}
+                            options={attendanceDataGraph.options}
+                            className="w-full"
+                        />
+                    </div>
+                </div>
+            </div>
 		</div>
     )
 };
