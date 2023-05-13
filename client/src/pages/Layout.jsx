@@ -12,7 +12,7 @@ const Layout = () => {
     <div className="font-roboto relative">
         <ScreenWarning />
         <Navbar />
-        <main className={`relative h-full  ${navbar ? "before:content-['']" : ""}`}>
+        <main className={`relative h-full  ${navbar ? "max-lg:before:content-['']" : ""}`}>
           <Header />
           <div className="overflow-y-auto">
             <Outlet />
