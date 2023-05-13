@@ -277,7 +277,7 @@ const FormSales = () => {
       accept: async () => {
         if (
           salesOrder.customer === "" ||
-          salesOrder.order < 0 ||
+          salesOrder.order <= 0 ||
           salesOrder.dateOrdered === "" ||
           totals.total === ""
         )

@@ -263,7 +263,7 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
             return <div className="bg-gradient-to-r from-yellow-400 to-orange-400 font-semibold p-1 rounded-xl text-sm max-w-min">{payment}</div>
         }   
         if(payment === "Paid"){
-            return <div className="bg-gradient-to-r from-cyan-400 to-green-400 font-semibold p-1 rounded-xl text-sm max-w-min">{payment}</div>
+            return <div className="bg-gradient-to-r from-green-300 to-green-500 font-semibold p-1 rounded-xl text-sm max-w-min">{payment}</div>
         }
     }
 
@@ -277,7 +277,7 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
             return <span className="bg-gradient-to-r from-cyan-400 to-blue-400 font-semibold p-1 rounded-xl text-sm max-w-min whitespace-nowrap">{shipment}</span>
         }
         if(shipment === "Completed"){
-            return <span className="bg-gradient-to-r from-green-400 to-green-600 font-semibold p-1 rounded-xl text-sm max-w-min">{shipment}</span>
+            return <span className="bg-gradient-to-r from-green-300 to-green-500 font-semibold p-1 rounded-xl text-sm max-w-min">{shipment}</span>
         }
     }
 

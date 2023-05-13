@@ -146,7 +146,7 @@ const Employee = () => {
               href={employeeInfo.qrCode && employeeInfo.qrCode} 
               className="border border-gray-400 bg-gray-400 lg:w-9/12 md:w-3/12 w-4/12 aspect-square rounded-md overflow-hidden max-h-min" 
               download>
-                <img src={employeeInfo.qrCode && employeeInfo.qrCode} className="object-fit w-full"/>
+                <img src={employeeInfo.qrCode && employeeInfo.qrCode} className="object-fit w-full" alt="ERP-QR-CODE"/>
             </a>
             <span className="text-sm break-words">QR code will going to use for recording employee’s attendance time-in and time-out. Click the QR code to download.</span>
         </div>

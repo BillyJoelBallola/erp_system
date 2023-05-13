@@ -2,45 +2,57 @@ import React, { useEffect, useState } from "react";
 import { Chart } from 'primereact/chart';
 import Summary from "../components/Summary";
 import axios from "axios";
+import moment from "moment";
+
+const labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const year = ['2023', '2024', '2025', '2026', '2027', '2028', '2029', '2030'];
 
 const Dashboard = () => {
 	const [salesDataGraph, setSalesDataGraph] = useState({
         data: {},
         options: {}
     });
-	const [attendanceDataGraph, setAttendanceDataGraph] = useState({
+	const [productionDataGraph, setProductionDataGraph] = useState({
         data: {},
         options: {}
     });
     const [summaryData, setSummaryData] = useState({
         sales: 0,
-        shipments: 0,
         products: 0,
         employees: 0,
-        customers: 0
+        customers: 0,
+        suppliers: 0
     }); 
+    const [allSales, setAllSales] = useState([]);
+    const [selectedYear, setSelectedYear] = useState(moment(Date.now()).format("YYYY"));
 
-	useEffect(() => {
+    const selectSalesByMonth = (monthNumber, yearVal) => {
+        let total = 0;
+        if(allSales.length > 0){
+            allSales.map((sales) => {
+                const [date, time] = sales.dateOrdered.split("T");
+                const [year, month, day] = date.split("-");
+                if(month === monthNumber && year === yearVal && sales.payment === "Paid"){
+                    total += sales.total;
+                }
+            })
+        }
+        return total;
+    }
+
+    useEffect(() => {
         let totalSales = 0;
-        let totalShipments = 0;
         let totalProducts = 0;
         let totalEmployees = 0;
         let totalCustomers = 0;
+        let totalSuppliers = 0;
 
 		axios.get("/sales").then(({ data }) => {
+            setAllSales(data);
             data.map((sales) => {
                 if(sales.payment === "Paid"){    
                     totalSales += sales.total;
                     setSummaryData((prev) => ({...prev, sales: totalSales}));
-                }
-            })
-		})
-
-		axios.get("/shipments").then(({ data }) => {
-            data.map((ship) => {
-                if(ship.status === "Completed"){
-                    totalShipments = data.length;
-                    setSummaryData((prev) => ({...prev, shipments: totalShipments}));
                 }
             })
 		})
@@ -60,23 +72,28 @@ const Dashboard = () => {
             setSummaryData((prev) => ({...prev, customers: totalCustomers}));
 		})
 
+		axios.get("/suppliers").then(({ data }) => {
+            totalSuppliers = data.length;
+            setSummaryData((prev) => ({...prev, suppliers: totalSuppliers}));
+		})
 	}, [])
 
-    // attendance
+    // production
     useEffect(() => {
         const documentStyle = getComputedStyle(document.documentElement);
         const textColor = documentStyle.getPropertyValue('--text-color');
         const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
 
         const data = {
-            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+            labels: labels,
             datasets: [
                 {
-                    label: 'Attendance',
-                    backgroundColor: documentStyle.getPropertyValue('--green-500'),
-                    borderColor: documentStyle.getPropertyValue('--green-500'),
-                    data: [65, 59, 80, 81, 56, 55, 40]
-                }
+                    label: 'Production',
+                    backgroundColor: ['#90EE90'],
+                    borderColor: ['#2E8B57'],
+                    borderWidth: 1,
+                    data: [50, 129, 29, 59, 79, 94, 200, 599, 409, 21, 24, 79]
+                },
             ]
         };
         const options = {
@@ -105,25 +122,38 @@ const Dashboard = () => {
             }
         };
 
-        setAttendanceDataGraph((prev) => ({...prev, data: data, options: options}));
+        setProductionDataGraph((prev) => ({...prev, data: data, options: options}));
     }, []);
 
     // sales
     useEffect(() => {
         const documentStyle = getComputedStyle(document.documentElement);
         const textColor = documentStyle.getPropertyValue('--text-color');
-        const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
 
         const data = {
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            labels: labels,
             datasets: [
                 {
                     label: 'Sales',
-                    data: [65, 59, 80, 81, 56, 55, 40],
+                    data: [
+                        selectSalesByMonth('01', selectedYear), 
+                        selectSalesByMonth('02', selectedYear), 
+                        selectSalesByMonth('03', selectedYear),
+                        selectSalesByMonth('04', selectedYear),
+                        selectSalesByMonth('05', selectedYear),
+                        selectSalesByMonth('06', selectedYear),
+                        selectSalesByMonth('07', selectedYear),
+                        selectSalesByMonth('08', selectedYear),
+                        selectSalesByMonth('09', selectedYear),
+                        selectSalesByMonth('10', selectedYear),
+                        selectSalesByMonth('11', selectedYear),
+                        selectSalesByMonth('12', selectedYear),
+                        selectSalesByMonth('13', selectedYear)
+                    ],
                     fill: false,
                     borderColor: documentStyle.getPropertyValue('--blue-400'),
-                    tension: 0.4
-                }
+                    tension: .4
+                },
             ]
         };
         
@@ -137,30 +167,18 @@ const Dashboard = () => {
                     }
                 }
             },
-            scales: {
-                x: {
-                    grid: {
-                        color: surfaceBorder
-                    }
-                },
-                y: {
-                    grid: {
-                        color: surfaceBorder
-                    }
-                }
-            }
         };
 
         setSalesDataGraph((prev) => ({...prev, data: data, options: options}));
-    }, []);
+    }, [allSales, selectedYear]);
 
     return (
 		<div className="px-5 py-6">
 			<div>
 				<h2 className="font-semibold text-2xl text-darker">Summary</h2>
-				<div className="flex gap-5 mt-2 max-w-full overflow-x-auto max-h-min">
+				<div className="flex gap-5 justify-center mt-2 max-w-full flex-wrap bg-[#f6f6f6] rounded-md py-4 max-sm:px-4">
 					<Summary 
-						color={"bg-blue-100"}
+						color={"bg-blue-200/[.6]"}
                         value={summaryData.sales}
                         label={"Total sales"}
                         icon={<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-5 h-5">
@@ -168,15 +186,7 @@ const Dashboard = () => {
                             </svg>}
 					/>
 					<Summary 
-						color={"bg-green-100"}
-                        value={summaryData.shipments}
-                        label={"Number of shipments"}
-                        icon={<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-5 h-5">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" />
-                            </svg>}z
-					/>
-					<Summary 
-						color={"bg-yellow-100"}
+						color={"bg-yellow-200/[.6]"}
                         value={summaryData.products}
                         label={"Number of products"}
                         icon={<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-5 h-5">
@@ -184,7 +194,7 @@ const Dashboard = () => {
                             </svg>}
 					/>
 					<Summary 
-						color={"bg-red-100"}
+						color={"bg-red-200/[.6]"}
                         value={summaryData.employees}
                         label={"Number of employees"}
                         icon={<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-5 h-5">
@@ -192,9 +202,17 @@ const Dashboard = () => {
                             </svg>}
 					/>
 					<Summary 
-						color={"bg-lime-100"}
+						color={"bg-lime-200/[.6]"}
                         value={summaryData.customers}
                         label={"Number of customers"}
+                        icon={<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-5 h-5">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                            </svg>}
+                    />
+					<Summary 
+						color={"bg-amber-200/[.6]"}
+                        value={summaryData.suppliers}
+                        label={"Number of suppliers"}
                         icon={<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-5 h-5">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
                             </svg>}
@@ -202,10 +220,20 @@ const Dashboard = () => {
 				</div>
 			</div>
 			<div className="mt-8">
-                <h2 className="font-semibold text-2xl text-darker">Analytics</h2>
+                <h2 className="font-semibold text-2xl text-darker">Analytics</h2>   
                 <div className="grid grid-cols-2 gap-10 max-lg:grid-cols-1 max-lg:gap-5">
                     <div className="mt-2 max-lg:mt-4">
-                        <h4 className="font-semibold text-lg text-dark">Sales</h4>
+                        <div className="flex justify-between items-center">
+                            <h4 className="font-semibold text-lg text-dark">Sales</h4>
+                            <select className="w-[100px]" value={selectedYear} onChange={(e) => setSelectedYear(e.target.value)}>
+                                <option value="">By year</option>
+                                {
+                                    year.map((y, idx) => (
+                                        <option value={y} key={idx}>{y}</option>
+                                    ))
+                                }
+                            </select>
+                        </div>
                         <Chart
                             type="line"
                             data={salesDataGraph.data}
@@ -214,11 +242,11 @@ const Dashboard = () => {
                         />
                     </div>
                     <div className="mt-2">
-                        <h4 className="font-semibold text-lg text-dark">Attendance</h4>
+                        <h4 className="font-semibold text-lg text-dark">Production</h4>
                         <Chart
                             type="bar"
-                            data={attendanceDataGraph.data}
-                            options={attendanceDataGraph.options}
+                            data={productionDataGraph.data}
+                            options={productionDataGraph.options}
                             className="w-full"
                         />
                     </div>
