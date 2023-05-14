@@ -47,14 +47,6 @@ const ManageAccount = () => {
     }))
   }
 
-  // useEffect(() => {
-  //   if(account.userImage){
-  //     axios.get(`/file${account.userImage}`).then(({data}) => {
-  //       setImageLink(data);
-  //     })
-  //   }
-  // }, [account.userImage])
-
   const submitManageAccount = (e) => {
     e.preventDefault();
     console.log(account);

@@ -1,7 +1,4 @@
 import fs from "fs";
-import { dirname } from "path";
-
-console.log(__dirname);
 
 export const uploadImage = async (req, res) => {
     const files = await req.files;
@@ -16,12 +13,3 @@ export const uploadImage = async (req, res) => {
         res.json(error.message);
     }
 }
-
-// export const getUploadedImage = async (req, res) => {
-//     const { filename } = await req.params;
-//     try {
-//         res.sendFile(__dirname, `/uploads/${filename}`);
-//     } catch (error) {
-//         res.json(error.message);
-//     }
-// }
