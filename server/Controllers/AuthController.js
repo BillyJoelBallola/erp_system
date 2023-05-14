@@ -6,11 +6,12 @@ import '../config.js';
 const brcyptSalt = bcrypt.genSaltSync(10);
 export const addUser = async (req, res) => {
     const userData = req.body;
-    const { firstName, lastName, role, email, password } = await userData;
+    const { firstName, lastName, role, email, password, userImage} = await userData;
 
     try {
         const newUserData = await User.create({
-            firstName,
+            userImage: userImage ? userImage : "",
+            firstName,   
             lastName,
             role,
             email,
@@ -29,7 +30,7 @@ export const login = async (req, res) => {
     if(userData){
         const correctPass = bcrypt.compareSync(password, userData.password);
         if(correctPass){
-            jwt.sign({ role: userData.role, firstName: userData.firstName, lastName: userData.lastName, email: userData.email, id: userData._id }, process.env.JWT_SECRET, {}, (err, token) => {
+            jwt.sign({ role: userData.role, firstName: userData.firstName, password: userData.password, lastName: userData.lastName, email: userData.email, userImage: userData.userImage, id: userData._id }, process.env.JWT_SECRET, {}, (err, token) => {
                 if (err) throw err;
                 res.cookie("token", token);
                 res.json(userData);

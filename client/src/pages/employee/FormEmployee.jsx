@@ -443,7 +443,7 @@ const FormEmployee = () => {
                 <input
                   onChange={inputContact}
                   value={employeeData.contact.email}
-                  type="text"
+                  type="email"
                   name="email"
                   placeholder="Email Address"
                 />

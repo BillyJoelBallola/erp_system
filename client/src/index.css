@@ -8,7 +8,7 @@
 }
 
 html{
-    @apply bg-[#FAFAFA];
+    @apply bg-[#g1g1g1];
 }
 
 ::-webkit-scrollbar{
@@ -18,30 +18,20 @@ html{
 .nav-links a{ @apply hover:text-blue-400 delay-150 ease-in-out py-2; }
 .nav-links a.active{ @apply text-white; }
 
-.p-toast-message-content{ @apply bg-white; }
+.p-datatable { @apply overflow-hidden rounded-lg shadow-sm border; }
 
-.p-datatable-wrapper{ @apply w-full grid; }
+.p-datatable-table th{ @apply text-sm; }
 
-.p-datatable-thead th,
-.p-datatable-tbody td{ @apply py-4; }
-
-.p-datatable-tbody td{ @apply border-y-gray-200 border-y }
-
-.p-datatable-thead{ @apply text-sm text-lighter; }
-
-.p-datatable-tbody{ @apply bg-white text-center text-light; }
-
-.p-paginator{ @apply bg-transparent border-transparent flex items-center justify-end mt-5 px-6 text-sm text-gray-600; }
-
-.p-paginator button{ @apply cursor-pointer grid place-items-center hover:bg-gray-200 p-2 rounded-full; }
+.p-paginator{ @apply flex justify-end; }
 
 input[type="text"], 
-input[type="password"], 
-input[type="number"]{ @apply border-b-[1px] bg-transparent border-gray-400 rounded-b-md px-3 py-2 text-sm focus:bg-gray-200 w-full focus:border-b-blue-400 h-full; }
+input[type="password"],
+input[type="email"], 
+input[type="number"]{ @apply border bg-transparent border-gray-300 rounded-md px-3 py-2 text-sm focus:bg-gray-100 w-full h-full; }
 
 select,
 input[type="date"],
-input[type="month"]{ @apply  border-[1px] border-gray-400 rounded-md px-3 py-2 text-sm text-gray-400 w-full; }
+input[type="month"]{ @apply border border-gray-300 rounded-md px-3 py-2 text-sm text-gray-400 w-full; }
 
 .btn-outlined{ @apply py-1 px-4 bg-white text-blue-400 text-sm border border-blue-400 font-bold rounded-md hover:bg-blue-100 hover:border-blue-100 transition-all delay-100 ease-in-out; }
 

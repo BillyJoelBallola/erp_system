@@ -19,11 +19,12 @@ import ShipmentRoutes from "./Routes/ShipmentRoutes.js";
 import AdjustmentRoutes from "./Routes/AdjustmentRoutes.js";
 import AttendanceRoutes from "./Routes/AttendanceRoutes.js";
 import PayslipRoutes from "./Routes/PayslipRoutes.js";
+import UploadRoutes from "./Routes/UploadRoutes.js";
+import { dirname } from "path";
+
 
 import './config.js'
 import './dbConnect.js';
-
-import { dirname } from "path";
 
 const app = express();
 app.use(express.json());
@@ -51,6 +52,7 @@ app.use(ShipmentRoutes);
 app.use(AdjustmentRoutes);
 app.use(AttendanceRoutes);
 app.use(PayslipRoutes);
+app.use(UploadRoutes);
 
 const PORT = process.env.SERVER_PORT || 4000;
 

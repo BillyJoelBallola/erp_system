@@ -502,9 +502,9 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
                 </div>
             }
             <div className="px-4 mt-6 mb-2">
-                <h2 className="font-bold text-dark text-2xl uppercase">{name}</h2>
+                <h2 className="font-bold text-dark text-2xl uppercase">{name}s</h2>
             </div>
-            <div className="px-4 pb-8">
+            <div className="px-4 pb-8 overflow-hidden rounded-lg">
                 <DataTable
                     value={dataValue}
                     filters={filters}

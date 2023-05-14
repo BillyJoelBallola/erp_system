@@ -42,7 +42,7 @@ const Header = () => {
         <div 
           onClick={() => setShowMenu(!showMenu)}
           className="flex gap-2 items-center bg-[#f1f1f1] py-1 px-2 rounded-md hover:shadow-md duration-100 ease-in-out cursor-pointer">
-          <div className="flex w-8 aspect-square border border-gray-300 overflow-hidden rounded-md">
+          <div className="flex w-8 aspect-square border border-gray-300 overflow-hidden rounded-full">
             <img src={userImg} className="object-contain" alt="user-img" />
           </div>
           <div className="grid">
