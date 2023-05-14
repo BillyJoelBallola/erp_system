@@ -45,6 +45,8 @@ import Adjusments from "./pages/adjustment/Adjusments";
 import Payslips from "./pages/payslip/Payslips";
 import FormPayslip from "./pages/payslip/FormPayslip";
 
+import ManageAccount from "./pages/settings/ManageAccount";
+
 const App = () => {
   return (
     <Routes>
@@ -81,6 +83,7 @@ const App = () => {
         <Route path="/adjustments" element={<Adjusments />}/>
         <Route path="/payslips" element={<Payslips />}/>
         <Route path="/payslips/form/:id?" element={<FormPayslip />}/>
+        <Route path="/settings/manage-account" element={<ManageAccount />}/>
       </Route>
     </Routes>
   );

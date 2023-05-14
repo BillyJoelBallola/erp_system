@@ -18,7 +18,7 @@ const Sales = () => {
     { field: "customers.name", header: "CUSTOMER NAME" },
     { field: "shipmentStatus", header: "SHIPMENT" },
     { field: "paymentStatus", header: "PAYMENT" },
-    { field: "total", header: "TOTAL" },
+    { field: "total", header: "₱ TOTAL" },
     { body: "buttons", header: "" },
   ];
 

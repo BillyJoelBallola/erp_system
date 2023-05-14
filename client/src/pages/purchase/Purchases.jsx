@@ -18,7 +18,7 @@ const Purchases = () => {
         {body: "linkCode", header: "# CODE"},
         {field: "supplier.name", header: "SUPPLIER NAME"},
         {field: "paymentStatus", header: "PAYMENT"},
-        {field: "total", header: "TOTAL"},
+        {field: "total", header: "₱ TOTAL"},
         {body: "buttons", header: ""},  
     ];
 
