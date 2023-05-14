@@ -24,7 +24,7 @@ const Login = () => {
       setCurrentUser(data);
       navigate("/");
     }else{
-      return toast.error("Failed to login.", { position: toast.POSITION.TOP_RIGHT });
+      return toast.error(data, { position: toast.POSITION.TOP_RIGHT });
     }
   }
 

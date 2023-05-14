@@ -29,7 +29,7 @@ export const login = async (req, res) => {
     if(userData){
         const correctPass = bcrypt.compareSync(password, userData.password);
         if(correctPass){
-            jwt.sign({ role: userData.role, firstName: userData.firstName, email: userData.email, id: userData._id }, process.env.JWT_SECRET, {}, (err, token) => {
+            jwt.sign({ role: userData.role, firstName: userData.firstName, lastName: userData.lastName, email: userData.email, id: userData._id }, process.env.JWT_SECRET, {}, (err, token) => {
                 if (err) throw err;
                 res.cookie("token", token);
                 res.json(userData);

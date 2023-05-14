@@ -150,7 +150,8 @@ const Dashboard = () => {
                         selectSalesByMonth('12', selectedYear),
                         selectSalesByMonth('13', selectedYear)
                     ],
-                    fill: false,
+                    fill: true,
+                    backgroundColor: 'rgba(103, 184, 255, 0.4)',
                     borderColor: documentStyle.getPropertyValue('--blue-400'),
                     tension: .4
                 },

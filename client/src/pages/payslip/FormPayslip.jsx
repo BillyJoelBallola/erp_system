@@ -220,7 +220,11 @@ const FormPayslip = () => {
             const [date, time] = payslipInfo.monthYear.split("T");
             const [year, month] = date.split("-");
             if(attendance.length > 0){
-                const attLength = attendance.filter((att) => (att.timeOut.includes(`${year}-${month}`))).length;
+                const attLength = attendance.filter((att) => {
+                    if(att.timeOut !== null){
+                        return att.timeOut.includes(`${year}-${month}`);
+                    }
+                }).length;
                 setTotals((prev) => ({
                     ...prev,
                     length: attLength
