@@ -42,8 +42,8 @@ const Header = () => {
         <div 
           onClick={() => setShowMenu(!showMenu)}
           className="flex gap-2 items-center bg-[#f1f1f1] py-1 px-2 rounded-md hover:shadow-md duration-100 ease-in-out cursor-pointer">
-          <div className="flex w-8 aspect-square border border-gray-300 overflow-hidden rounded-full">
-            <img src={userImg} className="object-contain" alt="user-img" />
+          <div className="flex items-center justify-center w-8 aspect-square border border-gray-300 overflow-hidden rounded-full">
+            <img src={currentUser?.userImage ?  `http://localhost:4000/uploads${currentUser.userImage}` : userImg} className="object-contain" alt="user-img" />
           </div>
           <div className="grid">
             <span className="text-sm">{currentUser?.firstName + " " + currentUser?.lastName}</span>

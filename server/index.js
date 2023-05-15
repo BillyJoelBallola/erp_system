@@ -20,12 +20,10 @@ import AdjustmentRoutes from "./Routes/AdjustmentRoutes.js";
 import AttendanceRoutes from "./Routes/AttendanceRoutes.js";
 import PayslipRoutes from "./Routes/PayslipRoutes.js";
 import UploadRoutes from "./Routes/UploadRoutes.js";
-import path from "path";
 
 import './config.js'
 import './dbConnect.js';
 
-const __dirname = path.dirname(new URL(import.meta.url).pathname);
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
@@ -33,7 +31,7 @@ app.use(cors({
     credentials: true,
     origin: "http://localhost:5173"
 }));
-app.use(express.static(__dirname + "/uploads"));
+app.use('/uploads', express.static('uploads'));
 
 app.use(AuthRoutes);
 app.use(ProfileRoutes);

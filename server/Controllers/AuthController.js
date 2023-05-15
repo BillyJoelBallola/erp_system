@@ -43,6 +43,18 @@ export const login = async (req, res) => {
     }   
 }
 
+export const verifyUser = async (req, res) => {
+    const { _id, password } = await req.body;
+    const userData = await User.findById(_id);
+    const correctPass = bcrypt.compareSync(password, userData.password);
+    if(correctPass){
+        res.json(userData);
+        console.log(userData);
+    }else{
+        res.json("Incorrect password");
+    }  
+}
+
 export const logout = (req, res) => {
 	res.cookie("token", "").json(true);
 };
