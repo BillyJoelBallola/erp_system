@@ -1,11 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ConfirmPopup, confirmPopup } from "primereact/confirmpopup";
-import { Toast } from "primereact/toast";
+import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 
 const FormPurchase = () => {
-    const toast = useRef();
     const navigate = useNavigate();
     const id = useParams().id;
     const [suppliers, setSuppliers] = useState([]);
@@ -95,15 +94,14 @@ const FormPurchase = () => {
         itemData.unitPrice === "" ||
         itemData.qty === 0 || itemData.qty === ""
         ){
-            return toast.current.show({ severity: 'warn', summary: 'Adding Item', detail: "Fill up all fields.", life: 3000 });
+            return toast.warning("Fill up all fields.", { position: toast.POSITION.TOP_RIGHT });
         }
       
         const existingItem = purchaseData.order.filter((item) => (item.item.toLowerCase() === itemData.item.toLowerCase()));
         if(existingItem.length > 0){
             resetItemData();
-            return toast.current.show({ severity: 'warn', summary: 'Adding Item', detail: `Item already in the list.`, life: 3000 });
+            return toast.warning("Item is already in the list.", { position: toast.POSITION.TOP_RIGHT });
         }
-
         setPurchaseData((prev) => ({
             ...prev,
             order: [...prev.order, itemData]
@@ -156,7 +154,7 @@ const FormPurchase = () => {
                     purchaseData.datePurchase === "" ||
                     purchaseData.order.length <= 0
                 )
-                return toast.current.show({ severity: 'warn', summary: 'Form message', detail: 'Fill up all fields.', life: 3000 });
+                return toast.warning("Fill up all fields.", { position: toast.POSITION.TOP_RIGHT });
         
                 const { discount, total, subTotal } = totals;
                 const { supplier, order, datePurchase } = purchaseData;
@@ -165,7 +163,7 @@ const FormPurchase = () => {
                 if (data) {
                     navigate(`/purchases/${data._id}`);
                 } else {
-                    return toast.current.show({ severity: 'error', summary: 'Form message', detail: 'Failed to add order.', life: 3000 });
+                  return toast.error("Failed to edit order.", { position: toast.POSITION.TOP_RIGHT });
                 }
             }
         });
@@ -183,7 +181,7 @@ const FormPurchase = () => {
                     purchaseData.datePurchase === "" ||
                     purchaseData.order.length <= 0
                 )
-                return toast.current.show({ severity: 'warn', summary: 'Form message', detail: 'Fill up all fields.', life: 3000 });
+                return toast.warning("Fill up all fields.", { position: toast.POSITION.TOP_RIGHT });
         
                 const { discount, total, subTotal } = totals;
                 const { supplier, order, datePurchase } = purchaseData;
@@ -191,7 +189,7 @@ const FormPurchase = () => {
                 if (data) {
                     navigate(`/purchases/${data._id}`);
                 } else {
-                    return toast.current.show({ severity: 'error', summary: 'Form message', detail: 'Failed to add order.', life: 3000 });
+                  return toast.warning("Failed to add order.", { position: toast.POSITION.TOP_RIGHT });
                 }
             }
         });
@@ -199,7 +197,10 @@ const FormPurchase = () => {
   
     return (
       <>
-        <Toast ref={toast} />
+        <ToastContainer 
+          draggable={false}
+          hideProgressBar={true}
+        />
         <ConfirmPopup />
         <div className="bg-gray-100 flex items-center justify-between px-4 py-3 border-0 border-b">
           <div className="font-semibold text-blue-400 flex items-center gap-2">
