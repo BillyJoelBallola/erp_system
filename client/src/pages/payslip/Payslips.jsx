@@ -15,10 +15,10 @@ const Payslips = () => {
 
   const columns = [
     // { body: "linkCode", header: "# CODE" },
-    { field: "employee.name", header: "EMPLOYEE NAME" },
-    { field: "monthYearFormat", header: "MONTH - YEAR" },
-    { field: "paymentStatus", header: "PAYMENT" },
-    { field: "netPay", header: "₱ NETPAY"},
+    { field: "employee.name", filter: "employee.name", header: "EMPLOYEE NAME" },
+    { field: "monthYearFormat", filter: "month", header: "MONTH - YEAR" },
+    { field: "paymentStatus", filter: "payment", header: "PAYMENT" },
+    { field: "netPay", filter: "netPay", header: "₱ NETPAY"},
     { body: "buttons", header: "" },
   ];
 

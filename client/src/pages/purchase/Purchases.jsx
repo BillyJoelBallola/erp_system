@@ -15,10 +15,10 @@ const Purchases = () => {
     }, [tableAction])
 
     const columns = [
-        {body: "linkCode", header: "# CODE"},
+        {body: "linkCode", filter: "_id", header: "# CODE"},
         {field: "supplier.name", header: "SUPPLIER NAME"},
-        {field: "paymentStatus", header: "PAYMENT"},
-        {field: "total", header: "₱ TOTAL"},
+        {field: "paymentStatus", filter: "payment", header: "PAYMENT"},
+        {field: "total", filter: "total", header: "₱ TOTAL"},
         {body: "buttons", header: ""},  
     ];
 

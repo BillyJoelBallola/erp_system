@@ -21,19 +21,19 @@ const Products = () => {
     }, [tableAction]);
 
     const infoComlumns = [
-        { body: "linkCode", header: "# CODE" },
-        { field: "name", header: "PRODUCT" },
-        { field: "quantity", header: "QTY" },
-        { field: "price", header: "SELLING PRICE" },
+        { body: "linkCode", filter: "_id", header: "# CODE" },
+        { field: "name", filter: "name", header: "PRODUCT" },
+        { field: "quantity", filter: "quantity", header: "QTY" },
+        { field: "price", filter: "price", header: "SELLING PRICE" },
         { body: "buttons", header: "" },
     ];
 
     const prodColumns = [
-        { body: "linkCode", header: "# CODE" },
-        { field: "quantity", header: "FINISH QTY" },
-        { field: "status", header: "STATUS" },
-        { field: "dateCreated", header: "DATE CREATED" },
-        { field: "dateFinish", header: "DATE FINISH" },
+        { body: "linkCode", filter: "_id", header: "# CODE" },
+        { field: "quantity", filter: "quantity", header: "FINISH QTY" },
+        { field: "status", filter: "status",  header: "STATUS" },
+        { field: "dateCreated", filter: "dateCreated", header: "DATE CREATED" },
+        { field: "dateFinish", filter: "dateFinish", header: "DATE FINISH" },
         { body: "production", header: "" },
     ];
 

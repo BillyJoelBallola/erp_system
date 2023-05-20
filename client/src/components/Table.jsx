@@ -508,7 +508,7 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
                 <DataTable
                     value={dataValue}
                     filters={filters}
-                    globalFilterFields={columns.map((item) => (item.field))}
+                    globalFilterFields={columns.map((item) => (item.filter))}
                     rows={10}
                     paginator
                     paginatorTemplate="RowsPerPageDropdown FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"

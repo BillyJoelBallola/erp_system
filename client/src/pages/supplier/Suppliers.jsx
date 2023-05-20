@@ -14,10 +14,10 @@ const Suppliers = () => {
   }, [tableAction]);
 
   const columns = [
-      { body: "linkCode", header: "# CODE" },
-      { field: "name", header: "SUPPLIER NAME" },
-      { field: "business", header: "BUSINESS" },
-      { field: "order", header: "# PURCHASES" },
+      { body: "linkCode", filter: "_id", header: "# CODE" },
+      { field: "name", filter: "name", header: "SUPPLIER NAME" },
+      { field: "business", filter: "business", header: "BUSINESS" },
+      { field: "order", filter: "order", header: "# PURCHASES" },
       { body: "buttons", header: "" },
   ];
 

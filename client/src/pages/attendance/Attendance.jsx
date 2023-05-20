@@ -15,9 +15,9 @@ const Attendance = () => {
   }, [tableAction])
     
   const columns = [
-    {field: "employee.name", header: "EMPLOYEE NAME"},
-    {field: "timeInFormat", header: "TIME-IN"},
-    {field: "timeOutFormat", header: "TIME-OUT"},
+    {field: "employee.name", filter: "employee.name", header: "EMPLOYEE NAME"},
+    {field: "timeInFormat", filter: "timeIn", header: "TIME-IN"},
+    {field: "timeOutFormat", filter: "timeOut", header: "TIME-OUT"},
     {body: "buttons", header: ""},  
   ];
 

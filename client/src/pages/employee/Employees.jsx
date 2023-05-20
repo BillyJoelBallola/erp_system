@@ -14,9 +14,9 @@ const Employees = () => {
   }, [tableAction]);
 
   const columns = [
-    { body: "linkCode", header: "# CODE" },
-    { field: `name`, header: "EMPLOYEE NAME" },
-    { field: "position.name", header: "POSITION" },
+    { body: "linkCode", filter: "_id", header: "# CODE" },
+    { field: "name", filter: "name", header: "EMPLOYEE NAME" },
+    { field: "position.name", filter: "position.name", header: "POSITION" },
     { body: "buttons", header: "" },
   ];
 

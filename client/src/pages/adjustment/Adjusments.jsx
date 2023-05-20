@@ -14,11 +14,11 @@ const Adjusments = () => {
   }, [tableAction]);
 
   const columns = [
-    {body: "linkCode", header: "# ADJUSTMENT CODE"},
-    {body: "link", header: "# ITEM CODE"},
-    {field: "item.oldQty", header: "OLD QTY"},
-    {field: "item.newQty", header: "NEW QTY"},
-    {field: "remarks", header: "REMARKS"},
+    {body: "linkCode", filter: "_id", header: "# ADJUSTMENT CODE"},
+    {body: "link", filter: "item.itemId", header: "# ITEM CODE"},
+    {field: "item.oldQty", filter: "item.oldQty", header: "OLD QTY"},
+    {field: "item.newQty", filter: "item.newQty", header: "NEW QTY"},
+    {field: "remarks", filter: "remarks", header: "REMARKS"},
     {body: "buttons", header: ""},  
   ];
 

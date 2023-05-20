@@ -13,12 +13,14 @@ const Shipments = () => {
           setTableAction("");
         })
     }, [tableAction])
+
+    console.log(allShipments);
   
     const columns = [
-      {body: "linkCode", header: "# SHIPMENT CODE"},
-      {body: "link", header: "# ORDER CODE"},
-      {field: "dateShipment", header: "SHIPMENT DATE"},
-      {field: "status", header: "STATUS"},
+      {body: "linkCode", filter: "_id", header: "# SHIPMENT CODE"},
+      {body: "link", filter: "salesOrder._id", header: "# ORDER CODE"},
+      {field: "dateShipment", filter: "dateShipment",  header: "SHIPMENT DATE"},
+      {field: "status", filter: "status", header: "STATUS"},
       {body: "shipment", header: ""},  
     ];
   

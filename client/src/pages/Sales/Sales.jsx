@@ -14,11 +14,11 @@ const Sales = () => {
   }, [tableAction]);
 
   const columns = [
-    { body: "linkCode", header: "# CODE" },
-    { field: "customers.name", header: "CUSTOMER NAME" },
-    { field: "shipmentStatus", header: "SHIPMENT" },
-    { field: "paymentStatus", header: "PAYMENT" },
-    { field: "total", header: "₱ TOTAL" },
+    { body: "linkCode", filter: "_id", header: "# CODE" },
+    { field: "customers.name", filter: "customers.name", header: "CUSTOMER NAME" },
+    { field: "shipmentStatus", filter: "shipment", header: "SHIPMENT" },
+    { field: "paymentStatus", filter: "payment", header: "PAYMENT" },
+    { field: "total", filter: "total", header: "₱ TOTAL" },
     { body: "buttons", header: "" },
   ];
 
