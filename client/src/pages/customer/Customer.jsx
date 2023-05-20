@@ -85,7 +85,7 @@ const Customer = () => {
         <div className="w-full h-[1px] bg-gray-200"></div>
         <div className="grid grid-cols-[200px_1fr] items-center">
           <span className="text-gray-500 text-sm font-semibold">ADDRESS</span>
-          <span>{customerInfo.address && `${customerInfo.address.street}, ${customerInfo.address.barangay}, ${customerInfo.address.city}, ${customerInfo.address.province}, ${customerInfo.address.country}`}</span>
+          <span>{customerInfo.address && `${customerInfo.address.street ? customerInfo.address.street + ", " : ""}${customerInfo.address.barangay ? customerInfo.address.barangay + ", ": ""} ${customerInfo.address.city}, ${customerInfo.address.province}, ${customerInfo.address.country}`}</span>
         </div>
         <div className="w-full h-[1px] bg-gray-200"></div>
         <div className="grid grid-cols-[200px_1fr] items-center">

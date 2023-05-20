@@ -65,7 +65,6 @@ const FormCustomer = () => {
           !customerData.name ||
           !customerData.business ||
           !customerData.address.street ||
-          !customerData.address.barangay ||
           !customerData.address.city ||
           !customerData.address.province ||
           !customerData.address.country ||
@@ -97,7 +96,6 @@ const FormCustomer = () => {
           !customerData.name ||
           !customerData.business ||
           !customerData.address.street ||
-          !customerData.address.barangay ||
           !customerData.address.city ||
           !customerData.address.province ||
           !customerData.address.country ||

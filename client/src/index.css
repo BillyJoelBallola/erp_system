@@ -12,7 +12,11 @@ html{
 }
 
 ::-webkit-scrollbar{
-    @apply w-0;
+    @apply w-[7px] bg-black/10;
+}
+
+::-webkit-scrollbar-thumb{
+    @apply bg-darker/50 rounded-full;
 }
 
 .nav-links a{ @apply hover:text-blue-400 delay-150 ease-in-out py-2; }

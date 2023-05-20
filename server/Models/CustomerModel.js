@@ -8,7 +8,7 @@ const CustomerSchema = new Schema({
     business: {type: String, required: true},
     address: {
         street: {type: String, required: true},
-        barangay: {type: String, required: true},
+        barangay: {type: String},
         city: {type: String, required: true},
         province: {type: String, required: true},
         country: {type: String, required: true},
