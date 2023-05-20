@@ -65,7 +65,6 @@ const FormSupplier = () => {
           supplierData.name === "" ||
           supplierData.business === "" ||
           supplierData.address.street === "" ||
-          supplierData.address.barangay === "" ||
           supplierData.address.city === "" ||
           supplierData.address.province === "" ||
           supplierData.address.country === "" ||
@@ -97,7 +96,6 @@ const FormSupplier = () => {
           supplierData.name === "" ||
           supplierData.business === "" ||
           supplierData.address.street === "" ||
-          supplierData.address.barangay === "" ||
           supplierData.address.city === "" ||
           supplierData.address.country === "" ||
           supplierData.address.province === "" ||

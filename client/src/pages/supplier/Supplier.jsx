@@ -85,7 +85,7 @@ const Supplier = () => {
         <div className="w-full h-[1px] bg-gray-200"></div>
         <div className="grid grid-cols-[200px_1fr] items-center">
           <span className="text-gray-500 text-sm font-semibold">ADDRESS</span>
-          <span>{supplierInfo.address && `${supplierInfo.address.street}, ${supplierInfo.address.barangay}, ${supplierInfo.address.city}, ${supplierInfo.address.province}, ${supplierInfo.address.country}`}</span>
+          <span>{supplierInfo.address && `${supplierInfo.address.street ?  supplierInfo.address.street + ", " : ""}${supplierInfo.address.barangay ?  supplierInfo.address.barangay + ", " : ""}${supplierInfo.address.city}, ${supplierInfo.address.province}, ${supplierInfo.address.country}`}</span>
         </div>
         <div className="w-full h-[1px] bg-gray-200"></div>
         <div className="grid grid-cols-[200px_1fr] items-center">

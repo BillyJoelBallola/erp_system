@@ -87,7 +87,7 @@ const FormSales = () => {
     const address = customer[0]?.address;
     let formattedAddress = "";
     if(address){
-      formattedAddress = `${address?.street}, ${address?.barangay}, ${address?.city}, ${address?.province}, ${address?.country}`;
+      formattedAddress = `${address.street ? address.street + ", " : ""}${address.barangay ? address.barangay + ", " : ""}${address?.city}, ${address?.province}, ${address?.country}`;
     }
     setCustomerData((prev) => ({
       ...prev,
