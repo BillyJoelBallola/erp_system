@@ -1,18 +1,17 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { country } from "../../static/Country";
 import axios from "axios";
 
 import { ConfirmPopup } from "primereact/confirmpopup";
 import { confirmPopup } from "primereact/confirmpopup";
-import { Toast } from "primereact/toast";
+import { ToastContainer, toast } from "react-toastify";
 
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 
 const FormCustomer = () => {
-  const toast = useRef(); 
   const navigate = useNavigate();
   const id = useParams().id;
   const [customerData, setCustomerData] = useState({
@@ -71,17 +70,17 @@ const FormCustomer = () => {
           !customerData.address.province ||
           !customerData.address.country ||
           !customerData.contact.phoneNumber
-        )
-          return toast.current.show({ severity: 'warn', summary: 'Form message', detail: 'Fill up all fields.', life: 3000 });
+        ){
+          return toast.warning("Fill up all important fields.", { position: toast.POSITION.TOP_RIGHT });
+        }
 
         const { data } = await axios.put("/update_customer", {
           ...customerData, id
         });
         if (data) {
           navigate(`/customers/${data._id}`);
-          toast.current.show({ severity: 'info', summary: 'Edit Message', detail: 'Edited successfully.', life: 3000 });
         } else {
-          toast.current.show({ severity: 'warn', summary: 'Edit Message', detail: 'Failed to edit customer info.', life: 3000 });
+          return toast.error("Failed to edit customer info.", { position: toast.POSITION.TOP_RIGHT });
         }
       },
     });
@@ -103,14 +102,15 @@ const FormCustomer = () => {
           !customerData.address.province ||
           !customerData.address.country ||
           !customerData.contact.phoneNumber
-        )
-        return toast.current.show({ severity: 'warn', summary: 'Form message', detail: 'Fill up all fields.', life: 3000 });
-    
+        ){
+           return toast.warning("Fill up all important fields.", { position: toast.POSITION.TOP_RIGHT });
+        }
+        
         const { data } = await axios.post("/add_customer", customerData);
         if (data) {
           navigate(`/customers/${data._id}`);
         } else {
-          alert("Failed to add new customer information.");
+          return toast.error("Failed to add customer info.", { position: toast.POSITION.TOP_RIGHT });
         }
       }
     });
@@ -118,7 +118,10 @@ const FormCustomer = () => {
 
   return (
     <>
-      <Toast ref={toast} />
+      <ToastContainer 
+        draggable={false}
+        hideProgressBar={true}
+      />
       <ConfirmPopup />
       <div className="bg-gray-100 flex items-center justify-between px-4 py-3 border-0 border-b">
         <div className="font-semibold text-blue-400 flex items-center gap-2">

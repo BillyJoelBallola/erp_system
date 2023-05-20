@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { country } from "../../static/Country";
 import QRCode from 'qrcode';
@@ -6,14 +6,13 @@ import axios from "axios";
 
 import { ConfirmPopup } from "primereact/confirmpopup";
 import { confirmPopup } from "primereact/confirmpopup";
-import { Toast } from "primereact/toast";
+import { ToastContainer, toast } from "react-toastify";
 
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 
 const FormEmployee = () => {
-  const toast = useRef();
   const navigate = useNavigate();
   const id = useParams().id;
   const [deduct, setDeduct] = useState("");
@@ -97,11 +96,11 @@ const FormEmployee = () => {
     const data = deductions.filter((item) => (item._id === deduct && deduct));
 
     if(existingDeduction.length > 0){
-      return toast.current.show({ severity: 'warn', summary: 'Adding Deduction', detail: `Deduction already in the list. Try other deduction.`, life: 3000 });
+      return toast.warning("Deduction already in the list. Try other deduction.", { position: toast.POSITION.TOP_RIGHT });
     }
 
     if(deduct === "") {
-      return toast.current.show({ severity: 'warn', summary: 'Adding Deduction', detail: `Select deduction.`, life: 3000 });
+      return toast.warning("Select decution.", { position: toast.POSITION.TOP_RIGHT });
     };
 
     setEmployeeData((prev) => ({
@@ -132,31 +131,15 @@ const FormEmployee = () => {
           !employeeData.position ||
           !employeeData.qrCode
         ){
-          return toast.current.show({
-            severity: "warn",
-            summary: "Form message",
-            detail: "Fill up all fields.",
-            life: 3000,
-          });
+          return toast.warning("Fill up all fields.", { position: toast.POSITION.TOP_RIGHT });
         }
         const res = await axios.put("/update_employee", { ...employeeData, id });
         const data = await res.data;
 
         if (data) {
-          toast.current.show({
-            severity: "info",
-            summary: "Edit Message",
-            detail: "Edited successfully.",
-            life: 3000,
-          });
           navigate(`/employees/${data._id}`);
         } else {
-          toast.current.show({
-            severity: "warn",
-            summary: "Edit Message",
-            detail: "Failed to edit employee info.",
-            life: 3000,
-          });
+          toast.error("Failed to edit.", { position: toast.POSITION.TOP_RIGHT });
         }
       },
     });
@@ -181,24 +164,15 @@ const FormEmployee = () => {
           !employeeData.contact.phoneNumber ||
           !employeeData.position ||
           !employeeData.qrCode
-        )
-          return toast.current.show({
-            severity: "warn",
-            summary: "Form message",
-            detail: "Fill up all important fields.",
-            life: 3000,
-          });
+        ){
+          return toast.warning("Fill up all fields.", { position: toast.POSITION.TOP_RIGHT });
+        }
 
         const { data } = await axios.post("/add_employee", employeeData);
         if (data) {
           navigate(`/employees/${data._id}`);
         } else {
-          toast.current.show({
-            severity: "warn",
-            summary: "Form message",
-            detail: "Failed to add new employee information.",
-            life: 3000,
-          });
+           toast.error("Failed to add.", { position: toast.POSITION.TOP_RIGHT });
         }
       },
     });
@@ -242,7 +216,10 @@ const FormEmployee = () => {
 
   return (  
     <>
-      <Toast ref={toast} />
+      <ToastContainer
+        draggable={false}
+        hideProgressBar={true}
+      />
       <ConfirmPopup />
       <div className="bg-gray-100 flex items-center justify-between px-4 py-3 border-0 border-b">
         <div className="font-semibold text-blue-400 flex items-center gap-2">
@@ -473,7 +450,7 @@ const FormEmployee = () => {
             <div className="grid lg:grid-cols-2 gap-10 md:grid-cols-1">
               <div className="grid gap-1 h-min">
                 <label className="text-gray-500 font-semibold text-xs">
-                  BASIC SALARY
+                  BASIC SALARY <i>(if applicable)</i>
                 </label>
                 <input
                   onChange={inputForm}

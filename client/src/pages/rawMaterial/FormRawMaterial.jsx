@@ -1,17 +1,16 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
 import { ConfirmPopup } from "primereact/confirmpopup";
 import { confirmPopup } from "primereact/confirmpopup";
-import { Toast } from "primereact/toast";
+import { ToastContainer, toast } from "react-toastify";
 
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 
 const FormRawMaterial = () => {
-  const toast = useRef(); 
   const navigate = useNavigate();
   const id = useParams().id;
   const [cat, setCat] = useState("");
@@ -73,17 +72,17 @@ const FormRawMaterial = () => {
           rawMaterialInfo.maesurement === "" ||
           rawMaterialInfo.quantity === "" ||
           rawMaterialInfo.storage === ""
-        )
-        return toast.current.show({ severity: 'warn', summary: 'Form message', detail: 'Fill up all fields.', life: 3000 });
+        ){
+          return toast.warning("Fill up all fields.", { position: toast.POSITION.TOP_RIGHT });
+        }
 
         const { data } = await axios.put("/update_raw-material", {
           ...rawMaterialInfo, id
         });
         if (data) {
           navigate(`/raw-materials/${data._id}`);
-          toast.current.show({ severity: 'info', summary: 'Edit Message', detail: 'Edited successfully.', life: 3000 });
         } else {
-          toast.current.show({ severity: 'warn', summary: 'Edit Message', detail: 'Failed to edit raw material info.', life: 3000 });
+          return toast.error("Failed to edit raw-material info.", { position: toast.POSITION.TOP_RIGHT });
         }
       },
     });
@@ -101,14 +100,15 @@ const FormRawMaterial = () => {
           rawMaterialInfo.maesurement === "" ||
           rawMaterialInfo.quantity === "" ||
           rawMaterialInfo.storage === ""
-        )
-        return toast.current.show({ severity: 'warn', summary: 'Form message', detail: 'Fill up all fields.', life: 3000 });
+        ){
+          return toast.warning("Fill up all fields.", { position: toast.POSITION.TOP_RIGHT });
+        }
 
         const { data } = await axios.post("/add_raw-material", rawMaterialInfo);
         if (data) {
           navigate(`/raw-materials/${data._id}`);
         } else {
-          alert("Failed to add new raw material information.");
+          return toast.error("Failed to add raw-material info.", { position: toast.POSITION.TOP_RIGHT });
         }
       }
     });
@@ -116,7 +116,10 @@ const FormRawMaterial = () => {
 
   return (
     <>
-      <Toast ref={toast} />
+      <ToastContainer 
+        draggable={false}
+        hideProgressBar={true}
+      />
       <ConfirmPopup />
       <div className="bg-gray-100 flex items-center justify-between px-4 py-3 border-0 border-b">
         <div className="font-semibold text-blue-400 flex items-center gap-2">

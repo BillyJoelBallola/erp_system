@@ -1,17 +1,16 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
 import { ConfirmPopup } from "primereact/confirmpopup";
 import { confirmPopup } from "primereact/confirmpopup";
-import { Toast } from "primereact/toast";
+import { ToastContainer, toast } from "react-toastify";
 
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 
 const FormProduct = () => {
-  const toast = useRef(); 
   const navigate = useNavigate();
   const id = useParams().id;
   const [cat, setCat] = useState("");
@@ -32,6 +31,25 @@ const FormProduct = () => {
     price: "",
     storage: ""
   });
+
+  const toastMsgBox = (severity, detail ) => {
+    switch(severity){
+        case "info":
+            toast.info(detail, { position: toast.POSITION.TOP_RIGHT });
+            break;
+        case "success":
+            toast.success(detail, { position: toast.POSITION.TOP_RIGHT });
+            break;
+        case "warning":
+            toast.warning(detail, { position: toast.POSITION.TOP_RIGHT });
+            break;
+        case "error":
+            toast.error(detail, { position: toast.POSITION.TOP_RIGHT });
+            break;
+        default:
+            break;
+    }
+}   
 
   useEffect(() => {
     if (id) {
@@ -80,15 +98,15 @@ const FormProduct = () => {
   
   const addRawMaterial = () => {
     if(rawMaterialData.item === ""){
-      return toast.current.show({ severity: 'warn', summary: 'Adding Raw Material', detail: `Please select raw material.`, life: 3000 });
+      return toastMsgBox("warnig", "Please select raw material.");
     }
     
     if(rawMaterialData.qty === 0 || rawMaterialData.qty === ""){  
-      return toast.current.show({ severity: 'warn', summary: 'Adding Raw Material', detail: 'Qty should be greater than to one[1].', life: 3000 });
+      return toastMsgBox("warnig", "Qty should be greater than to one[1].");
     }
 
     if(Number(rawMaterialData.qty) > rawMaterialData.inStock){
-      return toast.current.show({ severity: 'warn', summary: 'Adding Raw Material', detail: `Qty should be less than to ${rawMaterialData.inStock}.`, life: 3000 });
+      return toastMsgBox("warnig", `Qty should be less than to ${rawMaterialData.inStock}.`);
     }
 
     setProducts((prev) => ({
@@ -136,8 +154,9 @@ const FormProduct = () => {
           products.maesurement === "" ||
           products.rawMaterial === "" ||
           products.storage === ""
-        )
-        return toast.current.show({ severity: 'warn', summary: 'Form message', detail: 'Fill up all fields.', life: 3000 });
+        ){
+          return toastMsgBox("warning", "Fill up all fields.");
+        }
 
         const { data } = await axios.put("/update_product", {
           ...products, id
@@ -145,7 +164,7 @@ const FormProduct = () => {
         if (data) {
           navigate(`/products/${data._id}`);
         } else {
-          toast.current.show({ severity: 'warn', summary: 'Edit Message', detail: 'Failed to edit product info.', life: 3000 });
+          return toastMsgBox("error", "Failed to edit product info.");
         }
       },
     });
@@ -163,14 +182,15 @@ const FormProduct = () => {
           products.maesurement === "" ||
           products.rawMaterial === "" ||
           products.storage === ""
-        )
-        return toast.current.show({ severity: 'warn', summary: 'Form message', detail: 'Fill up all fields.', life: 3000 });
+        ){
+          return toastMsgBox("warning", "Fill up all fields.");
+        }
 
         const { data } = await axios.post("/add_product", products);
         if (data) {
           navigate(`/products/${data._id}`);
         } else {
-          return toast.current.show({ severity: 'error', summary: 'Form message', detail: 'Failed to add product information.', life: 3000 });
+          return toastMsgBox("error", "Failed to add product info.");
         }
       }
     });
@@ -178,7 +198,10 @@ const FormProduct = () => {
 
   return (
     <>
-      <Toast ref={toast} />
+      <ToastContainer 
+        draggable={false}
+        hideProgressBar={true}
+      />
       <ConfirmPopup />
       <div className="bg-gray-100 flex items-center justify-between px-4 py-3 border-0 border-b">
         <div className="font-semibold text-blue-400 flex items-center gap-2">

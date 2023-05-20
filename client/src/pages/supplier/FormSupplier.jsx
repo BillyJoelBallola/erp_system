@@ -5,14 +5,13 @@ import axios from "axios";
 
 import { ConfirmPopup } from "primereact/confirmpopup";
 import { confirmPopup } from "primereact/confirmpopup";
-import { Toast } from "primereact/toast";
+import { ToastContainer, toast } from "react-toastify";
 
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 
 const FormSupplier = () => {
-  const toast = useRef(); 
   const navigate = useNavigate();
   const id = useParams().id;
   const [supplierData, setSupplierData] = useState({
@@ -71,17 +70,17 @@ const FormSupplier = () => {
           supplierData.address.province === "" ||
           supplierData.address.country === "" ||
           supplierData.contact.phoneNumber === ""
-        )
-          return toast.current.show({ severity: 'warn', summary: 'Form message', detail: 'Fill up all fields.', life: 3000 });
+        ){
+          return toast.warning("Fill up all important fields.", { position: toast.POSITION.TOP_RIGHT });
+        }
 
         const { data } = await axios.put("/update_supplier", {
           ...supplierData, id
         });
         if (data) {
           navigate(`/suppliers/${data._id}`);
-          toast.current.show({ severity: 'info', summary: 'Edit Message', detail: 'Edited successfully.', life: 3000 });
         } else {
-          toast.current.show({ severity: 'warn', summary: 'Edit Message', detail: 'Failed to edit supplier info.', life: 3000 });
+          return toast.error("Failed to edit supplier info.", { position: toast.POSITION.TOP_RIGHT });
         }
       },
     });
@@ -103,14 +102,15 @@ const FormSupplier = () => {
           supplierData.address.country === "" ||
           supplierData.address.province === "" ||
           supplierData.contact.phoneNumber === ""
-        )
-        return toast.current.show({ severity: 'warn', summary: 'Form message', detail: 'Fill up all fields.', life: 3000 });
-    
+        ){
+          return toast.warning("Fill up all important fields.", { position: toast.POSITION.TOP_RIGHT });
+        }
+
         const { data } = await axios.post("/add_supplier", supplierData);
         if (data) {
           navigate(`/suppliers/${data._id}`);
         } else {
-          alert("Failed to add new supplier information.");
+           return toast.error("Failed to add supplier info.", { position: toast.POSITION.TOP_RIGHT });
         }
       }
     });
@@ -118,7 +118,10 @@ const FormSupplier = () => {
 
   return (
     <>
-      <Toast ref={toast} />
+      <ToastContainer 
+        draggable={false}
+        hideProgressBar={true}
+      />
       <ConfirmPopup />
       <div className="bg-gray-100 flex items-center justify-between px-4 py-3 border-0 border-b">
         <div className="font-semibold text-blue-400 flex items-center gap-2">

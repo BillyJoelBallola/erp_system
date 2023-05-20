@@ -18,7 +18,7 @@ import "primeicons/primeicons.css";
 import ProductionModal from "./ProductionModal";
 import AdjustmentModal from "./AdjustmentModal";
 import AttendanceModal from "./AttendanceModal";
-
+``
 const Table = ({ dataValue, columns, name, setTableAction}) => {
     const activeTab = useParams().tab;  
     const [visible, setVisible] = useState(false);
@@ -490,7 +490,7 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
                         type="search"
                         placeholder="Type to search"
                         className="text-sm py-1 px-2 ml-2 rounded-r-md rounded-e-md border border-gray-300 w-full"
-                        onChange={(e) => setFilters({global: {value: e.target.value, matchMode: FilterMatchMode.CONTAINS}})}
+                        onChange={(e) => setFilters({global: {value: e.target.value, matchMode: FilterMatchMode.CONTAINS }})}
                     />
                 </div>
             </div>
@@ -508,6 +508,7 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
                 <DataTable
                     value={dataValue}
                     filters={filters}
+                    globalFilterFields={columns.map((item) => (item.field))}
                     rows={10}
                     paginator
                     paginatorTemplate="RowsPerPageDropdown FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"

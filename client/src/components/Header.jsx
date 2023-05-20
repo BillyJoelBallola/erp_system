@@ -46,7 +46,7 @@ const Header = () => {
             <img src={currentUser?.userImage ?  `http://localhost:4000/uploads${currentUser.userImage}` : userImg} className="object-contain" alt="user-img" />
           </div>
           <div className="grid">
-            <span className="text-sm">{currentUser?.firstName + " " + currentUser?.lastName}</span>
+            <span className="text-sm font-semibold">{currentUser?.firstName + " " + currentUser?.lastName}</span>
             <span className="text-xs -mt-[5px]">{currentUser?.email}</span>
           </div>
         </div>

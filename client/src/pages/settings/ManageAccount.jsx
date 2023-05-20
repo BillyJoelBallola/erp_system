@@ -135,7 +135,7 @@ const ManageAccount = () => {
           <div className="grid grid-cols-[200px_1fr] gap-10 max-md:grid-cols-1">
             <div className="flex flex-col gap-5">
               <label htmlFor="userImage" className="flex items-center justify-center w-32 border-gray-300 border-2 aspect-square overflow-hidden rounded-full cursor-pointer">
-                <img src={account.userImage ? `http://localhost:4000/uploads${account.userImage}` :userImageProxy} className="object-contain" alt="user-image" />
+                <img src={account.userImage ? `http://localhost:4000/uploads${account.userImage}` : userImageProxy} className="object-contain" alt="user-image" />
               </label>
               <input accept="image/*" type="file" id="userImage" className="hidden" onChange={uploadImage}/>
               <div className="grid">
