@@ -108,7 +108,7 @@ const Sale = () => {
         <div className="grid grid-cols-[200px_1fr] items-center">
           <span className="text-gray-500 text-sm font-semibold">SHIPPING ADDRESS</span>
           <span className="text-lg">  
-            {salesInfo.customers && `${salesInfo.customers.address.street}, ${salesInfo.customers.address.barangay}, ${salesInfo.customers.address.city}, ${salesInfo.customers.address.province}, ${salesInfo.customers.address.country}`}
+            {salesInfo.customers && `${salesInfo.customers.address.street ? salesInfo.customers.address.street + ", " : ""}${salesInfo.customers.address.barangay ? salesInfo.customers.address.barangay + ", ": ""} ${salesInfo.customers.address.city}, ${salesInfo.customers.address.province}, ${salesInfo.customers.address.country}`}
           </span>
         </div>
         <div className="w-full h-[1px] bg-gray-200"></div>

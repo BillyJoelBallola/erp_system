@@ -408,7 +408,7 @@ const FormPayslip = () => {
                                         positions && 
                                         positions.map((position) => (
                                             position._id === payslipInfo.position &&
-                                            position.name === "Factory worker" &&
+                                            (position.name !== "Janitor" && position.name !== "Office Staff") &&
                                             <div className="flex flex-col gap-1" key={position._id}>
                                                 <span className="text-gray-500 font-semibold text-xs">
                                                     EARNING AMOUNT
