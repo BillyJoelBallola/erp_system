@@ -3,7 +3,7 @@ import { Dialog } from "primereact/dialog";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const AccountModal = ({ visible, setVisible, action, setAction, account, handleEditInfo, handleEditPassword }) => {
+const AccountModal = ({ visible, setVisible, action, setAction, account, handleEditInfo, handleEditPassword, setEditInfo }) => {
     const [password, setPassword] = useState("");
     const { _id } = account;
 
@@ -20,6 +20,7 @@ const AccountModal = ({ visible, setVisible, action, setAction, account, handleE
             setPassword("");
             if(action === "editInfo"){
                 handleEditInfo();
+                setEditInfo(false);
             }else{
                 handleEditPassword();
             }

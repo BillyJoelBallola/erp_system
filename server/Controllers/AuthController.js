@@ -49,7 +49,6 @@ export const verifyUser = async (req, res) => {
     const correctPass = bcrypt.compareSync(password, userData.password);
     if(correctPass){
         res.json(userData);
-        console.log(userData);
     }else{
         res.json("Incorrect password");
     }  

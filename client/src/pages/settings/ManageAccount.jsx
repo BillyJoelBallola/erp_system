@@ -127,6 +127,7 @@ const ManageAccount = () => {
         account={account}
         handleEditInfo={handleEditInfo}
         handleEditPassword={handleEditPassword}
+        setEditInfo={setEditInfo}
       />
       <div className="pt-4 pb-10 px-20 text-dark max-md:px-4">
         <h2 className="font-bold text-2xl py-4 uppercase border-b-gray-200 border-b">my account</h2>
