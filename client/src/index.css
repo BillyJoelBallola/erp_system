@@ -12,21 +12,31 @@ html{
 }
 
 ::-webkit-scrollbar{
-    @apply w-[7px] bg-black/10;
+    @apply w-[7px] h-[4px] bg-black/10;
 }
 
 ::-webkit-scrollbar-thumb{
     @apply bg-darker/50 rounded-full;
 }
 
-.nav-links a{ @apply hover:text-blue-400 delay-150 ease-in-out py-2; }
-.nav-links a.active{ @apply text-white; }
+.nav-links a{ 
+    @apply hover:text-blue-400 delay-150 ease-in-out py-2; 
+}
+.nav-links a.active{ 
+    @apply text-white; 
+}
 
-.p-datatable { @apply overflow-hidden rounded-lg shadow-sm border; }
+.p-datatable { 
+    @apply overflow-hidden rounded-lg shadow-sm border; 
+}
 
-.p-datatable-table th{ @apply text-sm; }
+.p-datatable-table th{ 
+    @apply text-sm; 
+}
 
-.p-paginator{ @apply flex justify-end; }
+.p-paginator{ 
+    @apply flex justify-end; 
+}
 
 input[type="text"], 
 input[type="password"],
@@ -35,23 +45,42 @@ input[type="number"]{ @apply border bg-transparent border-gray-300 rounded-md px
 
 select,
 input[type="date"],
-input[type="month"]{ @apply border border-gray-300 rounded-md px-3 py-2 text-sm text-gray-400 w-full; }
+input[type="month"]{ 
+    @apply border border-gray-300 rounded-md px-3 py-2 text-sm text-gray-400 w-full; 
+}
 
-.btn-outlined{ @apply py-1 px-4 bg-white text-blue-400 text-sm border border-blue-400 font-bold rounded-md hover:bg-blue-100 hover:border-blue-100 transition-all delay-100 ease-in-out; }
+.btn-outlined{ 
+    @apply py-1 px-4 bg-white text-blue-400 text-sm border border-blue-400 font-bold rounded-md hover:bg-blue-100 hover:border-blue-100 transition-all delay-100 ease-in-out; 
+}
 
-.btn-red{ @apply py-1 px-4 bg-white text-red-400 text-sm border border-red-400 font-bold rounded-md hover:bg-red-100 hover:border-red-100 transition-all delay-100 ease-in-out; }
+.btn-red{ 
+    @apply py-1 px-4 bg-white text-red-400 text-sm border border-red-400 font-bold rounded-md hover:bg-red-100 hover:border-red-100 transition-all delay-100 ease-in-out; 
+}
 
-.btn-dark{ @apply py-3 bg-darker text-sm text-white font-bold rounded-md hover:bg-dark/[.9] transition-all delay-100 ease-in-out; }
+.btn-dark{ 
+    @apply py-3 bg-darker text-sm text-white font-bold rounded-md hover:bg-dark/[.9] transition-all delay-100 ease-in-out; 
+}
 
-.btn-primary{ @apply py-1 bg-gradient-to-r from-blue-400 to-blue-500 text-sm text-white font-bold rounded-md hover:from-blue-400/[.8] hover:to-blue-500/[.8] transition-all delay-100 ease-in-out; }
+.btn-primary{ 
+    @apply py-1 bg-gradient-to-r from-blue-400 to-blue-500 text-sm text-white font-bold rounded-md hover:from-blue-400/[.8] hover:to-blue-500/[.8] transition-all delay-100 ease-in-out; 
+}
 
-.form-group{ @apply flex flex-col gap-2; }
+.form-group{ 
+    @apply flex flex-col gap-2; 
+}
 
-.form-group label{ @apply font-semibold; }
+.form-group label{ 
+    @apply font-semibold; 
+}
 
-.sub_nav a{ @apply relative; }
+.sub_nav a{ 
+    @apply relative; 
+}
 
-.sub_nav a.active{ @apply text-blue-400; }
+.sub_nav a.active{ 
+    @apply text-blue-400; 
+}
+
 .sub_nav a.active::before{
     content: "";
     position: absolute;

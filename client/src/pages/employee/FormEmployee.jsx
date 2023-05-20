@@ -192,25 +192,15 @@ const FormEmployee = () => {
       !employeeData.contact.phoneNumber ||
       !employeeData.position
     ){
-        return toast.current.show({
-            severity: "warn",
-            summary: "Form message",
-            detail: "Fill up all important fields.",
-            life: 3000,
-            });
+        return toast.warning("Fill up all important fields first.");
     }
     const randomNum = Math.random();
     const code = `ERP-${randomNum.toString().substring(2, 15)}-${name.split(" ")[0]}`;
     try {
-        const res = await QRCode.toDataURL(code);
-        setEmployeeData((prev) => ({...prev, qrCode: res, code: code}));
+      const res = await QRCode.toDataURL(code);
+      setEmployeeData((prev) => ({...prev, qrCode: res, code: code}));
     } catch (error) {
-        return toast.current.show({
-            severity: "warn",
-            summary: "Form message",
-            detail: "Fill up all important fields.",
-            life: 3000,
-            });
+      return toast.error("Failed to generate QR code. Please try again.");
     }
   }
 
@@ -515,7 +505,7 @@ const FormEmployee = () => {
                 <div className="bg-gray-400 min-w-[100px] w-4/12 min-h-[100px] max-h-[100px] overflow-hidden rounded-md border border-gray-400">
                     {
                         employeeData.qrCode &&
-                        <a href={employeeData.qrCode} download>
+                        <a href={employeeData.qrCode}>
                             <img src={employeeData.qrCode} className="object-fit"/>
                         </a>
                     }

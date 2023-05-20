@@ -52,7 +52,7 @@ const ProductionModal = ({ visible, setVisible, productInfo, production, setProd
                            
                         </div>
                     </div>
-                    <div>
+                    <div className="max-h-[120px] overflow-y-auto">
                         <div className="grid gap-2">
                                 <div className="grid gap-2 border-b-[1px] pb-2">
                                     <div className="grid grid-cols-[1fr_50px_100px] gap-10 text-gray-400 font-semibold text-sm">

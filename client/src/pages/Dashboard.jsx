@@ -92,7 +92,7 @@ const Dashboard = () => {
                     backgroundColor: ['#90EE90'],
                     borderColor: ['#2E8B57'],
                     borderWidth: 1,
-                    data: [50, 129, 29, 59, 79, 94, 200, 599, 409, 21, 24, 79]
+                    data: []
                 },
             ]
         };

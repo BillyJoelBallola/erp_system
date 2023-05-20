@@ -138,10 +138,10 @@ const ManageAccount = () => {
                 <img src={account.userImage ? `http://localhost:4000/uploads${account.userImage}` : userImageProxy} className="object-contain" alt="user-image" />
               </label>
               <input accept="image/*" type="file" id="userImage" className="hidden" onChange={uploadImage}/>
-              <div className="grid">
-                <span className="text-lg font-semibold">{`${currentUser?.firstName} ${currentUser?.lastName}`} </span>
+              <div className="grid gap-1">
+                <span className="text-lg font-semibold leading-5">{`${currentUser?.firstName} ${currentUser?.lastName}`} </span>
                 <span className="text-sm">{currentUser?.email}</span>
-                <span>{currentUser?.role}</span>
+                <span className="bg-dark text-white max-w-min px-1 rounded-md text-sm">{currentUser?.role}</span>
               </div>
             </div>
             <div>
