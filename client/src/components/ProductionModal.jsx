@@ -9,7 +9,7 @@ const ProductionModal = ({ visible, setVisible, productInfo, production, setProd
             [e.target.name]: e.target.value
         }));
     }
-
+    
     return (
         <div className="card flex justify-content-center">
             <Dialog header="PRODUCTION" 
@@ -79,7 +79,7 @@ const ProductionModal = ({ visible, setVisible, productInfo, production, setProd
                 {
                     action !== "view" &&
                     <div className="flex justify-end gap-5 mt-10 px-4">
-                        <button className="btn-primary px-4" onClick={submitProduction}>{production ? 'Save Edit' : 'Produce'}</button>
+                        <button className="btn-primary px-4" onClick={submitProduction}>{typeof production.product === "object" ? 'Save Edit' : 'Produce'}</button>
                         <button className="text-sm" onClick={() => setVisible(false)}>Cancel</button>
                     </div>
                 }

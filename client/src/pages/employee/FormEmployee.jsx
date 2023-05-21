@@ -500,7 +500,7 @@ const FormEmployee = () => {
               <div className="flex justify-between">
                 <div className="flex flex-col gap-2">
                     <span className="underline text-blue-400 cursor-pointer" onClick={generateQRCode}>Generate Employee's QR Code</span>
-                    <span className="text-xs text-light">QR code will going to use for recording employee’s attendance time-in and time-out. Click the QR code to download.</span>
+                    <span className="text-xs text-light">QR code will going to use for recording employee’s attendance time-in and time-out.</span>
                 </div>
                 <div className="bg-gray-400 min-w-[100px] w-4/12 min-h-[100px] max-h-[100px] overflow-hidden rounded-md border border-gray-400">
                     {
