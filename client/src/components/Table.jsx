@@ -320,7 +320,7 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
                 if(typeof productionRes === "object"){
                     setTableAction("submit-production");
                     setVisible(false);
-                    toastMsgBox('info', "Successfully added.");
+                    toastMsgBox('success', "Successfully edited.");
                 }
             }
         } catch (error) {
