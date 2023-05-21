@@ -176,12 +176,16 @@ const FormShipment = () => {
               <div className="grid row-2 gap-8">
                 <div className="grid gap-1">
                   <span className="text-gray-500 font-semibold text-xs">ORDER CODE - NAME</span>
-                  <select name="customer" value={shipOrder.salesOrder._id ? shipOrder.salesOrder._id : shipOrder.salesOrder}  onChange={selectOrder}>
+                  <select name="customer" disabled={id && true} value={shipOrder.salesOrder._id ? shipOrder.salesOrder._id : shipOrder.salesOrder}  onChange={selectOrder}>
                     <option value="">Select order</option>
                     {
                       orders.length > 0 &&
                       orders.map((info) => {
                         if(info.shipment === "Pending"){
+                          return (
+                            <option value={info._id} key={info._id}>{info._id.toString().substring(0, 10)}-{info.customers.name}</option>
+                          )
+                        }else if(id){
                           return (
                             <option value={info._id} key={info._id}>{info._id.toString().substring(0, 10)}-{info.customers.name}</option>
                           )

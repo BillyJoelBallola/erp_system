@@ -192,10 +192,6 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
         const { _id, shipment, payment } = rowData;
         return (
             <>
-                <ToastContainer
-                    draggable={false}
-                    hideProgressBar={true}
-                />
                 <ConfirmPopup />
                 <div className="flex gap-4 justify-center items-center">
                     {
@@ -215,7 +211,7 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
                         name === "sale" && (shipment !== "Pending" || payment !== "Unpaid") ? 
                             <></>
                         :
-                        name === "purchase" && payment !== "Pending" ? 
+                        name === "purchase" && payment !== "Unpaid" ? 
                             <></>
                         :
                         name === "attendance" ?
@@ -335,10 +331,6 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
         const { _id, quantity, product, status} = rowData;
         return (
             <>
-                <ToastContainer
-                    draggable={false}
-                    hideProgressBar={true}
-                />
                 <ConfirmPopup />
                 <div className="flex gap-1 justify-center">
                     {
@@ -375,10 +367,6 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
         const { _id, status, salesOrder } = rowData;
         return (
             <>
-                <ToastContainer 
-                    draggable={false}
-                    hideProgressBar={true}
-                />
                 <ConfirmPopup />
                 <div className="flex gap-1 justify-center text-sm font-bold">
                     {

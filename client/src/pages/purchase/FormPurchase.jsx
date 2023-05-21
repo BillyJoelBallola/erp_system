@@ -231,7 +231,7 @@ const FormPurchase = () => {
                 <span className="text-gray-500 font-semibold">
                   PAYMENT
                 </span>
-                <span className={`text-xl bg-gray-200 p-1 px-2 rounded-md max-w-max ${purchaseData.payment === "Pending" ? "text-yellow-500" : "text-blue-400"} `}>
+                <span className={`text-xl bg-gray-200 p-1 px-2 rounded-md max-w-max ${purchaseData.payment === "Unpaid" ? "text-yellow-500" : "text-blue-400"} `}>
                   {purchaseData.payment}
                 </span>
               </div>
@@ -246,7 +246,7 @@ const FormPurchase = () => {
                 <div className="grid row-2 gap-8">
                   <div className="grid gap-1">
                     <span className="text-gray-500 font-semibold text-xs">SUPPLIER</span>
-                    <select name="supplier" value={purchaseData.supplier ? purchaseData.supplier._id : purchaseData.supplier} onChange={selectSupplier}>
+                    <select name="supplier" value={purchaseData.supplier ? purchaseData.supplier._id : purchaseData.supplier} onChange={selectSupplier} disabled={id && true}>
                       <option value="">Select supplier</option>
                       {
                         suppliers.length > 0 &&
