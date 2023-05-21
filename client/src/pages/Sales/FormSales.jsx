@@ -332,7 +332,11 @@ const FormSales = () => {
               <span className="text-gray-500 font-semibold">
                 PAYMENT
               </span>
-              <span className="text-xl text-blue-400 bg-gray-200 p-1 px-2 rounded-md max-w-max">
+              <span 
+                className={`text-xl bg-gray-200 p-1 px-2 rounded-md max-w-max 
+                          ${salesOrder.payment === "Unpaid" ? 
+                          "text-yellow-500" : "text-green-500"
+                          }`}>
                 {salesOrder.payment}
               </span>
             </div>
@@ -340,7 +344,14 @@ const FormSales = () => {
               <span className="text-gray-500 font-semibold">
                 SHIPMENT
               </span>
-              <span className="text-xl text-blue-400 bg-gray-200 p-1 px-2 rounded-md max-w-max">
+              <span  
+                className={`text-xl bg-gray-200 p-1 px-2 rounded-md max-w-max 
+                        ${salesOrder.shipment === "Completed" ? 
+                          "text-green-500" : 
+                          salesOrder.shipment === "In progress" ? 
+                          "text-blue-400" : 
+                          "text-yellow-500" 
+                        }`}>
                 {salesOrder.shipment}
               </span>
             </div>

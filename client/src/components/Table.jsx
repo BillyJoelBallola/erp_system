@@ -81,13 +81,12 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
             icon: "pi pi-info-circle",
             acceptClassName: "p-button-danger",
             accept: async () => {
-                try {
-                    await axios.put("/finish_shipment", { orderId, shipmentId });
+                await axios.put("/finish_shipment", { orderId, shipmentId }).then(() => {
                     toastMsgBox('success', 'Shipment has been completed.');
                     setTableAction("finish-shipment");
-                } catch (error) {
+                }).catch(() => {
                     toastMsgBox('error', 'Failed to set as finish this shipment.');    
-                }
+                })
             },
         });
     }
@@ -111,7 +110,8 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
                     setTableAction("deleted");
                     toastMsgBox('success', 'Successfully deleted.');   
                 } catch (error) {
-                    toastMsgBox('error', `Failed to ${name === "shipment" ? "cancel" : "delete"}`); 
+                    const action = name === "shipment" ? "cancel" : "delete";
+                    toastMsgBox('error', `Failed to ${action}`); 
                 } 
             },
         });
@@ -141,9 +141,6 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
 
     const linkCode = (rowData) => {
         const { salesOrder, item } = rowData;
-        if(salesOrder){
-            return <Link className="underline text-blue-400" to={`/sales/${salesOrder._id}`}>{salesOrder._id.substring(0, 10)}</Link>
-        }
 
         if(item){
             const filteredRawMaterials = rawData.filter((raw) => (raw._id === item.itemId));
@@ -157,6 +154,14 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
             }
 
         }
+
+        if(salesOrder){
+            return <Link className="underline text-blue-400" to={`/sales/${salesOrder._id}`}>{salesOrder._id.substring(0, 10)}</Link>
+        }else{
+            return <span className="text-red-500 font-semibold">Order Deleted</span>
+        }
+
+        
     }
     
     const tableLink = (rowData) => {
@@ -190,48 +195,44 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
 
     const actionBodyTemplate = (rowData) => {
         const { _id, shipment, payment } = rowData;
+
+        const handleEdit = () => {
+            setVisible(true);
+            setAction("edit");
+            setAdjustmentId(_id);
+        };
+
+        const renderEditButton = () => (
+            <button className="hover:text-blue-400" onClick={handleEdit}>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
+                </svg>
+            </button>
+        );
+
+        const renderLinkButton = () => (
+            <Link to={`/${name}s/form/${_id}`} className="hover:text-blue-400">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
+                </svg>
+            </Link>
+        );
+
         return (
             <>
                 <ConfirmPopup />
                 <div className="flex gap-4 justify-center items-center">
-                    {
-                        name === "adjustment" ?
-                        <button 
-                        className="hover:text-blue-400" 
-                            onClick={() => {
-                                setVisible(true);
-                                setAction("edit");
-                                setAdjustmentId(_id);
-                            }}>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
-                            </svg>
-                        </button>
-                        :
-                        name === "sale" && (shipment !== "Pending" || payment !== "Unpaid") ? 
-                            <></>
-                        :
-                        name === "purchase" && payment !== "Unpaid" ? 
-                            <></>
-                        :
-                        name === "attendance" ?
-                            <></>
-                        :
-                        <Link to={`/${name}s/form/${_id}`} className="hover:text-blue-400">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
-                            </svg>
-                        </Link>
-                    }
+                    {name === "adjustment" && renderEditButton()}
+                    {(name === "sale" && (shipment !== "Pending" || payment !== "Unpaid")) || (name === "purchase" && payment !== "Unpaid") || name === "attendance" ? null : renderLinkButton()}
                     <button className="hover:text-red-400" onClick={(e) => handleDelete(e, _id)}>
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
-                        </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                    </svg>
                     </button>
                 </div>
             </>
         );
-    }
+    };
 
     const dateFormat = (dateValue) => {
         return <span>{moment(dateValue).format("MMM D YYYY")}</span>;
@@ -365,12 +366,14 @@ const Table = ({ dataValue, columns, name, setTableAction}) => {
 
     const shipmentActions = (rowData) => {
         const { _id, status, salesOrder } = rowData;
+        console.log(salesOrder);
         return (
             <>
                 <ConfirmPopup />
                 <div className="flex gap-1 justify-center text-sm font-bold">
                     {
-                        status === "In progress" ?
+                        status === "In progress" &&
+                        salesOrder !== null ?
                         <>
                             <button 
                                 className="hover:text-green-400"
